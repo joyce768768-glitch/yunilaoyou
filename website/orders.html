@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订单中心 · 与你老友</title>
+<meta name="description" content="查看你的会员订单与消费统计。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.page-head{padding:calc(var(--nav-h) + clamp(36px,6vw,60px)) 0 clamp(16px,2.6vw,28px)}
+.page-head h1{font-family:var(--f-disp);font-size:clamp(28px,4vw,42px);letter-spacing:1px;font-weight:600;margin:16px 0 8px}
+.page-head p{color:var(--ink-2);font-size:14.5px}
+
+/* 未登录 */
+.empty-hero{max-width:460px;margin:clamp(30px,5vw,60px) auto;text-align:center;padding:52px 36px}
+.empty-hero .em{font-size:52px}
+.empty-hero h2{font-family:var(--f-disp);font-size:23px;font-weight:600;margin:16px 0 8px;letter-spacing:.5px}
+.empty-hero p{font-size:13.5px;color:var(--ink-2);line-height:1.9;margin-bottom:24px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(18px,3vw,30px)}
+.kpi{padding:22px 22px 20px;position:relative;overflow:hidden}
+.kpi .lb{font-size:11.5px;font-weight:800;letter-spacing:1.5px;color:var(--ink-3);display:flex;align-items:center;gap:7px}
+.kpi .lb .dic{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.kpi .v{font-family:var(--f-num);font-size:clamp(24px,2.6vw,31px);font-weight:800;margin-top:12px;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.kpi .v small{font-size:12px;font-weight:700;color:var(--ink-3);margin-left:3px}
+.kpi .sub{font-size:11px;color:var(--ink-3);margin-top:5px}
+.kpi .deco{position:absolute;right:-22px;bottom:-22px;width:84px;height:84px;border-radius:50%;opacity:.08}
+@media (max-width:920px){.kpis{grid-template-columns:1fr 1fr}}
+
+/* 图表 */
+.dash{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:16px}
+@media (max-width:920px){.dash{grid-template-columns:1fr}}
+.chart-card{padding:24px 24px 18px}
+.chart-card .hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.chart-card .hd b{font-size:15px;font-weight:800}
+.chart-card .hd span{font-size:11.5px;color:var(--ink-3)}
+.bars{display:flex;align-items:flex-end;gap:clamp(10px,2vw,22px);height:190px;padding-top:14px}
+.bar-g{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+.bar-g .col{width:100%;max-width:52px;border-radius:12px 12px 6px 6px;background:var(--grad-primary);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 14px -4px rgba(108,92,231,.4);min-height:6px;transition:height .8s var(--spring);position:relative}
+.bar-g .col.zero{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--hairline)}
+.bar-g .col:hover::after{content:attr(data-v);position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--primary-deep);background:#fff;padding:3px 9px;border-radius:100px;box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);white-space:nowrap;z-index:3}
+.bar-g .lb{font-size:11px;color:var(--ink-3);font-weight:700}
+.ring-card{padding:24px;display:flex;flex-direction:column}
+.ring-card .hd b{font-size:15px;font-weight:800}
+.ring-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 0}
+.ring{position:relative;width:158px;height:158px}
+.ring svg{transform:rotate(-90deg)}
+.ring .cval{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .cval b{font-family:var(--f-num);font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.ring .cval span{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.legend{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.legend .li{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2)}
+.legend .li i{width:11px;height:11px;border-radius:4px;flex-shrink:0}
+.legend .li b{margin-left:auto;font-family:var(--f-num);font-weight:800;color:var(--ink)}
+
+/* 订单表 */
+.orders{margin-top:16px;overflow:hidden}
+.orders .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 14px;flex-wrap:wrap}
+.orders .hd b{font-size:15px;font-weight:800}
+.filters{display:flex;gap:7px;flex-wrap:wrap}
+.filters button{padding:7.5px 15px;border-radius:100px;font-size:12px;font-weight:700;color:var(--ink-2);background:var(--surface-2);transition:all .2s}
+.filters button.on{background:var(--grad-primary);color:#fff;box-shadow:0 4px 12px -3px rgba(108,92,231,.45)}
+.o-table{width:100%;border-collapse:collapse}
+.o-table th{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--ink-3);text-align:left;padding:11px 22px;border-top:.5px solid var(--line);border-bottom:.5px solid var(--line);background:rgba(245,241,232,.6)}
+.o-table td{padding:14px 22px;border-bottom:.5px solid var(--line);font-size:13px;vertical-align:middle}
+.o-table tr:last-child td{border-bottom:none}
+.o-table tr:hover td{background:rgba(108,92,231,.035)}
+.o-table .oid{font-family:var(--f-num);font-weight:700;letter-spacing:.5px}
+.o-table .pl b{display:block;font-weight:700}
+.o-table .pl span{font-size:11px;color:var(--ink-3)}
+.o-table .amt{font-family:var(--f-num);font-weight:800;font-variant-numeric:tabular-nums}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:4.5px 11px;border-radius:100px}
+.st.paid{color:var(--mint);background:var(--mint-soft)}
+.st.paid::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--mint)}
+.st.refund{color:var(--coral);background:var(--coral-soft)}
+.st.refund::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--coral)}
+.meth{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2)}
+@media (max-width:760px){
+  .o-table .hide-m{display:none}
+  .o-table th,.o-table td{padding:12px 14px}
+}
+.o-empty{text-align:center;padding:44px 20px}
+.o-empty .em{font-size:40px}
+.o-empty p{font-size:13px;color:var(--ink-3);margin-top:12px}
+.demo-bar{display:flex;justify-content:center;padding:0 22px 18px}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+
+<nav class="nav" id="nav">
+  <a class="logo" href="index.html">
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+    <span><b>与你老友</b><small>OLD FRIENDS · ROUNDTABLE</small></span>
+  </a>
+  <div class="links">
+    <a href="index.html#features">产品</a>
+    <a href="membership.html">会员</a>
+    <a href="orders.html" class="on">订单</a>
+    <div class="dd" id="dd-download">
+      <button type="button">下载 App <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="dd-menu">
+        <button class="dd-item" onclick="toast('TestFlight 内测招募中，敬请期待 🚀')"><span class="ic" style="background:var(--sky-soft)">🕊</span><span><b>TestFlight 内测</b><span>iOS 抢先体验版</span></span></button>
+        <button class="dd-item" onclick="toast('App Store 上架筹备中，先关注我们 🍎')"><span class="ic" style="background:var(--coral-soft)">🍎</span><span><b>App Store</b><span>iOS 正式版</span></span></button>
+        <button class="dd-item" onclick="toast('Android 版打磨中，很快见面 🤖')"><span class="ic" style="background:var(--mint-soft)">🤖</span><span><b>Android APK</b><span>主流安卓机型</span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="cta" id="auth-slot"></div>
+  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#302C63" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html#features">产品</a><a href="membership.html">会员</a><a href="orders.html">订单</a>
+</div>
+
+<!-- ============ 未登录 ============ -->
+<div class="wrap" id="gate" style="display:none">
+  <div class="card empty-hero reveal">
+    <div class="em">🔐</div>
+    <h2>这里藏着你的账本</h2>
+    <p>登录后即可查看会员订单与消费统计。<br>还没有账户？注册只要 10 秒，还送 5 张老友券。</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary" href="membership.html?tab=login">登录</a>
+      <a class="btn btn-ghost" href="membership.html?tab=signup">免费注册</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 已登录仪表盘 ============ -->
+<main class="wrap" id="dash" style="display:none;padding-bottom:30px">
+  <header class="page-head" style="padding-top:clamp(30px,4vw,48px)">
+    <span class="sec-tag">✦ ORDERS</span>
+    <h1>订单中心</h1>
+    <p id="hello">—</p>
+  </header>
+
+  <div class="kpis">
+    <div class="card kpi reveal">
+      <span class="lb"><span class="dic" style="background:var(--primary-soft)">💰</span>累计消费</span>
+      <p class="v" id="k-spend">¥0</p>
+      <p class="sub" id="k-spend-sub">共 0 笔订单</p>
+      <span class="deco" style="background:#6C5CE7"></span>
+    </div>
+    <div class="card kpi reveal">
+      <span class="lb"><span class="dic" style="background:var(--sun-soft)">👑</span>当前会员</span>
+      <p class="v" id="k-plan">—</p>
+      <p class="sub" id="k-plan-sub">未开通</p>
+      <span class="deco" style="background:#FBB03B"></span>
+    </div>
+    <div class="card kpi reveal">
+      <span class="lb"><span class="dic" style="background:var(--mint-soft)">✦</span>剩余积分</span>
+      <p class="v" id="k-pts">0</p>
+      <p class="sub">每月 1 号发放 · 未用 20% 结转</p>
+      <span class="deco" style="background:#2BBE94"></span>
+    </div>
+    <div class="card kpi reveal">
+      <span class="lb"><span class="dic" style="background:var(--coral-soft)">🎟</span>老友券</span>
+      <p class="v" id="k-coupons">0</p>
+      <p class="sub">可在女娲工坊捏人消耗</p>
+      <span class="deco" style="background:#FA7550"></span>
+    </div>
+  </div>
+
+  <div class="dash">
+    <div class="card chart-card reveal">
+      <div class="hd"><b>近 6 个月消费</b><span id="chart-sum">—</span></div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div class="card ring-card reveal">
+      <div class="hd"><b>支付方式占比</b></div>
+      <div class="ring-wrap">
+        <div class="ring">
+          <svg width="158" height="158" viewBox="0 0 158 158">
+            <circle cx="79" cy="79" r="64" fill="none" stroke="#F0EBE0" stroke-width="16"/>
+            <circle id="ring-arc" cx="79" cy="79" r="64" fill="none" stroke="url(#gradRing)" stroke-width="16" stroke-linecap="round" stroke-dasharray="0 999"/>
+            <defs><linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8478FF"/><stop offset="1" stop-color="#5647D6"/></linearGradient></defs>
+          </svg>
+          <div class="cval"><b id="ring-pct">—</b><span>首选支付宝</span></div>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+
+  <div class="card orders reveal">
+    <div class="hd">
+      <b>全部订单</b>
+      <div class="filters" id="filters">
+        <button class="on" data-f="all">全部</button>
+        <button data-f="trial">体验装</button>
+        <button data-f="lite">轻量月卡</button>
+        <button data-f="plus">标准月卡</button>
+        <button data-f="max">创作月卡</button>
+        <button data-f="paid">支付成功</button>
+        <button data-f="refund">已退款</button>
+      </div>
+    </div>
+    <div id="o-list"></div>
+    <div class="demo-bar"><button class="btn btn-ghost btn-sm" onclick="loadDemo()">🧪 载入演示订单</button></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="in">
+    <div class="base" style="margin-top:0;padding-top:0;border-top:none">
+      <span>© 2026 与你老友 · 把智慧请上桌</span>
+      <span>演示环境 · 订单数据仅保存在本机浏览器</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+let curFilter='all';
+/* 全端统一档位名（与 App PLANS 同步） */
+const PLAN_NAME={free:'免费版',trial:'体验装',lite:'轻量月卡',plus:'标准月卡',max:'创作月卡'};
+const METHOD_META={alipay:['🅰','支付宝','#4AA8E8'],wechat:['💬','微信支付','#2BBE94'],card:['💳','银行卡','#FBB03B']};
+const $=id=>document.getElementById(id);
+
+function render(){
+  const u=SITE.me();
+  document.getElementById('gate').style.display=u?'none':'block';
+  document.getElementById('dash').style.display=u?'block':'none';
+  if(!u){SITE.renderAuth();return}
+  $('hello').textContent=`${u.nick}，这是你在与你老友的每一笔智慧投资 ✦`;
+  const orders=SITE.orders();
+  const paid=orders.filter(o=>o.status==='paid');
+  const spend=paid.reduce((s,o)=>s+o.amount,0);
+  const vip=u.plan&&u.planUntil>Date.now();
+  $('k-spend').textContent=fmtMoney(spend);
+  $('k-spend-sub').textContent=`共 ${paid.length} 笔订单`;
+  $('k-plan').textContent=vip?(PLAN_NAME[u.plan]||u.plan):'—';
+  $('k-plan-sub').textContent=vip?`到期 ${new Date(u.planUntil).toLocaleDateString('zh-CN')}`:'未开通会员';
+  $('k-pts').textContent=u.points||0;
+  $('k-coupons').textContent=u.coupons??0;
+  drawChart(orders); drawRing(paid); drawTable(orders);
+  SITE.renderAuth();
+}
+
+/* 柱状图：近 6 个月 */
+function drawChart(orders){
+  const now=new Date(); const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({key:`${d.getFullYear()}-${d.getMonth()}`,label:`${d.getMonth()+1}月`,sum:0});
+  }
+  orders.filter(o=>o.status==='paid').forEach(o=>{
+    const d=new Date(o.time); const k=`${d.getFullYear()}-${d.getMonth()}`;
+    const m=months.find(x=>x.key===k); if(m)m.sum+=o.amount;
+  });
+  const max=Math.max(...months.map(m=>m.sum),1);
+  const total=months.reduce((s,m)=>s+m.sum,0);
+  $('chart-sum').textContent=`合计 ${fmtMoney(total)}`;
+  $('bars').innerHTML=months.map(m=>`
+    <div class="bar-g">
+      <div class="col ${m.sum?'':'zero'}" data-v="${m.sum?fmtMoney(m.sum):'¥0'}" style="height:${m.sum?Math.max(8,Math.round(m.sum/max*86)):3}%"></div>
+      <span class="lb">${m.label}</span>
+    </div>`).join('');
+}
+
+/* 环形图：支付方式占比 */
+function drawRing(paid){
+  const by={}; paid.forEach(o=>{by[o.method]=(by[o.method]||0)+1});
+  const total=paid.length;
+  const legend=document.getElementById('legend');
+  if(!total){
+    $('ring-pct').textContent='—'; document.getElementById('ring-arc').style.strokeDasharray='0 999';
+    legend.innerHTML='<p style="font-size:12px;color:var(--ink-3)">暂无支付记录，开通会员后这里会亮起来 ✦</p>';
+    return;
+  }
+  const entries=Object.entries(by).sort((a,b)=>b[1]-a[1]);
+  const top=entries[0];
+  $('ring-pct').textContent=Math.round(top[1]/total*100)+'%';
+  $('ring-pct').nextElementSibling.textContent=`首选${METHOD_META[top[0]]?.[1]||top[0]}`;
+  const colors=['#8478FF','#2BBE94','#FBB03B','#FA7550'];
+  let acc=0; const C=2*Math.PI*64;
+  const arc=document.getElementById('ring-arc');
+  arc.setAttribute('stroke-dasharray',`${C*top[1]/total} ${C}`);
+  legend.innerHTML=entries.map(([m,n],i)=>`
+    <div class="li"><i style="background:${colors[i%4]}"></i>${METHOD_META[m]?.[1]||m}<b>${n} 笔 · ${Math.round(n/total*100)}%</b></div>`).join('');
+}
+
+/* 订单表 */
+function drawTable(orders){
+  const list=orders.filter(o=>{
+    if(curFilter==='all')return true;
+    if(curFilter==='paid'||curFilter==='refund')return o.status===curFilter;
+    return o.planKey===curFilter;
+  });
+  if(!list.length){
+    $('o-list').innerHTML=`<div class="o-empty"><div class="em">🪑</div><p>还没有符合条件的订单。<br>去会员页请大佬上桌，或点下方「载入演示订单」看看效果。</p></div>`;
+    return;
+  }
+  $('o-list').innerHTML=`<table class="o-table">
+    <thead><tr><th>订单号</th><th>套餐</th><th class="hide-m">支付方式</th><th class="hide-m">时间</th><th>金额</th><th>状态</th></tr></thead>
+    <tbody>${list.map(o=>{
+      const mm=METHOD_META[o.method]||['✦',o.method||'—','#A9A5CD'];
+      return `<tr>
+        <td class="oid">${o.id}</td>
+        <td class="pl"><b>${o.plan}</b><span>${o.pts?'到账 '+o.pts+' 积分':''}</span></td>
+        <td class="hide-m"><span class="meth"><span style="font-size:15px">${mm[0]}</span>${mm[1]}</span></td>
+        <td class="hide-m" style="color:var(--ink-2)">${fmtTime(o.time)}</td>
+        <td class="amt">${fmtMoney(o.amount)}</td>
+        <td><span class="st ${o.status}">${o.status==='paid'?'支付成功':'已退款'}</span></td>
+      </tr>`}).join('')}</tbody></table>`;
+}
+
+/* 演示数据 */
+function loadDemo(){
+  const u=SITE.me();
+  if(!u){toast('请先登录，演示订单会挂到你的账户下');return}
+  const now=Date.now(), D=30*864e5;
+  const demo=[
+    {plan:'标准月卡',planKey:'plus',amount:89,months:1,pts:2000,ago:96,method:'alipay',status:'paid'},
+    {plan:'轻量月卡',planKey:'lite',amount:39.9,months:1,pts:600,ago:66,method:'wechat',status:'paid'},
+    {plan:'体验装',planKey:'trial',amount:9.9,months:1,pts:150,ago:35,method:'alipay',status:'paid'},
+    {plan:'标准月卡',planKey:'plus',amount:89,months:1,pts:2000,ago:4,method:'card',status:'paid'},
+    {plan:'创作月卡',planKey:'max',amount:169,months:1,pts:8000,ago:78,method:'alipay',status:'refund'},
+  ];
+  demo.forEach(d=>{
+    SITE.createOrder({plan:d.plan,planKey:d.planKey,amount:d.amount,months:d.months,pts:d.pts,method:d.method,status:d.status,nick:u.nick,email:u.email,time:now-d.ago*D});
+  });
+  toast('已载入 5 笔演示订单 🧪'); render();
+}
+
+/* 筛选 */
+document.querySelectorAll('#filters button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); curFilter=b.dataset.f; render();
+}));
+
+initNav();initReveal();render();
+</script>
+</body>
+</html>

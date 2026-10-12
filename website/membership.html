@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成为会员 · 与你老友</title>
+<meta name="description" content="开通与你老友会员：体验装 ¥9.9 / 轻量月卡 ¥39.9 / 标准月卡 ¥89（2000 积分）/ 创作月卡 ¥169。积分每月发放，随时可取消。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.page-head{padding:calc(var(--nav-h) + clamp(36px,6vw,64px)) 0 clamp(20px,3vw,34px);text-align:center}
+.page-head h1{font-family:var(--f-disp);font-size:clamp(30px,4.4vw,46px);letter-spacing:1px;font-weight:600;margin:16px 0 10px}
+.page-head p{color:var(--ink-2);font-size:15px;line-height:1.9}
+
+.mgrid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(24px,3.4vw,44px);align-items:start;margin-top:clamp(26px,4vw,44px)}
+@media (max-width:920px){.mgrid{grid-template-columns:1fr}}
+
+/* ============ 套餐选择 ============ */
+.planbox{display:flex;flex-direction:column;gap:14px}
+.popt{position:relative;display:flex;align-items:center;gap:16px;padding:20px 22px;cursor:pointer;transition:transform .2s var(--spring),box-shadow .25s var(--ease),border-color .2s;border:2px solid transparent;text-align:left;width:100%}
+.popt:hover{transform:translateY(-2px)}
+.popt.on{border-color:var(--primary);box-shadow:0 0 0 3.5px var(--primary-soft),var(--sh-m),inset 0 0 0 1px var(--hairline)}
+.popt .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.popt.on .radio{border-color:var(--primary)}
+.popt.on .radio::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--grad-primary)}
+.popt .pm{flex:1}
+.popt .pm b{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.popt .pm b .bdg{font-size:9.5px;font-weight:800;letter-spacing:1px;color:#fff;background:linear-gradient(140deg,#FF9A68,#F25C82);padding:3px 9px;border-radius:100px}
+.popt .pm span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.6}
+.popt .pp{text-align:right;flex-shrink:0}
+.popt .pp .pv{font-family:var(--f-num);font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.popt .pp .pv small{font-size:11.5px;font-weight:600;color:var(--ink-3);margin-left:3px}
+.popt .pp .cut{font-size:10.5px;font-weight:800;color:var(--mint);background:var(--mint-soft);padding:2.5px 8px;border-radius:100px;margin-top:4px;display:inline-block}
+.pline{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.pline i{font-style:normal;font-size:11px;font-weight:700;color:var(--ink-2);background:var(--surface-2);padding:4px 10px;border-radius:100px}
+
+/* ============ 账户面板 ============ */
+.acct{padding:30px 28px}
+.tabs{display:flex;background:var(--surface-2);border-radius:100px;padding:5px;margin-bottom:24px}
+.tabs button{flex:1;padding:11px 0;border-radius:100px;font-size:14px;font-weight:700;color:var(--ink-2);transition:all .25s var(--ease)}
+.tabs button.on{background:var(--surface);color:var(--primary);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline)}
+.acct h3{font-family:var(--f-disp);font-size:21px;letter-spacing:.5px;font-weight:600;margin-bottom:6px}
+.acct .hint{font-size:12.5px;color:var(--ink-2);line-height:1.8;margin-bottom:20px}
+.pane{display:none}.pane.on{display:block;animation:fadeUp .35s var(--ease)}
+.btn-full{width:100%;height:52px;font-size:15.5px;border-radius:var(--r-m)}
+.aux{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:12px;color:var(--ink-3)}
+.aux button{color:var(--primary);font-weight:700;font-size:12px}
+.agree{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:var(--ink-3);line-height:1.7;margin:14px 0 18px}
+.agree input{width:16px;height:16px;margin-top:2px;accent-color:var(--primary);flex-shrink:0}
+
+/* 登录态卡 */
+.me-card{text-align:center}
+.me-card .big-ava{width:72px;height:72px;border-radius:50%;background:var(--grad-primary);color:#fff;font-family:var(--f-num);font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 20px -6px rgba(86,71,214,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+.me-card h3{margin-bottom:2px}
+.me-card .mail{font-size:12.5px;color:var(--ink-3);margin-bottom:18px}
+.mstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0 22px}
+.mstat{background:var(--surface-2);border-radius:var(--r-m);padding:14px 8px}
+.mstat b{display:block;font-family:var(--f-num);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums}
+.mstat span{font-size:10.5px;color:var(--ink-3);margin-top:3px;display:block}
+.vip-flag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--sun);background:var(--sun-soft);padding:5px 13px;border-radius:100px;margin-bottom:10px}
+
+/* ============ 付款模态 ============ */
+.pay-head{text-align:center;margin-bottom:22px}
+.pay-head .em{font-size:40px}
+.pay-head h3{font-family:var(--f-disp);font-size:22px;font-weight:600;margin-top:10px;letter-spacing:.5px}
+.pay-sum{background:var(--surface);border-radius:var(--r-m);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);padding:16px 18px;margin-bottom:18px}
+.pay-sum .row{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;color:var(--ink-2)}
+.pay-sum .row b{color:var(--ink)}
+.pay-sum .row.total{border-top:.5px solid var(--line);margin-top:8px;padding-top:12px;font-size:15px}
+.pay-sum .row.total b{font-family:var(--f-num);font-size:22px;color:var(--primary-deep)}
+.methods{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.method{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:var(--r-m);background:var(--surface);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);cursor:pointer;transition:all .2s var(--ease);border:2px solid transparent;text-align:left;width:100%}
+.method.on{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.method .mic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.method b{font-size:14px;font-weight:700;flex:1}
+.method .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;transition:all .2s}
+.method.on .tick{background:var(--primary);border-color:var(--primary)}
+.paying{display:none;text-align:center;padding:30px 0 20px}
+.paying.on{display:block}
+.spinner{width:44px;height:44px;border-radius:50%;border:4px solid var(--primary-soft);border-top-color:var(--primary);animation:rot .8s linear infinite;margin:0 auto 16px}
+@keyframes rot{to{transform:rotate(360deg)}}
+.pay-ok{text-align:center;display:none}
+.pay-ok.on{display:block;animation:pop .45s var(--spring)}
+.okic{width:64px;height:64px;border-radius:50%;background:var(--mint-soft);color:var(--mint);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;animation:pop .5s var(--spring)}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+
+<nav class="nav" id="nav">
+  <a class="logo" href="index.html">
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+    <span><b>与你老友</b><small>OLD FRIENDS · ROUNDTABLE</small></span>
+  </a>
+  <div class="links">
+    <a href="index.html#features">产品</a>
+    <a href="membership.html" class="on">会员</a>
+    <a href="orders.html">订单</a>
+    <div class="dd" id="dd-download">
+      <button type="button">下载 App <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="dd-menu">
+        <button class="dd-item" onclick="toast('TestFlight 内测招募中，敬请期待 🚀')"><span class="ic" style="background:var(--sky-soft)">🕊</span><span><b>TestFlight 内测</b><span>iOS 抢先体验版</span></span></button>
+        <button class="dd-item" onclick="toast('App Store 上架筹备中，先关注我们 🍎')"><span class="ic" style="background:var(--coral-soft)">🍎</span><span><b>App Store</b><span>iOS 正式版</span></span></button>
+        <button class="dd-item" onclick="toast('Android 版打磨中，很快见面 🤖')"><span class="ic" style="background:var(--mint-soft)">🤖</span><span><b>Android APK</b><span>主流安卓机型</span></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="cta" id="auth-slot"></div>
+  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#302C63" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav>
+<div class="mobile-menu" id="mm">
+  <a href="index.html#features">产品</a><a href="membership.html">会员</a><a href="orders.html">订单</a>
+</div>
+
+<!-- ============ HEAD ============ -->
+<header class="page-head wrap">
+  <span class="sec-tag">✦ MEMBERSHIP</span>
+  <h1>成为会员，常请大佬<em style="font-style:normal;color:var(--primary)">上桌</em></h1>
+  <p>积分开桌 · 无限插话 · 女娲畅用。所有档位随时可取消，未用积分按规则结转。</p>
+</header>
+
+<main class="wrap mgrid" style="padding-bottom:20px">
+  <!-- 左：套餐 -->
+  <div>
+    <div class="planbox reveal" id="planbox">
+      <button class="card card-hover popt" data-plan="free" onclick="pickPlan('free',this)">
+        <span class="radio"></span>
+        <span class="pm">
+          <b>免费体验</b>
+          <span>围观公开桌 · 3 次插话体验 · 老友券解锁女娲（注册送 5 张）</span>
+          <span class="pline"><i>公开桌围观</i><i>插话 ×3</i><i>老友券 ×5</i></span>
+        </span>
+        <span class="pp"><span class="pv">¥0</span></span>
+      </button>
+      <button class="card card-hover popt" data-plan="trial" onclick="pickPlan('trial',this)">
+        <span class="radio"></span>
+        <span class="pm">
+          <b>体验装</b>
+          <span>150 积分一次性到账 · 按场开桌 · 围观全部公开桌，先试试手感</span>
+          <span class="pline"><i>150 分</i><i>一次性</i><i>首购尝鲜</i></span>
+        </span>
+        <span class="pp"><span class="pv">¥9.9</span></span>
+      </button>
+      <button class="card card-hover popt" data-plan="lite" onclick="pickPlan('lite',this)">
+        <span class="radio"></span>
+        <span class="pm">
+          <b>轻量月卡</b>
+          <span>每月 600 积分 + 2 张老友券 · 约 30-60 场圆桌 · 实录归档回放</span>
+          <span class="pline"><i>600 分/月</i><i>老友券 ×2</i><i>30-60 场</i></span>
+        </span>
+        <span class="pp"><span class="pv">¥39.9<small>/月</small></span></span>
+      </button>
+      <button class="card card-hover popt on" data-plan="plus" onclick="pickPlan('plus',this)">
+        <span class="radio"></span>
+        <span class="pm">
+          <b>标准月卡 <span class="bdg">🔥 最受欢迎</span></b>
+          <span>每月 2000 积分 + 4 张老友券 · 公开桌无限插话 · 女娲畅用 · 积分 20% 结转</span>
+          <span class="pline"><i>2000 分/月</i><i>老友券 ×4</i><i>无限插话</i></span>
+        </span>
+        <span class="pp"><span class="pv">¥89<small>/月</small></span></span>
+      </button>
+      <button class="card card-hover popt" data-plan="max" onclick="pickPlan('max',this)">
+        <span class="radio"></span>
+        <span class="pm">
+          <b>创作月卡</b>
+          <span>每月 8000 积分 + 8 张老友券 · 老友公开出租赚分成 · 新功能优先内测</span>
+          <span class="pline"><i>8000 分/月</i><i>老友券 ×8</i><i>出租分成</i></span>
+        </span>
+        <span class="pp"><span class="pv">¥169<small>/月</small></span></span>
+      </button>
+    </div>
+
+    <div class="card reveal" style="margin-top:18px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start">
+      <span style="font-size:22px">🛡</span>
+      <p style="font-size:12.5px;color:var(--ink-2);line-height:1.9">支付由支付宝 / 微信支付提供收款通道，本演示站点不会产生真实扣款。会员权益即时到账，积分每月 1 号发放，未用 20% 结转（封顶 500），可随时一键取消续费。</p>
+    </div>
+  </div>
+
+  <!-- 右：账户 -->
+  <div class="card acct reveal" id="acct">
+    <!-- 游客态 -->
+    <div id="guest-view">
+      <div class="tabs">
+        <button id="tab-signup" class="on" onclick="switchTab('signup')">免费注册</button>
+        <button id="tab-login" onclick="switchTab('login')">登录</button>
+      </div>
+
+      <div class="pane on" id="pane-signup">
+        <h3>开一个账户 🎉</h3>
+        <p class="hint">注册即送 5 张老友券，第一桌免费开。</p>
+        <div class="field" id="f-nick">
+          <label>昵称</label>
+          <input class="inp" id="r-nick" placeholder="怎么称呼你？" maxlength="16">
+          <p class="err">昵称至少 2 个字符</p>
+        </div>
+        <div class="field" id="f-email">
+          <label>邮箱</label>
+          <input class="inp" id="r-email" type="email" placeholder="you@example.com">
+          <p class="err">邮箱格式不正确</p>
+        </div>
+        <div class="field" id="f-pwd">
+          <label>密码</label>
+          <input class="inp" id="r-pwd" type="password" placeholder="至少 8 位，建议字母 + 数字">
+          <p class="err">密码至少 8 位</p>
+        </div>
+        <label class="agree"><input type="checkbox" id="r-agree"><span>我已阅读并同意《用户协议》与《隐私政策》，知晓本站为演示环境，不产生真实扣款。</span></label>
+        <button class="btn btn-primary btn-full" onclick="doSignup()">创建账户</button>
+        <div class="aux"><span>已有账户？</span><button onclick="switchTab('login')">直接登录 →</button></div>
+      </div>
+
+      <div class="pane" id="pane-login">
+        <h3>欢迎回来 👋</h3>
+        <p class="hint">老友们都很想你。</p>
+        <div class="field" id="f-lemail">
+          <label>邮箱</label>
+          <input class="inp" id="l-email" type="email" placeholder="you@example.com">
+          <p class="err">邮箱格式不正确</p>
+        </div>
+        <div class="field" id="f-lpwd">
+          <label>密码</label>
+          <input class="inp" id="l-pwd" type="password" placeholder="你的密码">
+          <p class="err">请输入密码</p>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="doLogin()">登 录</button>
+        <div class="aux"><span>还没有账户？</span><button onclick="switchTab('signup')">免费注册 →</button></div>
+      </div>
+    </div>
+
+    <!-- 登录态 -->
+    <div id="me-view" style="display:none">
+      <div class="me-card">
+        <span class="big-ava" id="me-ava">友</span>
+        <div class="vip-flag" id="me-vip" style="display:none">👑 正式会员</div>
+        <h3 id="me-nick">—</h3>
+        <p class="mail" id="me-mail">—</p>
+        <div class="mstats">
+          <div class="mstat"><b id="me-pts">0</b><span>剩余积分</span></div>
+          <div class="mstat"><b id="me-coupons">5</b><span>老友券</span></div>
+          <div class="mstat"><b id="me-exp">—</b><span>会员到期</span></div>
+        </div>
+        <button class="btn btn-primary btn-full" id="me-buy" onclick="openPay()">✦ 开通会员</button>
+        <div class="aux"><a href="orders.html" style="color:var(--primary);font-weight:700">查看订单中心 →</a><button onclick="SITE.logout();renderMe()">退出登录</button></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ 付款模态 ============ -->
+<div class="modal-veil" id="pay-veil">
+  <div class="modal">
+    <!-- 确认 -->
+    <div id="pay-step1">
+      <div class="pay-head">
+        <div class="em">✦</div>
+        <h3>确认订单</h3>
+      </div>
+      <div class="pay-sum">
+        <div class="row"><span>套餐</span><b id="p-plan">标准月卡</b></div>
+        <div class="row"><span>周期</span><b id="p-cycle">1 个月</b></div>
+        <div class="row"><span>到账积分</span><b id="p-pts">2000 分</b></div>
+        <div class="row total"><span>应付</span><b id="p-amt">¥89</b></div>
+      </div>
+      <div class="methods" id="methods">
+        <button class="method on" data-m="alipay"><span class="mic" style="background:var(--sky-soft)">🅰</span><b>支付宝</b><span class="tick">✓</span></button>
+        <button class="method" data-m="wechat"><span class="mic" style="background:var(--mint-soft)">💬</span><b>微信支付</b><span class="tick">✓</span></button>
+        <button class="method" data-m="card"><span class="mic" style="background:var(--sun-soft)">💳</span><b>银行卡</b><span class="tick">✓</span></button>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doPay()">确认支付 <span id="pay-amt-inline">¥89</span></button>
+      <div class="aux" style="justify-content:center"><button onclick="closePay()">再想想</button></div>
+    </div>
+    <!-- 支付中 -->
+    <div class="paying" id="pay-step2">
+      <div class="spinner"></div>
+      <p style="font-size:14.5px;font-weight:700">正在拉起支付…</p>
+      <p style="font-size:12px;color:var(--ink-3);margin-top:8px">演示环境，无需真实付款</p>
+    </div>
+    <!-- 成功 -->
+    <div class="pay-ok" id="pay-step3">
+      <div class="okic">✓</div>
+      <h3 style="font-family:var(--f-disp);font-size:22px;font-weight:600;letter-spacing:.5px">开通成功！</h3>
+      <p style="font-size:12.5px;color:var(--ink-2);margin:10px 0 4px" id="ok-plan">标准月卡已到账</p>
+      <p style="font-size:11px;color:var(--ink-3);letter-spacing:.5px" id="ok-oid">订单号 —</p>
+      <div style="display:flex;gap:10px;margin-top:24px">
+        <button class="btn btn-ghost" style="flex:1" onclick="closePay();location.reload()">留在本页</button>
+        <button class="btn btn-primary" style="flex:1" onclick="location.href='orders.html'">查看订单 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="in">
+    <div class="base" style="margin-top:0;padding-top:0;border-top:none">
+      <span>© 2026 与你老友 · 把智慧请上桌</span>
+      <span>支付通道由支付宝 / 微信支付提供 · 演示环境不产生真实扣款</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+let selPlan='plus', selMethod='alipay';
+const $=id=>document.getElementById(id);
+const PLANS={
+  free:{name:'免费体验',amt:0,months:0,pts:0,coupons:0},
+  trial:{name:'体验装',amt:9.9,months:1,pts:150,coupons:0},
+  lite:{name:'轻量月卡',amt:39.9,months:1,pts:600,coupons:2},
+  plus:{name:'标准月卡',amt:89,months:1,pts:2000,coupons:4},
+  max:{name:'创作月卡',amt:169,months:1,pts:8000,coupons:8},
+};
+function pickPlan(p,el){
+  selPlan=p;
+  document.querySelectorAll('.popt').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  if(p==='free') toast('免费版无需开通，注册即可体验 ✨');
+}
+function switchTab(t){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+t).classList.add('on');
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pane-'+t).classList.add('on');
+}
+function bad(id){const f=document.getElementById(id);f.classList.add('bad');setTimeout(()=>f.classList.remove('bad'),2200);return false}
+const emailOK=v=>/^[\w.+-]+@[\w-]+\.[\w.]{2,}$/.test(v);
+
+function doSignup(){
+  const nick=$('r-nick').value.trim(), email=$('r-email').value.trim(), pwd=$('r-pwd').value;
+  if(nick.length<2) return bad('f-nick');
+  if(!emailOK(email)) return bad('f-email');
+  if(pwd.length<8) return bad('f-pwd');
+  if(!$('r-agree').checked) return toast('请先同意用户协议与隐私政策');
+  try{
+    const u=SITE.signup(nick,email,pwd);
+    SITE.updateUser({coupons:5, points:0});
+    toast(`欢迎入席，${nick}！老友券 ×5 已到账 🎉`);
+    renderMe();
+  }catch(e){ toast(e,3000) }
+}
+function doLogin(){
+  const email=$('l-email').value.trim(), pwd=$('l-pwd').value;
+  if(!emailOK(email)) return bad('f-lemail');
+  if(!pwd) return bad('f-lpwd');
+  try{
+    const u=SITE.login(email,pwd);
+    toast(`欢迎回来，${u.nick} 👋`); renderMe();
+  }catch(e){ toast(e,3000) }
+}
+function renderMe(){
+  const u=SITE.me();
+  document.getElementById('guest-view').style.display=u?'none':'block';
+  const mv=document.getElementById('me-view');
+  mv.style.display=u?'block':'none';
+  if(!u){SITE.renderAuth();return}
+  const vip=u.plan&&u.planUntil>Date.now();
+  $('me-ava').textContent=(u.nick||'友')[0].toUpperCase();
+  $('me-nick').textContent=u.nick;
+  $('me-mail').textContent=u.email;
+  $('me-pts').textContent=u.points||0;
+  $('me-coupons').textContent=u.coupons??5;
+  $('me-exp').textContent=vip?new Date(u.planUntil).toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'}):'—';
+  $('me-vip').style.display=vip?'inline-flex':'none';
+  $('me-buy').style.display=vip?'none':'flex';
+  SITE.renderAuth();
+}
+/* ---- 付款 ---- */
+function openPay(){
+  if(!SITE.me()){switchTab('login');toast('请先登录，再开通会员');return}
+  const p=PLANS[selPlan];
+  if(selPlan==='free'){toast('免费版无需开通，注册即可体验 ✨');return}
+  $('p-plan').textContent=p.name; $('p-cycle').textContent=p.months+' 个月';
+  $('p-pts').textContent=p.pts+' 分'; $('p-amt').textContent=fmtMoney(p.amt);
+  $('pay-amt-inline').textContent=fmtMoney(p.amt);
+  $('pay-step1').style.display='block'; $('pay-step2').classList.remove('on'); $('pay-step3').classList.remove('on');
+  document.getElementById('pay-veil').classList.add('on');
+}
+function closePay(){document.getElementById('pay-veil').classList.remove('on')}
+document.querySelectorAll('.method').forEach(m=>m.addEventListener('click',()=>{
+  document.querySelectorAll('.method').forEach(x=>x.classList.remove('on'));
+  m.classList.add('on'); selMethod=m.dataset.m;
+}));
+function doPay(){
+  const u=SITE.me(); if(!u){closePay();switchTab('login');return}
+  $('pay-step1').style.display='none'; $('pay-step2').classList.add('on');
+  setTimeout(()=>{
+    $('pay-step2').classList.remove('on'); $('pay-step3').classList.add('on');
+    const p=PLANS[selPlan];
+    const base=u.planUntil&&u.planUntil>Date.now()?u.planUntil:Date.now();
+    /* 对齐 App 会员规则：积分累加，老友券按档发放（不缩水取大值） */
+    SITE.updateUser({plan:selPlan,planUntil:base+p.months*30*864e5,
+      points:(u.points||0)+p.pts,coupons:Math.max(u.coupons||0,p.coupons||0)});
+    const rec=SITE.createOrder({plan:p.name,planKey:selPlan,amount:p.amt,method:{alipay:'支付宝',wechat:'微信支付',card:'银行卡'}[selMethod],months:p.months,pts:p.pts,nick:u.nick,email:u.email});
+    $('ok-plan').textContent=`${p.name}已到账 · ${p.pts} 积分入袋${p.coupons?` · 老友券 ×${p.coupons}`:''}`;
+    $('ok-oid').textContent='订单号 '+rec.id;
+    SITE.renderAuth(); renderMe();
+  },1300);
+}
+document.getElementById('pay-veil').addEventListener('click',e=>{if(e.target.id==='pay-veil')closePay()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closePay()});
+
+/* init */
+initNav();initReveal();
+renderMe();
+const q=new URLSearchParams(location.search).get('tab');
+if(q==='login')switchTab('login'); else if(q==='signup')switchTab('signup');
+/* 首页定价卡跳转：?plan=xxx 预选套餐 */
+const qp=new URLSearchParams(location.search).get('plan');
+if(qp&&PLANS[qp]&&qp!=='free'){const b=document.querySelector(`.popt[data-plan="${qp}"]`);if(b)pickPlan(qp,b)}
+</script>
+</body>
+</html>
