@@ -1,0 +1,123 @@
+/* ============================================================
+   与你老友 · Design Tokens — Primitive Layer v1.0.0
+   ------------------------------------------------------------
+   收编自: index.html / website/*.html / setkey.html
+   原则: 已声明变量为锚点, 高频裸写值补刻度, 低频值就近吸附
+   本层只声明"有什么", 不含语义角色(semantic 在第 2 期)
+   ============================================================ */
+
+:root {
+  /* ---------- 品牌紫 primary ---------- */
+  --primary-softer: #F5F3FF;   /* 原声明保留 */
+  --primary-soft:   #ECE8FF;   /* 吸收 #f0eeff(8) #e8e4ff #f9eeff #f6f0ff #f2f0ff #f2efff #f0ebfd #eae6ff #e7e3ff #e2deff */
+  --primary-200:    #C4B8F0;   /* 吸收 #c9c4ff #c9bfff #c3b6ff #bec8ff #b9affa #b9acff #ddd6f3 #d6ceff #e4d8ff */
+  --primary-300:    #8478FF;   /* 原裸写高频(13), 吸收 #9183ff #7a6bff #9f8fff #9d8cff #a7a3f5 #b18cff */
+  --primary-violet: #C192F5;   /* v1.8.0 新档: nu-m 装饰渐变 stop(紫罗兰), 与 200/300 不等值 */
+  --primary:        #6C5CE7;   /* 原声明·基色 */
+  --primary-600:    #5647D6;   /* 原裸写(7), 吸收 #5a4bd8 #5343d4 */
+  --primary-deep:   #4B42C6;   /* 原声明保留, 吸收 #4b42c8(笔误) #4738bc */
+  --primary-800:    #3D2F80;   /* 吸收 #4e3d96 #4a32a8 */
+
+  /* ---------- 墨色 ink(文字/深色) ---------- */
+  --ink:       #302C63;        /* 原声明·基色 */
+  --ink-deep:  #262050;        /* 原裸写(3), 吸收 #2a2355 */
+  --ink-night: #1E1940;        /* 原裸写(2), 最深 */
+  --ink-2:     #6D69A4;        /* 原声明保留, 吸收 #6b67a0 #6a58a0 #7a68b0 */
+  --ink-3:     #A9A5CD;        /* 原声明保留, 吸收 #a5a1c7(6) */
+  --ink-4:     #B9B4D8;        /* 吸收 #b7b2d9 */
+  --ink-frame: #494170;        /* v1.8.0 新档: phone 边框描边色(index/website 各1处), 与 ink/ink-2 均不等值 */
+
+  /* ---------- 珊瑚 coral ---------- */
+  --coral-soft:  #FFEAE1;      /* 原声明, 吸收 #ffede6(3) #ffefe2 #ffefe0 #ffe0d2 #ffeee8 */
+  --coral-light: #FF9A76;      /* 原裸写(5), 吸收 #ff9a68(5) #ff9a5c #ff8a5c #ffa98c */
+  --coral:       #FA7550;      /* 原声明·基色, 吸收 #ff7a50 */
+  --coral-deep:  #D9683A;      /* 原裸写(2), 吸收 #d14a28 #d05a3a #ff6b4a(3) */
+
+  /* ---------- 薄荷 mint ---------- */
+  --mint-soft:  #DEF5EC;       /* 原声明, 吸收 #ddf9ee #e8f8f3 #e9faf3 #e9faf1 #e2f7ee #e2f5ee #eaf9ef #eaf5ef #c7f0d8 #c6eedf #f2fefb */
+  --mint-light: #63E2B6;       /* 吸收 #3edba8 #34d3a5 #7fd8c4 #8febcb #8fe3a8 */
+  --mint:       #2BBE94;       /* 原声明·基色, 吸收 #2fc79a */
+  --mint-deep:  #1E9A74;       /* 原裸写(4), 吸收 #1fa983 #1e6b52 */
+
+  /* ---------- 樱粉 pink ---------- */
+  --pink-soft:  #FFE6EF;       /* 原声明, 吸收 #ffe3ef #ffd9e8 #fdeef4 #fdedf7 #fbeff2 */
+  --pink-light: #F5A8C0;       /* 原裸写(2), 吸收 #ffb1cc #ffafce #ff9ec7 #f8aecb #f5b8c4 #ffb7d6 */
+  --pink:       #FF8FB8;       /* 原声明·基色 */
+  --pink-bright:#FF9DC0;       /* v1.8.0 新档: nu-m 装饰渐变 stop(亮粉), 与 pink-light 不等值 */
+  --pink-deep:  #F25C82;       /* 原裸写(6), 吸收 #f26d85 #e87ba0 #e85d96 #e879b8 #f2689c */
+
+  /* ---------- 天空 sky ---------- */
+  --sky-soft:  #E3F1FD;        /* 原声明, 吸收 #e4f3fd #e9f5fb #e8f4fc #e3f2fd #eefaff */
+  --sky-light: #7CC8F5;        /* 原裸写(2), 吸收 #5eb6e8 #84c4ee #9fd8f0 #b8e0f5 #d2ebfb */
+  --sky:       #4AA8E8;        /* 原声明·基色, 吸收 #4a9de0 */
+  --sky-deep:  #2E86C8;        /* 原裸写(2), 吸收 #2e86b8 #2e7cb8 */
+
+  /* ---------- 暖阳 sun ---------- */
+  --sun-soft:  #FFF3D6;        /* 原声明, 吸收 #fff4e3 #fcf6e3 #fbf3df #faf1e5 #f8f1e2 #f7f1e6 #f5e3b8 */
+  --sun-softer:#FFF7EA;        /* 原裸写高频(7) */
+  --sun-light: #FFD98F;        /* 原裸写(3), 吸收 #ffd08a(3) #f5d98f #ffdfa0 #ffefcb */
+  --sun:       #FBB03B;        /* 原声明·基色 ★ #ffb930(8) 归并于此 */
+  --sun-deep:  #F0B24C;        /* 原裸写(4), 吸收 #e0b24c */
+  --sun-dark:  #B47716;        /* v1.8.0 新档: admin 登录提示深金文字(sun-soft 底上保对比), 与 sun-deep 不等值 */
+
+  /* ---------- 底与面 surface ---------- */
+  --bg:        #FAF6EF;        /* 原声明·页面底(暖米) */
+  --surface:   #FFFFFF;        /* 原声明·卡片面 */
+  --surface-2: #F5F1E8;        /* 原声明, 吸收 #f0ebe0 #f3eee6 #f5f1e8 */
+  --line:      #EFE9DD;        /* 原声明·分隔线 */
+  --hairline:  rgba(48,44,99,.07); /* 原声明·发丝线 */
+
+  /* ---------- 字体族 ---------- */
+  --f-disp: '阿里妈妈方圆体 VF','AlimamaFangYuanTiVF','Yuanti SC','LXGW WenKai Screen','Baloo 2','PingFang SC',sans-serif;
+  --f-body: -apple-system,BlinkMacSystemFont,'PingFang SC','HarmonyOS Sans SC','Microsoft YaHei',sans-serif;
+  --f-num:  'Baloo 2',-apple-system,sans-serif;
+
+  /* ---------- 字阶(保留 .5 密度决策, 15 档→8 档) ---------- */
+  --text-xs:   10.5px;   /* 原 28 处 */
+  --text-sm:   11.5px;   /* 吸收 11px(35)→见迁移表⚠ */
+  --text-base: 12.5px;   /* 吸收 12px(29) */
+  --text-md:   13.5px;   /* 吸收 13px(23) */
+  --text-lg:   15px;
+  --text-xl:   19px;
+  --text-2xl:  22px;
+  --text-num:  14.5px;   /* 数字专用档 */
+
+  /* ---------- 圆角(v1.5.0 勘误: 刻度对齐线上声明 12/16/22/28; 裸值 10/14/18 留作治理项) ---------- */
+  --r-xs: 8px;
+  --r-s:  12px;
+  --r-m:  16px;
+  --r-l:  22px;
+  --r-xl: 28px;
+  --r-2xl: 36px;          /* v1.4.0 裁决补录: 容器级, 仅 sheet/大模态顶部 */
+  --r-pill: 999px;       /* 原 100px×45 处 */
+  --r-circle: 50%;       /* 原 50%×50 处 */
+
+  /* ---------- 阴影(ink 染色体系) ---------- */
+  --sh-s: 0 1px 2px rgba(48,44,99,.04), 0 3px 12px rgba(48,44,99,.055);
+  --sh-m: 0 2px 5px rgba(48,44,99,.04), 0 12px 30px -6px rgba(48,44,99,.10);
+  --sh-l: 0 6px 16px rgba(48,44,99,.08), 0 28px 64px -12px rgba(48,44,99,.20);
+  --sh-inset: inset 0 1px 3px rgba(48,44,99,.12);  /* 按钮内阴影, 原裸写 */
+
+  /* ---------- 动效 ---------- */
+  --ease:   cubic-bezier(.32,.72,.24,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast: .15s;      /* 吸收 .16s .18s */
+  --dur-base: .2s;
+  --dur-slow: .3s;       /* 吸收 .25s .28s */
+  --dur-lazy: .5s;
+
+  /* ---------- 间距(4pt 基准, 待迁移期对页校验) ---------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px;
+
+  /* ---------- 布局尺寸 ---------- */
+  --nav-h: 76px;   /* 官网固定导航高; v1.5.1 补收(原 site.css 声明, 摘除时漏收) */
+
+  /* ---------- 渐变资产(复合, 由色阶引用构成) ---------- */
+  /* 品牌主渐变: 官网 CTA/hero 大按钮; v1.5.1 补收(原 --grad-primary) */
+  --grad-primary: linear-gradient(140deg, var(--primary-300) 0%, var(--primary) 48%, var(--primary-deep) 100%);
+  /* v1.8.0 收编: 进度条 shimmer(index distill-bar / website bar-m, 2处复用), #7A6BFF 已归并 primary-300 */
+  --grad-progress: linear-gradient(90deg, var(--primary-300), var(--pink), var(--sun));
+  /* v1.8.0 收编: website nu-m 卡装饰渐变(stop 为 v1.8.0 新入阶色) */
+  --grad-nu: linear-gradient(130deg, var(--pink-bright) 0%, var(--primary-violet) 48%, var(--primary-300) 78%, var(--primary) 100%);
+}

@@ -1,0 +1,18 @@
+{
+  "name": "bottom-sheet",
+  "version": "1.0.0",
+  "source": "index.html .sheet / .sheet.on / .grab / .sheet-hd / .sheet-body",
+  "slots": ["grab(把手)", "hd(标题区)", "body(内容)", "mask(背景遮罩)"],
+  "geometry": { "radius": "36px 36px 0 0 ⚠超刻度", "maxHeight": "88%", "grab": "42×5 --ink-3 op.35" },
+  "states": {
+    "off": { "transform": "translateY(105%)", "visibility": "hidden", "pointer-events": "none" },
+    "on":  { "transform": "translateY(0)" }
+  },
+  "motion": { "transform": ".44s var(--ease)", "note": "spring 不适用大位移, 保持 ease" },
+  "surface": { "bg": "--bg-base", "shadow": "0 -18px 56px -8px rgba(36,31,68,.28)" },
+  "a11y": ["role=dialog aria-modal", "打开时 focus 移入, 关闭归还触发元素", "mask 点击=关闭(破坏型操作除外)"],
+  "rules": [
+    "⚠ 36px 圆角超出 r-xl(18): 第5期裁决——补 --r-2xl:36 还是收敛到 18",
+    "一层只允许一个 sheet, 禁止叠 sheet 开 sheet"
+  ]
+}

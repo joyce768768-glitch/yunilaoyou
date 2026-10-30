@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "r1Exempt": {
+    "varLines": ["--c1", "--c2", "--tint", "c1", "c2", "tint", "deep"],
+    "files": ["website/admin/admin.js"],
+    "thirdPartyColors": []
+  },
+  "notes": {
+    "varLines": "行级豁免: 数据注入口键名行不算裸值——CSS 形式 --c1/--c2/--tint(头像/气泡定制口) + JS 数据形式 c1/c2/tint/deep(角色库个性化配色, 内容资产, 每角色专属, 不吸附色阶以免丢失个性)",
+    "files": "文件级豁免: website/admin/admin.js — 管理台 JS 数据色为内容资产(头像池 AVA_C/图表调色板 PAL/状态映射 HC·NUWA_STC/种子数据 c1·c2·tint·deep), 值与色阶同源但 JS 无法 var(); snapshot 的 JS key:value 跳过规则不覆盖数组/三元/参数形式, v1.8.0 裁决整文件豁免",
+    "thirdPartyColors": "第三方品牌规定色: 无(SVG 图标色 v1.8.0 已全部吸附入阶, 零值级豁免)"
+  }
+}

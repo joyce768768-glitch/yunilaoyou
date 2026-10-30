@@ -1,0 +1,45 @@
+{
+  "name": "button",
+  "version": "1.0.0",
+  "source": "index.html .btn / .btn-primary / .icbtn",
+  "slots": ["container", "icon(optional)", "label", "badge-dot(optional)"],
+  "variants": {
+    "primary": {
+      "states": {
+        "rest":     { "bg": "--bg-brand", "text": "--text-invert", "shadow": "--sh-m" },
+        "hover":    { "bg": "--bg-brand-hover" },
+        "active":   { "bg": "--bg-brand-active", "transform": "scale(.96)" },
+        "focus":    { "ring": "--ring-focus" },
+        "disabled": { "opacity": "var(--state-disabled-opacity)", "pointer-events": "none" },
+        "loading":  { "opacity": "0.7", "cursor": "wait", "pointer-events": "none", "spinner": "label 前置" }
+      }
+    },
+    "soft": {
+      "states": {
+        "rest":     { "bg": "--bg-brand-soft", "text": "--text-brand" },
+        "hover":    { "bg": "--bg-brand-softer" },
+        "active":   { "transform": "scale(.96)" },
+        "focus":    { "ring": "--ring-focus" },
+        "disabled": { "opacity": "var(--state-disabled-opacity)" },
+        "loading":  { "opacity": "0.7", "cursor": "wait" }
+      }
+    },
+    "icon": {
+      "size": "42px", "radius": "--r-l(15px→迁移时对齐)",
+      "states": {
+        "rest":     { "bg": "--bg-surface", "shadow": "--sh-s", "border": "--border-hairline(inset)" },
+        "active":   { "transform": "scale(.9)" },
+        "focus":    { "ring": "--ring-focus" },
+        "disabled": { "opacity": "var(--state-disabled-opacity)" }
+      },
+      "badgeDot": { "bg": "--status-error", "size": "8px", "ring": "2px solid #fff" }
+    }
+  },
+  "typography": { "label": "--type-body-s 600", "letterSpacing": ".5px" },
+  "motion": { "transform": "--dur-fast var(--spring)", "shadow": "--dur-slow var(--ease)" },
+  "rules": [
+    "focus 态原系统缺失 → 本规格强制 --ring-focus(键盘导航必需)",
+    "loading 态原系统缺失 → 本规格补齐",
+    "危险操作按钮用 status-error 色系, 不得用 primary"
+  ]
+}

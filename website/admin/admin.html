@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-store">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>管理后台 · 与你老友</title>
 <meta name="description" content="与你老友管理后台：用户、订单、财务与 Token 成本核算。">
@@ -10,22 +11,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="../../design-system/tokens/tokens.css">
+<link rel="stylesheet" href="../../design-system/tokens/semantic.css">
+<link rel="stylesheet" href="admin.css?v=3">
 </head>
 <body>
 <!-- 登录鉴权 -->
 <div id="login" class="login">
   <div class="login-card">
-    <span class="lg-mark"><svg viewBox="0 0 24 24" fill="none" width="26" height="26"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+    <span class="lg-mark"><svg viewBox="0 0 24 24" fill="none" width="26" height="26"><circle cx="9" cy="9" r="4.4" fill="var(--sun-softer)"/><circle cx="15.5" cy="14.5" r="4.4" fill="var(--sun)" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="var(--pink)"/></svg></span>
     <h1 class="lg-title">与你老友 · 管理后台</h1>
-    <p class="lg-sub">请使用管理员账号登录</p>
+    <p class="lg-sub">请使用管理员手机号登录</p>
     <form onsubmit="tryLogin(event)" novalidate>
-      <div class="lg-field"><span>👤</span><input id="lg-user" placeholder="管理员账号" autocomplete="username"></div>
-      <div class="lg-field"><span>🔒</span><input id="lg-pwd" type="password" placeholder="密码" autocomplete="current-password"></div>
+      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><input id="lg-phone" type="tel" maxlength="11" placeholder="手机号" autocomplete="tel"></div>
+      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1121 11.5z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg></span><input id="lg-code" inputmode="numeric" maxlength="6" placeholder="验证码" autocomplete="one-time-code"><button type="button" class="lg-code-btn" id="lg-send" onclick="sendCode()">获取验证码</button></div>
       <p class="lg-err" id="lg-err"></p>
       <button class="btn btn-primary lg-btn" type="submit">登录后台</button>
     </form>
-    <p class="lg-tip">演示环境 · 账号 <b>admin</b> · 密码 <b>admin888</b></p>
+    <p class="lg-tip">演示环境 · 输入手机号获取验证码，自动回填后直接登录</p>
     <p class="lg-back"><a href="../index.html">← 返回官网</a></p>
   </div>
 </div>
@@ -34,15 +37,20 @@
   <!-- 侧栏 -->
   <aside class="side">
     <a class="logo" href="#/dashboard">
-      <span class="mark"><svg viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" width="20" height="20"><circle cx="9" cy="9" r="4.4" fill="var(--sun-softer)"/><circle cx="15.5" cy="14.5" r="4.4" fill="var(--sun)" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="var(--pink)"/></svg></span>
       <span><b>与你老友</b><small>ADMIN CONSOLE</small></span>
     </a>
     <a class="nav-item on" data-r="dashboard" href="#/dashboard"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 12l3.4-3.4"/><path d="M12 3.4v2M12 18.6v2M3.4 12h2M18.6 12h2"/></svg></span><span>数据总览</span></a>
+    <a class="nav-item" data-r="xpanel" href="#/xpanel"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13h4l2.2-6.2 3.6 11 2.6-7.4 1.6 2.6h5"/></svg></span><span>体验看板</span></a>
     <a class="nav-item" data-r="users" href="#/users"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 19.5a6.4 6.4 0 0112.4 0"/><circle cx="17" cy="9.5" r="2.6"/><path d="M15.8 15.6a5 5 0 015.4 3.9"/></svg></span><span>用户管理</span></a>
     <a class="nav-item" data-r="orders" href="#/orders"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5v7L12 21l-9-5.5v-7L12 3l9 5.5z"/><path d="M3.3 8.6L12 13.2l8.7-4.6"/><path d="M12 21v-7.8"/></svg></span><span>订单管理</span></a>
     <a class="nav-item" data-r="finance" href="#/finance"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 14.5h4"/></svg></span><span>财务管理</span></a>
     <a class="nav-item" data-r="token" href="#/token"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg></span><span>Token 计算</span></a>
+    <a class="nav-item" data-r="nuwa" href="#/nuwa"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4.5 12 2.5-6H21"/></svg></span><span>女娲管线</span></a>
+    <a class="nav-item" data-r="prompts" href="#/prompts"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 9h7M8.5 13h4.5"/><path d="M21 11.6a8.6 8.6 0 01-8.6 8.6c-1.4 0-2.7-.3-3.8-.9L3 21l1.7-5.6a8.6 8.6 0 1116.3-3.8z"/></svg></span><span>Prompt 管理</span></a>
     <a class="nav-item" data-r="chars" href="#/chars"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9.5" r="2.5"/><path d="M15.5 14.5c2.8.3 5 2.6 5 5.5"/></svg></span><span>老友管理</span></a>
+    <a class="nav-item" data-r="realfriends" href="#/realfriends"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.6"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/><path d="M8.5 10.5l-1.2 2.2M15.5 10.5l1.2 2.2"/></svg></span><span>真人好友</span></a>
+    <a class="nav-item" data-r="lives" href="#/lives"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6.5" width="13.5" height="11" rx="2.5"/><path d="M16 10.5l5.5-3v9l-5.5-3"/></svg></span><span>广场直播</span></a>
     <a class="nav-item" href="../index.html" title="返回官网"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/></svg></span><span>返回官网</span></a>
     <button class="logout-btn" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M15 3h4a1 1 0 011 1v16a1 1 0 01-1 1h-4"/><path d="M10 17l-5-5 5-5"/><path d="M5 12h11"/></svg>退出登录</button>
     <span class="env">DEMO · 演示环境</span>
@@ -65,8 +73,8 @@
   <div id="d-body"></div>
 </aside>
 
-<script src="../../yln-core.js?v=3"></script>
-<script src="admin.js?v=3"></script>
+<script src="../../yln-core.js?v=12"></script>
+<script src="admin.js?v=26"></script>
 <script>router();</script>
 </body>
 </html>

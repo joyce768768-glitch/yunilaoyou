@@ -1,0 +1,51 @@
+{
+  "name": "avatar",
+  "version": "1.1.0",
+  "source": "index.html avaHTML() 唯一渲染口",
+  "signature": "产品签名组件 · 呆萌脸(squircle+双眼+微笑+腮红) + 领域SVG角标",
+  "changelog": "v1.1.0 (2026-10-27): 角标从 emoji 升级为 FIELD_ICON v2 领域SVG; 渲染口收编为 avaHTML(id,size,badge) 三参唯一口(角标自动注入, 调用点禁止手传); 新增 real/grid/detail 四 variant",
+  "slots": ["face(squircle)", "eyes(::before)", "smile(::after)", "blush.l/.r", "badge(optional·领域SVG)"],
+  "api": {
+    "avaHTML(id, size, badge)": "唯一头像渲染口; badge=false 显式无角标; 真人自动分流 uavaHTML",
+    "flatBadge(c, px)": "领域SVG生成器, stroke=c.deep, 尺寸随头像缩放 px=size*0.34*0.72",
+    "禁令": "任何调用点不得手传 flatBadge/自定义 icon(O13 机检守卫)"
+  },
+  "customProps": {
+    "--c1/--c2": "角色渐变(135deg)",
+    "--eg": "眼距(默认 10px)"
+  },
+  "geometry": { "radius": "36%", "eyes": "9%×15% 椭圆 --ink", "smile": "20%×12% 2.2px 弧线 --ink", "blush": "13%×9% 白42%" },
+  "surface": {
+    "shadow": "inset 0 -3px 6px rgba(0,0,0,.08), inset 0 2px 3px rgba(255,255,255,.5), 0 2px 4px rgba(48,44,99,.08), 0 5px 14px -3px rgba(48,44,99,.14)"
+  },
+  "badge": {
+    "bg": "#fff",
+    "radius": "--r-circle",
+    "size": "44%",
+    "position": "right:-7% bottom:-4%",
+    "content": "FIELD_ICON v2 领域SVG(stroke=c.deep, viewBox 24, stroke-width 2.3, linecap/linejoin round)",
+    "scale": "badge 圆块 = 头像34%; SVG = 圆块72%; 详情92px档 = SVG 23px",
+    "note": "扁平白底无投影"
+  },
+  "variants": {
+    "default": "AI 老友 46px 老友卡/选人卡/会话单聊行/邀请弹层 54px/聊天室消息与打字中 40px",
+    "real": "真人 uavaHTML: 圆形姓氏字色底头像(--uava, AVA_C 语义色板), 无角标",
+    "grid": "群聊九宫格 gridAvaHTML 3×3 gcell: 物理放不下角标, 刻意无角标(微信式)",
+    "detail": "人物详情 92px 大头像: badge 32px 圆块 + flatBadge(c,23)"
+  },
+  "fieldIconV2": {
+    "科技": "代码括号 M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4",
+    "商业": "增长柱状 M4 20h16M7 16v-4M12 16V8M17 16V6",
+    "智慧": "翻开的书 M12 5.5C10 4 7.5 3.5 4.5 3.5v14c3 0 5.5.5 7.5 2 2-1.5 4.5-2 7.5-2v-14c-3 0-5.5.5-7.5 2z M12 5.5v14",
+    "创作": "星芒火花 M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z + 副星",
+    "生涯": "阶梯上升 M4 20h4v-4h4v-4h4V8h4",
+    "情感": "捧心 心形+托手弧线",
+    "真友": "人形+认证对勾 circle + path + check"
+  },
+  "rules": [
+    "五官色固定 --ink, 不随角色渐变变化",
+    "角色渐变 c1/c2 限同一 family 内取色(如 primary-300→primary-600), 禁止跨 family 撞色",
+    "badge 内容色用 c.deep(角色数据注入, 同 avatar 渐变白名单), 缺省回退 --icon-brand",
+    "改特征图形只改 FIELD_ICON 一处, 全端生效(唯一图标源)"
+  ]
+}
