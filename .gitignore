@@ -11,5 +11,8 @@ Thumbs.db
 *.log
 *.tmp
 
+# 本地测试辅助页（key 只存访问者浏览器，不入库）
+setkey.html
+
 # 依赖（本项目零依赖，防御性保留）
 node_modules/

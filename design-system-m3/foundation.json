@@ -1,0 +1,49 @@
+{
+  "schema": "yln.m3-foundation.charter.v1",
+  "title": "与你老友 · AI-Native Design System Foundation",
+  "sourceCharter": "/Users/moon/Trae/设计系统实验室/material-3-foundation-merged.md",
+  "extractionMode": "document-led/source-observed",
+  "ruleLevels": {
+    "reference": "M3 可迁移机制，不要求复制官方造型",
+    "hard": "自有硬约束，缺失必须显式登记",
+    "default": "默认策略，允许记录例外"
+  },
+  "principles": [
+    {"id": "PR-01", "name": "清晰层级", "downstream": ["SYS-COLOR", "TYPE-15", "PAT-HOME-FEED", "PAT-ADMIN-ANALYTICS"], "evidence": "前台 index.html:65-83；后台 KPI/图表/明细层级 admin.js:196-224"},
+    {"id": "PR-02", "name": "个性化", "downstream": ["TOK-CONTEXT"], "status": "partial", "evidence": "主题切换入口存在，但前台与后台均无深色映射 index.html:2603"},
+    {"id": "PR-03", "name": "自适应", "downstream": ["PAT-RESPONSIVE", "PAT-ADMIN-RECORDS"], "status": "partial", "evidence": "前台 520px 单断点；后台 1080px 栅格与 920px 导航断点，表格窄屏策略缺失"},
+    {"id": "PR-04", "name": "包容性", "downstream": ["A11Y-GATE"], "status": "gap", "evidence": "前台 reduced-motion 已观察，后台缺失；两端系统 aria/焦点管理均不完整"},
+    {"id": "PR-05", "name": "Agent 协作", "downstream": ["GOV-STABLE-ID", "PAT-AI-DISTILL", "PAT-ADMIN-NUWA"], "evidence": "本次前台与后台资产均使用稳定 ID、路由和源码指针"},
+    {"id": "PR-06", "name": "可控智能体验", "downstream": ["PAT-AI-DISTILL", "PAT-CHAT-RECOVERY", "PAT-ADMIN-NUWA", "PAT-ADMIN-PROMPT"], "status": "partial", "evidence": "生成/降级/复核/重跑/Prompt 实测真实存在；显式取消、跨端聚合与完整失败恢复仍不完整"}
+  ],
+  "semanticCore": {
+    "dependency": "Reference → System → Component → UI",
+    "colorPairs": ["primary/on-primary", "primary-container/on-primary-container", "surface/on-surface", "error-container/on-error-container"],
+    "feedbackRoles": ["success", "warning", "info", "neutral", "error"],
+    "stateModel": "交互状态与业务状态分离；使用状态适用矩阵，不机械要求全部组件拥有六态",
+    "contextRouting": {"theme": "System token mode", "viewport": "Layout/Pattern", "localeRTL": "Behavior/Logical direction"}
+  },
+  "componentPriorities": {
+    "P0": ["CMP-BUTTON-PRIMARY", "CMP-TEXT-FIELD", "CMP-TAB-BAR", "CMP-MESSAGE-BUBBLE", "CMP-BOTTOM-SHEET", "CMP-DISTILL-PROGRESS", "CMP-ADMIN-NAV", "CMP-DATA-TABLE", "CMP-ADMIN-DRAWER", "CMP-FORM-FIELD", "CMP-PROMPT-EDITOR"],
+    "P1": ["CMP-CHIP", "CMP-SWITCH", "CMP-MODE-SELECTOR", "CMP-HERO-CARD", "CMP-FRIEND-CARD", "CMP-TOAST", "CMP-EMPTY-LIVE", "CMP-KPI-CARD", "CMP-STATUS-BADGE", "CMP-SEARCH-FIELD", "CMP-BAR-CHART", "CMP-DONUT-CHART", "CMP-EMPTY-STATE", "CMP-HEALTH-BANNER", "CMP-TRACE-WATERFALL"],
+    "P2": ["plan-card", "vip-card", "rank-card", "confetti"]
+  },
+  "coverage": [
+    {"m3": "Buttons", "own": "btn-primary / icbtn", "decision": "adopt", "source": "index.html:77-80,111-113"},
+    {"m3": "FAB", "own": "fab", "decision": "adopt", "source": "index.html:175-177"},
+    {"m3": "Navigation bar", "own": "tabbar", "decision": "adopt", "source": "index.html:164-178,927-949"},
+    {"m3": "Navigation rail", "own": "admin side / nav-item", "decision": "adopt-as-side-navigation", "source": "website/admin/admin.html:38-57; admin.css:13-25,168-177"},
+    {"m3": "Sheets", "own": "sheet + veil", "decision": "adopt", "source": "index.html:421-432,952-1066"},
+    {"m3": "Search", "own": "admin search / u-q / o-q", "decision": "adopt-for-admin-records", "source": "website/admin/admin.js:228-260,396-416"},
+    {"m3": "Carousel", "own": "plan-row / pub-row", "decision": "merge-as-horizontal-list", "source": "index.html:338,396-397"},
+    {"m3": "Toolbars", "own": "chat-head", "decision": "adopt-as-top-app-bar", "source": "index.html:259-264"},
+    {"m3": "Button groups", "own": "mode-row / sq-tabs", "decision": "adopt-as-mode-selector", "source": "index.html:323-325,449-454"},
+    {"m3": "Loading indicator", "own": "spin + distill-bar + typing", "decision": "adopt", "source": "index.html:284-288,493-509"}
+  ],
+  "hardConstraintStatus": [
+    {"id": "HC-TOKEN", "status": "partial", "note": "对照版核心组件绑定 System token；原项目仍存在内联裸值"},
+    {"id": "HC-A11Y", "status": "gap", "note": "未见完整语义角色、焦点圈、Sheet 焦点圈定与读屏顺序"},
+    {"id": "HC-AGENT-ID", "status": "observed", "note": "本对照版组件、Pattern、规则均有稳定 ID"},
+    {"id": "HC-NO-UNREGISTERED", "status": "observed", "note": "所有组件均带真实源码指针；未实现能力标 missing"}
+  ]
+}

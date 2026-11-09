@@ -2,6 +2,22 @@
 
 格式：semver ｜ 每次变更同步 metadata.json 版本号 + git tag ds-vX.Y.Z
 
+## [1.9.0] - 2026-11-01 方向A现状提纯：在册染色投影体系治理完成
+- **semantic +3 词**（新词 → minor）：`--shadow-brand-hover`（site.css .btn-primary:hover 档，.22/.48→.24/.56 统一）、`--shadow-ink`（ink 染色两段）、`--shadow-stage`（舞台氛围晕 inset 220px）
+- **品牌投影族 6 处吸附**（微差按 v1.8.0「裁决内统一代价」惯例归一）：index `.btn-primary`、`.chat-foot .send`（v1.7.0 在册项兑现）、`.brand-mark .logo`（#5343D4 吸收档染色，本轮新发现）；site.css `.btn-primary` rest+hover；membership `.big-ava`；setkey 按钮 rgba(108,92,231,.32)（=--primary #6C5CE7 染色，本轮新发现）→ `var(--shadow-brand)` / `var(--shadow-brand-hover)`
+- **墨色投影族 3 处**：index `.stage::after`→`--shadow-stage`、`.set-ic`→`--shadow-ink`（.12→.10 统一）、website `.bub-m`→`--shadow-ink`
+- **组件规格同步**：button.json v1.0.0→v1.1.0 对齐页面真相——primary bg `--bg-brand`→`--grad-primary`、rest 投影 `--sh-m`→inset 白高光×2+`var(--shadow-brand)`、hover 补 `var(--shadow-brand-hover)`+上浮（不换底色，`--bg-brand-hover` 仅 preview 自演示在用）
+- **按先例保留**：inset 白高光按组件保留（v1.7.0）；avatar/气泡组件内染色阴影按组件保留（v1.1.0）
+- **新发现登记（本轮不执行，待下轮裁决）**：
+  - 大型面板展示投影（几何与 --shadow-brand 差异显著，统一会明显改长相）：index `.hero`（.20/.52 两段）、website `.ph-hero`（.5）、`.bigcta`（.55）、setkey `.card`（rgba(91,107,200,.14)，浏览器复核时发现——因 gitignore 漏盘）
+  - 小件品牌外投影（几何各异）：`.f-card .tick` .4、`.tab.on` drop-shadow .35、`.step-label .num` .35、`.chip.on` .5、`.fb.u` .35、admin/orders `.bar-g .col`/.filters/.lg-mark/.nav-item .ic 等表单与图例件
+  - state/氛围类 primary 染色（非投影，宜将来立 rgb 三通道 + α 档范式）：dashed 轨道/描边、hover 底 .035/.06、inset 环 .12~.28、text-stroke、radial 氛围
+  - 组件内 ink 染色阴影（按 v1.1.0 组件保留先例）：avatar 族、mascot、sw、bub(peer)、pub-card、distill-bar、tabbar、website fic/faces/bar-m/mcard、site nav.scrolled/mobile-menu
+  - 动画环染色：index pulse rgba(250,117,80,.5)（=coral 染色）、website featPulse rgba(242,109,109,.45)（#F26D6D 无族档）；`.end-chip` mint 染色投影 rgba(43,190,148,.45)（将来可立 --shadow-mint）
+- **机检盲区（流水线改进项，待裁决）**：setkey.html 被 `.gitignore:15` 显式忽略，全局 Grep 与历次盘点（v1.8.0 263 hex、本轮勘察）均未覆盖——建议 snapshot.py R1 扫描加 `--no-ignore` 或建「ignore 但需体检」清单
+- **浏览器复核完成**（v1.8.0「三必查」惯例兑现）：13 处收编点 computed box-shadow 逐一比对全匹配；admin `.btn-primary:hover` = .24/.56 + 上浮 -1.5px；5 页 overflowX=0；index/admin 截图目测正常；`.set-ic.nuwa-ic` 粉紫染色确认组件保留先例非回归
+- 验证：snapshot 复核 dangling=0 r1=0 → **pass**
+
 ## [1.8.0] - 2026-10-31 裸值收编裁决（A-E 清单）全量执行：snapshot dangling=0 r1=0 → pass
 - **primitive +4 色档 +2 渐变词**（新词 → minor）：
   - `--ink-frame: #494170`（phone 边框描边，B 区；与 ink/ink-2 均不等值故入档）

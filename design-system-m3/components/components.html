@@ -1,0 +1,218 @@
+<!-- 与你老友 · 同源组件模板。preview 只 clone 此处，不维护第二套 demo DOM。 -->
+<template data-component="primary-button">
+  <div class="m3-component-scope">
+    <button class="btn btn-primary" data-action="preview-toast">开始圆桌 ✨</button>
+    <button class="btn btn-primary" disabled style="margin-top:12px">先挑 2 位老友</button>
+  </div>
+</template>
+
+<template data-component="text-field">
+  <div class="m3-component-scope">
+    <label class="topic-input">
+      <span>💬</span>
+      <input id="m3-topic" placeholder="或者自己写一个纠结的问题…" maxlength="120">
+    </label>
+  </div>
+</template>
+
+<template data-component="tab-bar">
+  <div class="m3-component-scope">
+    <nav class="tabbar">
+      <button class="tab on" data-tab="圆桌">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/><circle cx="12" cy="15.6" r="1.2" fill="currentColor"/></svg>
+        <span>圆桌</span><i class="t-dot"></i>
+      </button>
+      <button class="tab" data-tab="会话">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        <span>会话</span><i class="t-dot"></i>
+      </button>
+      <div class="fab-slot"><button class="fab" data-action="preview-toast"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <button class="tab" data-tab="老友">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 19.5a6.4 6.4 0 0112.4 0"/><circle cx="17" cy="9.5" r="2.6"/><path d="M15.8 15.6a5 5 0 015.4 3.9"/></svg>
+        <span>老友</span><i class="t-dot"></i>
+      </button>
+      <button class="tab" data-tab="我的">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2.2"/><circle cx="9" cy="16" r="2.2"/></svg>
+        <span>我的</span><i class="t-dot"></i>
+      </button>
+    </nav>
+  </div>
+</template>
+
+<template data-component="message-bubble">
+  <div class="m3-component-scope">
+    <div class="msg">
+      <span class="ava" style="--c1:var(--ref-violet-300);--c2:var(--ref-violet-500);--eg:12px;width:40px;height:40px"><i class="badge">🍎</i></span>
+      <div class="body"><p class="name">乔布斯<span class="role">科技</span></p><div class="bub" style="--tint:var(--ref-violet-100)">这不是方向的竞赛，是品味的竞赛。Focus means saying no.</div></div>
+    </div>
+    <div class="msg user">
+      <div class="u-ava">小</div>
+      <div class="body"><p class="name">小Moon</p><div class="bub">那怎样判断哪些机会应该拒绝？</div></div>
+    </div>
+  </div>
+</template>
+
+<template data-component="bottom-sheet">
+  <div class="m3-component-scope">
+    <div class="sheet-demo">
+      <div class="veil"></div>
+      <section class="sheet">
+        <i class="grab"></i>
+        <div class="sheet-hd"><div><h2>开一桌圆桌</h2><p>挑老友 → 定话题 → 看他们吵</p></div><button class="close-x" data-action="preview-toast">×</button></div>
+        <div class="sheet-body">
+          <div class="step-label"><span class="num">1</span><b>挑老友</b><span>已选 2/5 位</span></div>
+          <div class="step-label"><span class="num">2</span><b>今天聊什么</b></div>
+          <label class="topic-input"><span>💬</span><input placeholder="或者自己写一个纠结的问题…"></label>
+          <div class="step-label"><span class="num">3</span><b>聊天氛围</b></div>
+          <div class="mode-row"><button class="mode on"><i>🎙</i><b>深度圆桌</b><span>三轮交锋</span></button><button class="mode"><i>⚡️</i><b>快问快答</b><span>一针见血</span></button><button class="mode"><i>🤡</i><b>吐槽大会</b><span>毫不留情</span></button></div>
+        </div>
+        <div class="desk-cta"><button class="btn btn-primary" data-action="preview-toast">开始圆桌 ✨</button></div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<template data-component="distill-progress">
+  <div class="m3-component-scope">
+    <div class="pipe">
+      <div class="pipe-title"><b>② 灵魂提炼</b><span class="ln"></span><span class="st">90%</span></div>
+      <div class="distill-bar"><div class="fill" style="--progress:90%"></div></div>
+      <p class="distill-status">正在压缩思维模型… <b>真实完成前不超过 90%</b></p>
+      <div class="vitem"><span class="vic">🧠</span><div class="t"><b>跨域迁移验证</b><span>思维模型能否处理陌生问题</span></div><span class="okc">✓</span></div>
+      <div class="vitem"><span class="vic">⚖️</span><div class="t"><b>排他性验证</b><span>是否只是通用正确的废话</span></div><span class="okc">✓</span></div>
+    </div>
+  </div>
+</template>
+
+<template data-component="hero-card">
+  <div class="m3-component-scope">
+    <button class="hero" data-action="preview-toast">
+      <i class="deco d1"></i><i class="deco d2"></i><i class="deco d3"></i>
+      <div class="row"><div><span class="kicker">✦ 快速开桌</span><h2>发起一场圆桌</h2><p>挑 2~5 位老友，选个纠结的问题<br>让他们当面吵给你看</p></div><div class="mascot"><i class="spark">✦</i><i class="bl l"></i><i class="bl r"></i></div></div>
+      <div class="row" style="margin-top:12px"><span style="font-size:12px;opacity:.85">老友库里已有 15 位老友等你</span><span class="go">→</span></div>
+    </button>
+  </div>
+</template>
+
+<template data-component="friend-card">
+  <div class="m3-component-scope">
+    <button class="f-card hor" data-action="preview-toast">
+      <span class="ava" style="--c1:var(--ref-mint-300);--c2:var(--ref-mint-500);--eg:14px;width:46px;height:46px"><i class="badge">🧘</i></span>
+      <span class="fi"><span class="nm"><h3>纳瓦尔</h3><i class="new-tag">官方</i></span><p>每个欲望，都是你跟不快乐签的一份合同。</p></span>
+      <span class="f-more">ⓘ</span>
+    </button>
+  </div>
+</template>
+
+<template data-component="toast">
+  <div class="m3-component-scope"><div class="toast-demo"><div class="toast">已提交复核 · 本次不扣券</div></div></div>
+</template>
+
+<template data-component="empty-live">
+  <div class="m3-component-scope">
+    <button class="live-card ghost" data-action="preview-toast">
+      <div class="top"><span class="live-badge off">🌙 暂无直播</span><span class="astack"><span class="ava" style="--c1:var(--ref-violet-300);--c2:var(--ref-violet-500);--eg:9px;width:30px;height:30px"></span><span class="ava" style="--c1:var(--ref-mint-300);--c2:var(--ref-mint-500);--eg:9px;width:30px;height:30px"></span></span></div>
+      <p class="topic">没有正在进行的圆桌</p><p class="meta">点这里发起一场，让老友们当面吵给你看 →</p>
+    </button>
+  </div>
+</template>
+
+<template data-component="chip">
+  <div class="m3-component-scope"><div class="chip-row"><button class="chip on">商业导师</button><button class="chip">人生顾问</button><button class="chip">技术大神</button><button class="chip">灵感缪斯</button><button class="chip">毒舌挚友</button></div></div>
+</template>
+
+<template data-component="switch">
+  <div class="m3-component-scope"><div class="switch-row"><div><b>圆桌提醒</b><span>开播与收官时通知我</span></div><button class="sw on"></button></div></div>
+</template>
+
+<template data-component="mode-selector">
+  <div class="m3-component-scope"><div class="mode-row"><button class="mode on"><i>🎙</i><b>深度圆桌</b><span>三轮交锋</span></button><button class="mode"><i>⚡️</i><b>快问快答</b><span>一针见血</span></button><button class="mode"><i>🤡</i><b>吐槽大会</b><span>毫不留情</span></button></div></div>
+</template>
+
+<!-- 管理后台 · website/admin/admin.html + admin.css + admin.js 同源提取 -->
+<template data-component="admin-nav">
+  <div class="m3-component-scope admin-scope"><nav class="side admin-nav-demo" aria-label="后台路由示意">
+    <div class="logo"><span class="mark">友</span><span><b>与你老友</b><small>ADMIN CONSOLE</small></span></div>
+    <button class="nav-item on" data-action="preview-toast"><span class="ic">总</span><span>数据总览</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">验</span><span>体验看板</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">用</span><span>用户管理</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">单</span><span>订单管理</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">财</span><span>财务管理</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">T</span><span>Token 计算</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">娲</span><span>女娲管线</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">P</span><span>Prompt 管理</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">友</span><span>老友管理</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">真</span><span>真人好友</span></button>
+    <button class="nav-item" data-action="preview-toast"><span class="ic">播</span><span>广场直播</span></button>
+    <span class="env">DEMO · 演示环境</span>
+  </nav></div>
+</template>
+
+<template data-component="kpi-card">
+  <div class="m3-component-scope admin-scope"><div class="kpis admin-kpi-demo">
+    <div class="card kpi"><span class="lb"><span class="dic primary">U</span>注册用户</span><p class="v">10<small>人</small></p><p class="sub">本地用户与演示种子合并</p><span class="deco"></span></div>
+    <div class="card kpi"><span class="lb"><span class="dic warning">¥</span>累计营收</span><p class="v">¥1,184</p><p class="sub">仅统计支付成功订单</p><span class="deco"></span></div>
+    <div class="card kpi pending" title="待 N4 llmChat 计时"><span class="lb"><span class="dic">R</span>快 · 速度</span><p class="v">待接入</p><p class="sub">R-01 · 待 N4 性能埋点</p><span class="deco"></span></div>
+  </div></div>
+</template>
+
+<template data-component="data-table">
+  <div class="m3-component-scope admin-scope"><div class="admin-table-scroll"><table class="tbl">
+    <thead><tr><th>用户</th><th>会员状态</th><th>积分</th><th>老友券</th><th>注册时间</th><th>操作</th></tr></thead>
+    <tbody><tr><td><div class="ucell"><span class="uava violet">林</span><div><b>林晚照</b><span>wan.zhao@example.com</span></div></div></td><td><span class="st vip">创作月卡</span></td><td class="num">2,400</td><td class="num">6</td><td class="mut">2026-08-16</td><td><button class="btn btn-xs" data-action="preview-toast">详情</button></td></tr>
+    <tr><td><div class="ucell"><span class="uava pink">陈</span><div><b>陈默</b><span>chenmo@example.com</span></div></div></td><td><span class="st vip">标准月卡</span></td><td class="num">860</td><td class="num">4</td><td class="mut">2026-07-28</td><td><button class="btn btn-xs" data-action="preview-toast">详情</button></td></tr>
+    <tr><td><div class="ucell"><span class="uava mint">陆</span><div><b>陆知远</b><span>zhiyuan@example.com</span></div></div></td><td><span class="st free">免费用户</span></td><td class="num">24</td><td class="num">1</td><td class="mut">2026-06-09</td><td><button class="btn btn-xs" data-action="preview-toast">详情</button></td></tr></tbody>
+  </table></div></div>
+</template>
+
+<template data-component="status-badge">
+  <div class="m3-component-scope admin-scope"><div class="admin-badge-row"><span class="st paid">成功</span><span class="st vip">已发布</span><span class="st refund">退款</span><span class="st free">草稿</span><span class="st ban">已忽略</span></div></div>
+</template>
+
+<template data-component="admin-drawer">
+  <div class="m3-component-scope admin-scope"><div class="admin-drawer-demo"><div class="veil on"></div><aside class="drawer on">
+    <div class="dh"><b>用户详情</b><button class="x" data-action="preview-toast">×</button></div>
+    <div class="duser"><span class="uava big">林</span><div><b>林晚照</b><p>wan.zhao@example.com</p><span class="st vip">创作月卡</span></div></div>
+    <p class="dsec">账户数据</p><div class="drow"><span>剩余积分</span><b>2,400</b></div><div class="drow"><span>老友券</span><b>6 张</b></div><div class="drow"><span>累计消费</span><b>¥258</b></div>
+    <p class="dsec">隐私专区</p><div class="privacy-note"><b>执法级隐私数据</b><span>每次查阅均需口令并留痕审计。</span></div>
+  </aside></div></div>
+</template>
+
+<template data-component="search-field">
+  <div class="m3-component-scope admin-scope"><div class="admin-search-demo"><div class="filters"><button class="on" data-action="preview-toast">全部</button><button data-action="preview-toast">付费会员</button><button data-action="preview-toast">免费用户</button></div><label class="search"><span>⌕</span><input placeholder="搜索昵称 / 邮箱"></label></div></div>
+</template>
+
+<template data-component="bar-chart">
+  <div class="m3-component-scope admin-scope"><div class="card admin-chart-card"><div class="hd"><b>近 6 个月营收</b><span>单位 · 元</span></div><div class="bars">
+    <div class="bar-g"><div class="col" data-v="¥258" style="--h:28%"></div><span class="lb">6月</span></div><div class="bar-g"><div class="col" data-v="¥418" style="--h:46%"></div><span class="lb">7月</span></div><div class="bar-g"><div class="col zero" data-v="¥0" style="--h:3%"></div><span class="lb">8月</span></div><div class="bar-g"><div class="col" data-v="¥695" style="--h:76%"></div><span class="lb">9月</span></div><div class="bar-g"><div class="col alt" data-v="¥524" style="--h:57%"></div><span class="lb">10月</span></div><div class="bar-g"><div class="col" data-v="¥772" style="--h:84%"></div><span class="lb">11月</span></div>
+  </div><p class="chart-total">合计 <b>¥2,667</b></p></div></div>
+</template>
+
+<template data-component="donut-chart">
+  <div class="m3-component-scope admin-scope"><div class="donut-demo"><div class="ring"><svg width="150" height="150" viewBox="0 0 150 150"><circle class="track" cx="75" cy="75" r="58"/><circle class="arc a1" cx="75" cy="75" r="58"/><circle class="arc a2" cx="75" cy="75" r="58"/><circle class="arc a3" cx="75" cy="75" r="58"/></svg><div class="cval"><b>16 笔</b><span>全部订单</span></div></div><div class="legend"><div class="li"><i class="a1"></i>支付宝<b>7 笔 · 44%</b></div><div class="li"><i class="a2"></i>微信支付<b>5 笔 · 31%</b></div><div class="li"><i class="a3"></i>银行卡<b>4 笔 · 25%</b></div></div></div></div>
+</template>
+
+<template data-component="empty-state">
+  <div class="m3-component-scope admin-scope"><div class="empty admin-empty-demo"><div class="em">—</div><p>没有匹配的用户</p><span>调整筛选条件或搜索关键词后重试</span></div></div>
+</template>
+
+<template data-component="form-field">
+  <div class="m3-component-scope admin-scope"><div class="admin-form-demo"><p class="dsec">极简开捏 · 默认区</p><div class="frow"><label>显示名 *</label><input value="德鲁克"></div><div class="frow"><label>方向</label><input value="商业导师"></div><div class="frow"><label>分类</label><select><option>智慧</option><option>商业</option></select></div><div class="frow"><label>语料</label><textarea rows="3">管理是把事情做对，领导是做对的事情。</textarea></div><details class="adv" open><summary>高级 · 蒸馏产物审校</summary><div class="frow"><label>心智模型</label><textarea rows="2">目标管理|先明确贡献，再配置资源</textarea></div></details></div></div>
+</template>
+
+<template data-component="health-banner">
+  <div class="m3-component-scope admin-scope"><div class="stack"><div class="card health-banner ok"><b>管线健康</b><span>平均置信度 82 · 降级率 12% · 维基命中 64% · 共 18 次运行</span></div><div class="card health-banner warn"><b>需要关注</b><span>降级率 34% 超过 30% 阈值 · 建议给常蒸对象补一手语料</span></div></div></div>
+</template>
+
+<template data-component="trace-waterfall">
+  <div class="m3-component-scope admin-scope"><div class="trace-demo">
+    <div class="trace-node"><b>六路采集</b><span class="trace-track"><i class="ok" style="--w:72%"></i></span><span class="trace-time">8.4s</span><button class="btn btn-xs" data-action="preview-toast">↻</button></div><p class="trace-evidence">著作·维基　访谈　社媒·有限　批评　决策　人生</p>
+    <div class="trace-node"><b>女娲蒸馏</b><span class="trace-track"><i class="ok" style="--w:46%"></i></span><span class="trace-time">5.3s</span><button class="btn btn-xs" data-action="preview-toast">↻</button></div><p class="trace-evidence">思维内核完整</p>
+    <div class="trace-node"><b>三路验证</b><span class="trace-track"><i class="warn" style="--w:31%"></i></span><span class="trace-time">3.6s</span><button class="btn btn-xs" data-action="preview-toast">↻</button></div><p class="trace-evidence">跨域 78 · 生成力 84 · 排他 81 → 置信度 81</p>
+    <div class="trace-node"><b>黑盒评测</b><span class="trace-track"><i class="ok" style="--w:58%"></i></span><span class="trace-time">6.7s</span><button class="btn btn-xs" data-action="preview-toast">↻</button></div><p class="trace-evidence">匹配分 86/70 线 · Token：输入 18.2K · 输出 4.1K · 14 次模型调用</p>
+  </div></div>
+</template>
+
+<template data-component="prompt-editor">
+  <div class="m3-component-scope admin-scope"><div class="card prompt-demo"><div class="hd"><b>圆桌插话 · 思维内核版</b><span>已自定义</span></div><textarea rows="5">你是 {{charName}}。依据思维内核回答，保持观点边界，不编造未提供的经历。</textarea><div class="prompt-actions"><button class="btn btn-primary btn-sm" data-action="preview-toast">保存覆盖</button><button class="btn btn-ghost btn-sm" data-action="preview-toast">恢复默认</button><span>{{var}} 占位符请保持原样</span></div><div class="prompt-preview"><small>SYSTEM · 德鲁克 · 思维内核版模板</small><pre>目标管理：先明确贡献，再配置资源。\n诚实边界：不虚构未提供的个人经历。</pre><small>USER · 最终发送的消息</small><pre>圆桌话题：「AI 时代普通人的最大机会在哪里」。\n请接着当前讨论给出你的判断。</pre><button class="btn btn-primary btn-sm" data-action="preview-toast">真实调用测试</button></div></div></div>
+</template>

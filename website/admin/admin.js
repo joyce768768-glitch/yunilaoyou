@@ -107,49 +107,38 @@ const users=()=>load(K.users,[]);
 const orders=()=>load(K.orders,[]);
 const tokens=()=>load(K.tokens,[]);
 
-/* ---- 管理员鉴权（演示级：手机号+验证码，验证码本端生成自动回填；sessionStorage 会话关标签页即失效） ---- */
-const AUTH_KEY='yln_admin_session';
-let smsCode='',smsTimer=null;
-const isAuthed=()=>{try{return sessionStorage.getItem(AUTH_KEY)==='1'}catch(e){return false}};
-function showLogin(){$('login').hidden=false;$('app').hidden=true}
-function enterApp(){$('login').hidden=true;$('app').hidden=false;location.hash||='#/dashboard';router()}
-function sendCode(){
-  const phone=$('lg-phone').value.trim(),err=$('lg-err');
-  err.classList.remove('on');
-  if(!/^1\d{10}$/.test(phone)){err.textContent='请输入正确的 11 位手机号';err.classList.add('on');return}
-  smsCode=String(Math.floor(100000+Math.random()*900000));   /* 演示环境：本端生成并直接回填，免真实短信 */
-  $('lg-code').value=smsCode;
-  const btn=$('lg-send');let left=60;btn.disabled=true;
-  clearInterval(smsTimer);
-  smsTimer=setInterval(()=>{btn.textContent=`${--left}s 后重发`;if(left<=0){clearInterval(smsTimer);btn.disabled=false;btn.textContent='获取验证码'}},1000);
-  err.textContent='验证码已自动填入（演示环境）';err.classList.add('on');err.style.color='var(--mint)';
-  setTimeout(()=>{err.classList.remove('on');err.style.color=''},1800);
+/* ---- 管理员鉴权：服务端邮箱密码校验 + 独立 Bearer Token（sessionStorage） ---- */
+const isAuthed=()=>!!YLN.adminAuth.token();
+const adminCall=(path,opt={})=>YLN.adminAuth.call(path,opt);
+function showLogin(){YLN.events.stop();$('login').hidden=false;$('app').hidden=true}
+function enterApp(){
+  $('login').hidden=true;$('app').hidden=false;location.hash||='#/dashboard';router();startAdminEvents();
+  YLN.adminCharsPull().then(()=>{if(isAuthed())router()}).catch(()=>{});
 }
-function tryLogin(e){
+async function tryLogin(e){
   e.preventDefault();
-  const phone=$('lg-phone').value.trim(),code=$('lg-code').value.trim(),err=$('lg-err'),card=document.querySelector('.login-card');
+  const email=$('lg-email').value.trim(),pwd=$('lg-pwd').value,err=$('lg-err'),btn=$('lg-submit');
   err.classList.remove('on');err.style.color='';
-  if(!/^1\d{10}$/.test(phone)){
-    err.textContent='请输入正确的 11 位手机号';err.classList.add('on');
-    if(card){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake')}
-    return;
-  }
-  if(!smsCode){err.textContent='请先点击「获取验证码」';err.classList.add('on');return}
-  if(code!==smsCode){
-    err.textContent='验证码不正确，请重新获取';err.classList.add('on');
-    if(card){card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake')}
-    return;
-  }
-  try{sessionStorage.setItem(AUTH_KEY,'1')}catch(x){}
-  enterApp();toast('欢迎回来，管理员 ✦');
+  if(!email||!pwd){err.textContent='请输入管理员邮箱和密码';err.classList.add('on');return}
+  btn.disabled=true;btn.textContent='正在登录…';
+  const d=await YLN.adminAuth.login(email,pwd);
+  btn.disabled=false;btn.textContent='登录后台';
+  if(!d||!d.ok){err.textContent=(d&&d.err)||'服务器不可达，请稍后重试';err.classList.add('on');return}
+  $('lg-pwd').value='';enterApp();toast('欢迎回来，管理员');
 }
-function logout(){
-  try{sessionStorage.removeItem(AUTH_KEY)}catch(x){}
-  showLogin();
-  $('lg-code').value='';smsCode='';clearInterval(smsTimer);
-  const btn=$('lg-send');if(btn){btn.disabled=false;btn.textContent='获取验证码'}
-  $('lg-err').classList.remove('on');
-  toast('已退出登录');
+async function logout(){
+  await YLN.adminAuth.logout();showLogin();
+  $('lg-pwd').value='';$('lg-err').classList.remove('on');toast('已退出登录');
+}
+let adminRefreshTimer=null;
+function startAdminEvents(){
+  YLN.events.start({admin:true,onUnauthorized:()=>{if(isAuthed())logout()},onEvent:e=>{
+    if(!isAuthed())return;
+    if(e.type==='chars')YLN.adminCharsPull().catch(()=>{});
+    if(e.type==='prompts')YLN.nuwa.promptsPull().catch(()=>{});
+    clearTimeout(adminRefreshTimer);
+    adminRefreshTimer=setTimeout(()=>{if(isAuthed())router()},120);
+  }});
 }
 
 /* ---- 工具 ---- */
@@ -289,29 +278,25 @@ function openUser(id){
       <div style="background:var(--surface-2);border-radius:10px;padding:12px;font-size:12px;line-height:1.7;color:var(--ink-2)">
         <b style="color:var(--ink)">执法级隐私数据</b><br>
         用户的群聊数据（圆桌实录）与自建老友属用户隐私，仅限极少数授权管理员（如执法调证）查阅。<br>
-        <span style="color:#E05A4E">每次查阅均需口令并留痕审计。</span>
+        <span style="color:#E05A4E">仅当前管理员会话可查，每次查阅均留痕审计。</span>
       </div>
       <div class="dacts" style="margin-top:10px">
-        <input id="pv-code" type="password" placeholder="输入隐私口令" style="flex:1" onkeydown="if(event.key==='Enter')unlockPrivacy('${curUser.id}')">
-        <button class="btn btn-primary btn-sm" onclick="unlockPrivacy('${curUser.id}')">解锁查阅</button>
+        <button class="btn btn-primary btn-sm" onclick="unlockPrivacy('${curUser.id}')">管理员授权查阅</button>
       </div>
     </div>`;
   $('veil').classList.add('on');$('drawer').classList.add('on');
 }
-/* 隐私专区：口令解锁 → 拉取该用户群聊数据与自建老友（服务器逐次校验口令），查阅留痕 */
+/* 隐私专区：独立管理员会话鉴权 → 拉取该用户群聊数据与自建老友，查阅留痕 */
 async function unlockPrivacy(uid){
-  const code=($('pv-code')&&$('pv-code').value||'').trim();
-  if(!code){toast('请输入隐私口令');return}
   try{
-    const r=await fetch('/api/admin/user/privacy?uid='+encodeURIComponent(uid)+'&code='+encodeURIComponent(code));
-    const d=await r.json();
-    if(!d.ok){toast(d.err==='隐私口令错误'?'口令错误，已记录本次尝试':'拉取失败：'+(d.err||r.status));return}
+    const d=await adminCall('/admin/user/privacy?uid='+encodeURIComponent(uid));
+    if(!d||!d.ok){toast('拉取失败：'+((d&&d.err)||'服务不可达'));return}
     auditLog(uid,'查阅隐私数据');
     const rounds=d.rounds||[],chars=d.chars||[];
     const zone=$('pv-zone');
     zone.innerHTML=`
       <div style="background:#FFF4F0;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#B0442E;margin-bottom:10px">
-        ⚠️ 你正在查阅用户 <b>${esc(curUser.nick)}</b> 的隐私数据（口令校验通过）。本次查阅已写入审计日志。
+        你正在查阅用户 <b>${esc(curUser.nick)}</b> 的隐私数据（管理员会话校验通过）。本次查阅已写入审计日志。
       </div>
       <p style="font-size:12.5px;font-weight:700;margin:0 0 6px">群聊数据（${rounds.length}）</p>
       ${rounds.length?rounds.slice(0,20).map(r=>`
@@ -360,10 +345,8 @@ function syncWallet(uid,patch){
 /* P1：后台调整推送到服务器钱包表（yln_wallet，patch 合并+流水备注），APP 端下次 walletPull 拉回 */
 function adminWalletPush(uid,patch,note,delta){
   try{
-    fetch('/api/admin/wallet',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({uid,patch,note,delta:delta||0})})
-      .then(r=>r.json()).then(d=>{if(!d||!d.ok)toast('服务器钱包同步失败：'+((d&&d.err)||'服务不可达'))})
-      .catch(()=>{});
+    adminCall('/admin/wallet',{method:'POST',body:JSON.stringify({uid,patch,note,delta:delta||0})})
+      .then(d=>{if(!d||!d.ok)toast('服务器钱包同步失败：'+((d&&d.err)||'服务不可达'))});
   }catch(e){}
 }
 function gift(id,type){
@@ -1357,7 +1340,7 @@ function pXpanel(){
     <div class="card kpi"><span class="lb"><span class="dic" style="background:var(--primary-soft)">💳</span>付费完成率</span><p class="v" id="xp-t03">—</p><p class="sub" id="xp-t03-sub">T-03 · 订单 → 支付成功</p><span class="deco" style="background:var(--primary-deep)"></span></div>
     <div class="card kpi"><span class="lb"><span class="dic" style="background:var(--coral-soft)">🧱</span>积分墙挽回</span><p class="v" id="xp-re01">—</p><p class="sub" id="xp-re01-sub">Re-01 近似 · 触墙 7 日内充值</p><span class="deco" style="background:var(--coral)"></span></div>
   </div>
-  <div class="card"><div class="hd"><b>诊断层 · 五度五性</b><span>P0 可算即上 · 其余置灰待 L2 判卷 / N2 漏斗 / N4 计时</span></div>
+  <div class="card" style="margin-bottom:14px"><div class="hd"><b>诊断层 · 五度五性</b><span>P0 可算即上 · 其余置灰待 L2 判卷 / N2 漏斗 / N4 计时</span></div>
     <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
       ${mute('F-02','像 · 保真度','待 L2 实录抽检判卷')}
       ${mute('V-01','真 · 真实度','待 L2 事实题探针')}
@@ -1370,8 +1353,8 @@ function pXpanel(){
     </div>
     <p style="margin:10px 2px 0;font-size:11px;color:var(--ink-3)">C-01 一致性 = 本地全量静态断言（node tests/run-tests.js）· 每次改动执行，未通过不发布</p>
   </div>
-  <div class="card"><div class="hd"><b>圆桌 ERD 明细</b><span id="xp-erd-note">口径 v1 · 演示桌剧本与单聊已排除</span></div><div id="xp-erd-tbl"></div></div>
-  <div class="card"><div class="hd"><b>单聊关系回流明细</b><span>BOND-01 / BOND-01b · 首聊后 7 日窗口</span></div><div id="xp-bond-tbl"></div></div>
+  <div class="card" style="margin-bottom:14px"><div class="hd"><b>圆桌 ERD 明细</b><span id="xp-erd-note">口径 v1 · 演示桌剧本与单聊已排除</span></div><div id="xp-erd-tbl"></div></div>
+  <div class="card" style="margin-bottom:14px"><div class="hd"><b>单聊关系回流明细</b><span>BOND-01 / BOND-01b · 首聊后 7 日窗口</span></div><div id="xp-bond-tbl"></div></div>
   <div class="card"><div class="hd"><b>口径注脚</b><span>docs/experience-metrics.md · v1.1</span></div>
     <p style="margin:6px 2px;font-size:11.5px;line-height:1.9;color:var(--ink-2)">
     · ERD-01 v1：插话 → AI 回应成功 → <b>10 分钟内同桌再插话</b>（话语权回归，不是挂机时长）；切桌/切后台不构成退出<br>
@@ -1440,8 +1423,8 @@ function pLives(){
 }
 async function renderLives(){
   try{
-    const r=await fetch('/api/admin/live');const d=await r.json();
-    if(!d.ok)throw new Error(d.err||r.status);
+    const d=await adminCall('/admin/live');
+    if(!d||!d.ok)throw new Error((d&&d.err)||'服务不可达');
     livesCache=d.lives||[];
   }catch(e){const t=document.getElementById('lv-table');if(t)t.innerHTML=`<div class="empty"><div class="em">📵</div><p>服务器不可达（${esc(String(e.message||e))}）</p></div>`;return}
   const live=livesCache.filter(l=>l.status==='live');
@@ -1471,9 +1454,8 @@ async function forceCloseLive(liveId){
   const l=livesCache.find(x=>x.liveId===liveId);if(!l)return;
   if(!confirm(`强制关播「${l.title||liveId}」？\n围观端将立即收到收官提示，主播端轮询同步结束。此操作不可恢复。`))return;
   try{
-    const r=await fetch('/api/admin/live/close',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({liveId})});
-    const d=await r.json();
-    if(!d.ok){toast('关播失败：'+(d.err||r.status));return}
+    const d=await adminCall('/admin/live/close',{method:'POST',body:JSON.stringify({liveId})});
+    if(!d||!d.ok){toast('关播失败：'+((d&&d.err)||'服务不可达'));return}
     auditLog(null,'强制关播：'+(l.title||liveId)+'（主播 '+(l.ownerNick||'—')+'）');
     toast('已强制关播，操作已留痕');renderLives();
   }catch(e){toast('服务器不可达，关播失败')}
@@ -1553,3 +1535,9 @@ addEventListener('hashchange',router);
 /* 抽屉关闭 */
 function closeDrawer(){stopLiveView();$('veil').classList.remove('on');$('drawer').classList.remove('on')}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+addEventListener('beforeunload',()=>YLN.events.stop());
+(async()=>{
+  if(!isAuthed()){showLogin();return}
+  const admin=await YLN.adminAuth.me();
+  if(admin)enterApp();else showLogin();
+})();

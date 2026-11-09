@@ -21,14 +21,14 @@
   <div class="login-card">
     <span class="lg-mark"><svg viewBox="0 0 24 24" fill="none" width="26" height="26"><circle cx="9" cy="9" r="4.4" fill="var(--sun-softer)"/><circle cx="15.5" cy="14.5" r="4.4" fill="var(--sun)" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="var(--pink)"/></svg></span>
     <h1 class="lg-title">与你老友 · 管理后台</h1>
-    <p class="lg-sub">请使用管理员手机号登录</p>
+    <p class="lg-sub">请使用管理员邮箱登录</p>
     <form onsubmit="tryLogin(event)" novalidate>
-      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><input id="lg-phone" type="tel" maxlength="11" placeholder="手机号" autocomplete="tel"></div>
-      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1121 11.5z"/><path d="M8.5 10.5h7M8.5 13.5h4"/></svg></span><input id="lg-code" inputmode="numeric" maxlength="6" placeholder="验证码" autocomplete="one-time-code"><button type="button" class="lg-code-btn" id="lg-send" onclick="sendCode()">获取验证码</button></div>
+      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span><input id="lg-email" type="email" placeholder="管理员邮箱" autocomplete="username" required></div>
+      <div class="lg-field"><span class="lg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><input id="lg-pwd" type="password" placeholder="管理员密码" autocomplete="current-password" required></div>
       <p class="lg-err" id="lg-err"></p>
-      <button class="btn btn-primary lg-btn" type="submit">登录后台</button>
+      <button class="btn btn-primary lg-btn" id="lg-submit" type="submit">登录后台</button>
     </form>
-    <p class="lg-tip">演示环境 · 输入手机号获取验证码，自动回填后直接登录</p>
+    <p class="lg-tip">管理员账号由服务端环境变量初始化，不使用默认密码</p>
     <p class="lg-back"><a href="../index.html">← 返回官网</a></p>
   </div>
 </div>
@@ -73,8 +73,7 @@
   <div id="d-body"></div>
 </aside>
 
-<script src="../../yln-core.js?v=12"></script>
-<script src="admin.js?v=26"></script>
-<script>router();</script>
+<script src="../../yln-core.js?v=13"></script>
+<script src="admin.js?v=27"></script>
 </body>
 </html>

@@ -53,8 +53,8 @@ b{font-variant-numeric:tabular-nums}
 @media (max-width:1080px){.grid2{grid-template-columns:1fr}}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:12px;font-weight:800;font-size:13px;padding:10px 18px;transition:all .2s var(--ease)}
-.btn-primary{background:var(--grad-primary);color:var(--text-invert);box-shadow:0 6px 14px -4px rgba(108,92,231,.45),inset 0 1px 0 rgba(255,255,255,.25)}
-.btn-primary:hover{transform:translateY(-1.5px);box-shadow:0 10px 20px -6px rgba(108,92,231,.55),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-primary{background:var(--grad-primary);color:var(--text-invert);box-shadow:var(--shadow-brand),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-primary:hover{transform:translateY(-1.5px);box-shadow:var(--shadow-brand-hover),inset 0 1px 0 rgba(255,255,255,.25)}
 .btn-ghost{background:var(--surface);color:var(--ink);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline)}
 .btn-ghost:hover{transform:translateY(-1.5px);box-shadow:var(--sh-m)}
 .btn-sm{padding:6.5px 13px;font-size:12px;border-radius:10px}

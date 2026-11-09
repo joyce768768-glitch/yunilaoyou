@@ -1,0 +1,146 @@
+{
+  "schema": "yln.m3-foundation.patterns.v1",
+  "windowClasses": {
+    "compact": {"status": "partial", "rule": "前台 ≤520px 全屏手机；后台 ≤1080px 调整栅格、≤920px 隐藏导航文字，但表格重排与无障碍名称仍缺失", "source": "index.html:532-538; website/admin/admin.css:168-187"},
+    "medium": {"status": "observed-shared", "rule": "前台 >520px 使用 398×844 手机舞台；后台沿用桌面工作区，未按 M3 档位单独重组", "source": "index.html:47-49; website/admin/admin.css:1-187"},
+    "expanded": {"status": "not-separately-defined"},
+    "large": {"status": "not-separately-defined"},
+    "extraLarge": {"status": "not-separately-defined"}
+  },
+  "patterns": [
+    {
+      "id": "PAT-HOME-FEED", "name": "圆桌首页 Feed", "priority": "P0", "layout": "single-pane feed",
+      "anatomy": ["问候与头像", "快速开桌 Hero", "进行中", "热门大佬横列", "最近圆桌", "底部导航"],
+      "source": "index.html:569-610",
+      "lifecycle": {"loading": "implicit-async", "empty": "ghost live-card + 开桌 CTA", "error": "服务器不可达时仅显示本地公开桌", "success": "直播卡 + 会话卡"},
+      "behavior": ["首页停留每 10s 同步直播", "离页停止轮询", "空直播卡可直接开桌"],
+      "evidence": "index.html:1342-1369"
+    },
+    {
+      "id": "PAT-ROUND-WIZARD", "name": "开桌四步配置", "priority": "P0", "layout": "modal bottom sheet / single task",
+      "anatomy": ["挑老友", "定话题", "选氛围", "选可见范围", "主 CTA"],
+      "source": "index.html:977-1011",
+      "lifecycle": {"loading": "not-applicable", "empty": "未选人时 CTA disabled", "error": "输入校验 toast", "success": "进入圆桌生成"},
+      "behavior": ["最多选 5 位", "组合方案快速选人", "私密/公开影响直播与积分"],
+      "evidence": "index.html:1833-1852"
+    },
+    {
+      "id": "PAT-AI-DISTILL", "name": "女娲人物蒸馏生命周期", "priority": "P0", "layout": "single-focus sequential task",
+      "anatomy": ["姓名/方向/语料输入", "六路采集", "灵魂提炼", "三重验证", "完成或人工复核"],
+      "source": "index.html:856-922,2433-2584",
+      "lifecycle": {
+        "generating": "采集逐项完成；蒸馏进度真实完成前钳制 90%",
+        "completed": "人物入库并展示思维内核与置信度",
+        "degraded": "仅风格壳时明确降级并建议补语料",
+        "review": "质量未达标不入库、不扣券，进入人工复核",
+        "interrupted": "缺少显式取消与断点续作 UI",
+        "retry": "支持补语料后重新蒸馏，无独立重试按钮"
+      },
+      "uncertainty": "展示置信度、思维边界与降级原因",
+      "dataAwareness": "语料输入为可选；本次未见外发范围的可视化说明",
+      "evidence": "index.html:894,2471-2513,2535-2583"
+    },
+    {
+      "id": "PAT-CHAT-RECOVERY", "name": "圆桌生成与恢复", "priority": "P0", "layout": "list-detail equivalent / chat single pane",
+      "anatomy": ["顶部标题", "消息流", "阶段分隔", "打字指示", "纪要", "插话输入"],
+      "source": "index.html:829-853,1975-2151",
+      "lifecycle": {"loading": "typing bubble", "empty": "无主题静场，首条插话自动成为主题", "error": "单角色失败则跳过，不作为全局错误展示", "success": "逐条消息 + 阶段 + 收官纪要", "interrupted": "每条话轮增量落盘，重进恢复而不重新生成"},
+      "behavior": ["生成时禁用输入", "Enter 发送", "先看结论可中断当前生成", "公开桌同步直播流"],
+      "evidence": "index.html:2014-2151,2334-2339,2705"
+    },
+    {
+      "id": "PAT-LIVE-SPECTATE", "name": "公开圆桌围观", "priority": "P1", "layout": "shared single stream / read-mostly",
+      "anatomy": ["直播卡", "共享消息流", "围观者插话", "收官只读"],
+      "source": "index.html:1293-1369,2014-2054,2187-2262",
+      "lifecycle": {"loading": "轮询增量", "empty": "暂无直播 ghost card", "error": "离线静默降级，本地实录不受影响", "success": "主播与围观者共享同一消息流", "done": "只读，不再推流"},
+      "dataAwareness": "开桌时明确选择私密或公开",
+      "evidence": "index.html:1002-1006"
+    },
+    {
+      "id": "PAT-SETTINGS", "name": "本地偏好与隐私", "priority": "P1", "layout": "grouped list",
+      "anatomy": ["偏好组", "通用组", "开关行", "反馈 toast"],
+      "source": "index.html:759-824",
+      "lifecycle": {"loading": "not-applicable", "empty": "not-applicable", "error": "服务器不可用时写本地", "success": "偏好保存并 toast"},
+      "gaps": ["深色模式仅提示排期中", "开关缺少 role=switch 与 aria-checked"],
+      "evidence": "index.html:2598-2604"
+    },
+    {
+      "id": "PAT-ADMIN-AUTH", "name": "后台登录鉴权", "priority": "P0", "surface": "admin", "route": "login", "layout": "centered single-focus authentication",
+      "anatomy": ["品牌与演示环境", "手机号", "验证码", "发送验证码", "登录", "会话状态"],
+      "source": "website/admin/admin.html:14-36",
+      "lifecycle": {"loading": "发送验证码与登录请求期间禁用重复提交", "empty": "手机号或验证码为空时阻止登录", "error": "格式错误、验证码错误或接口失败通过 toast 反馈", "success": "写入 sessionStorage 并进入 dashboard", "expired": "关标签页后会话失效，需重新登录"},
+      "behavior": ["演示环境本端生成并自动回填验证码", "会话保存在 sessionStorage 而非长期 localStorage", "退出登录清理后台会话"],
+      "dataAwareness": "登录是演示鉴权，不等同生产级身份认证与服务端权限控制。",
+      "evidence": "website/admin/admin.js:43-104"
+    },
+    {
+      "id": "PAT-ADMIN-ANALYTICS", "name": "运营数据总览", "priority": "P0", "surface": "admin", "route": "dashboard", "layout": "KPI overview + chart grid",
+      "anatomy": ["用户与营收 KPI", "近六个月营收柱状图", "支付方式环形图", "最近订单", "数据口径说明"],
+      "source": "website/admin/admin.html:60-70",
+      "lifecycle": {"loading": "本地种子与存储同步计算，无独立加载骨架", "empty": "图表显示零值或空集合，未统一为空状态", "error": "无独立服务端聚合错误态", "success": "KPI、图表与最近订单共同展示"},
+      "behavior": ["仅支付成功订单进入营收口径", "柱状图和环形图由本地数据即时生成"],
+      "dataAwareness": "演示种子、本机三端共享 localStorage 与服务器接口并存；本页不是全平台实时财务指标。",
+      "gaps": ["图表缺少键盘操作与完整语义替代", "窄屏数据表未定义列优先级"],
+      "evidence": "website/admin/admin.js:155-226"
+    },
+    {
+      "id": "PAT-ADMIN-RECORDS", "name": "运营记录管理", "priority": "P0", "surface": "admin", "route": "users / orders / finance / token / chars / realfriends", "layout": "filter-toolbar + data-table + detail drawer",
+      "anatomy": ["搜索与筛选", "数据表", "状态徽标", "分页或空状态", "详情 Drawer", "危险操作确认"],
+      "source": "website/admin/admin.html:60-78",
+      "lifecycle": {"loading": "本地记录同步渲染；远端操作依赖按钮反馈", "empty": "无匹配记录时显示空状态", "error": "接口或操作失败通过 toast 反馈", "success": "记录刷新并同步详情", "destructive": "退款等操作先确认，完成后留状态"},
+      "behavior": ["昵称与邮箱搜索", "会员和订单状态筛选", "详情在通用 Drawer 中展示", "支持导出 CSV 等业务动作"],
+      "dataAwareness": "记录可能混合演示种子、本机存储和服务器响应，导出范围继承当前数据口径。",
+      "gaps": ["后台大量裸值与 inline style 未收编", "表格窄屏重排和可访问名称仍缺失"],
+      "evidence": "website/admin/admin.js:228-512,951-1174"
+    },
+    {
+      "id": "PAT-ADMIN-PRIVACY", "name": "用户隐私审计", "priority": "P0", "surface": "admin", "route": "users → detail drawer", "layout": "record detail + gated privacy section",
+      "anatomy": ["用户身份", "账户数据", "隐私专区", "访问口令", "隐私记录", "审计留痕"],
+      "source": "website/admin/admin.html:74-78",
+      "lifecycle": {"locked": "默认隐藏隐私数据并要求访问口令", "loading": "口令验证期间避免重复提交", "error": "口令错误时拒绝展开", "success": "本次查阅解锁并写入审计", "audit": "访问行为形成可回查记录"},
+      "behavior": ["每次查阅均需口令", "解锁只作用于当前查看上下文", "隐私访问与运营操作分开呈现"],
+      "dataAwareness": "敏感数据访问必须留痕；界面展示不等于已经满足生产合规与权限模型。",
+      "evidence": "website/admin/admin.js:276-339"
+    },
+    {
+      "id": "PAT-ADMIN-NUWA", "name": "女娲观测与人工复核", "priority": "P0", "surface": "admin", "route": "nuwa", "layout": "health summary + trace list + review workspace",
+      "anatomy": ["管线健康横幅", "运行记录", "Trace 瀑布", "节点证据", "单节点与下游重跑", "人工复核队列"],
+      "source": "website/admin/admin.html:60-70",
+      "lifecycle": {"loading": "读取健康与 Trace 记录", "healthy": "平均置信度、降级率和维基命中低于告警阈值", "degraded": "降级率超过 30% 显示关注横幅与补语料建议", "review": "低置信或需人工判断的记录进入复核", "retry": "支持单节点及下游重跑", "resolved": "人工终态受保护并保留放行记录"},
+      "behavior": ["节点重跑会联动下游，不覆盖人工终态", "复核放行保留操作证据", "健康阈值直接参与横幅状态"],
+      "uncertainty": "分别展示置信度、黑盒匹配分、降级原因和采集证据，不把 AI 输出包装为确定事实。",
+      "dataAwareness": "社媒等来源存在有限采集状态，复核需保留来源边界。",
+      "evidence": "website/admin/admin.js:513-675"
+    },
+    {
+      "id": "PAT-ADMIN-PROMPT", "name": "Prompt 组装与真实调试", "priority": "P0", "surface": "admin", "route": "prompts", "layout": "template list + editor + assembled preview + test output",
+      "anatomy": ["Prompt 列表", "模板编辑器", "占位符提示", "覆盖与恢复默认", "SYSTEM / USER 预览", "真实调用测试", "运行结果"],
+      "source": "website/admin/admin.html:60-70",
+      "lifecycle": {"loading": "刷新模板或真实调用时显示运行状态", "empty": "未配置自定义覆盖时使用默认模板", "error": "缺少 Key、接口失败或运行异常进入 error 状态", "success": "显示实际模型输出与调用完成状态", "missingKey": "明确标记缺少调用凭据，不伪造模型结果"},
+      "behavior": ["自定义覆盖优先于默认模板", "组装预览区分 SYSTEM 与 USER", "占位符需保持原样", "真实调用按钮直接触发调试流程"],
+      "dataAwareness": "模板内容会进入模型请求；预览与真实调用必须区分，测试结果不代表全量线上质量。",
+      "gaps": ["运行输出缺少 aria-live 等动态播报"],
+      "evidence": "website/admin/admin.js:676-824"
+    },
+    {
+      "id": "PAT-ADMIN-XMETRICS", "name": "体验指标观测", "priority": "P1", "surface": "admin", "route": "xpanel", "layout": "metric dashboard + diagnostic groups",
+      "anatomy": ["体验指标卡", "ERD / BOND / T03 / RE01 / W04 指标组", "可计算值", "待接入诊断项", "口径说明"],
+      "source": "website/admin/admin.html:38-57",
+      "lifecycle": {"loading": "从当前本机数据计算已接入指标", "empty": "数据不足时不推定业务结论", "partial": "已接入项展示数值，未接入项真实置灰", "success": "可计算指标与待接入边界同屏可见"},
+      "behavior": ["按指标来源分别计算", "缺少埋点的指标不以估算值替代", "速度等待 N4 llmChat 计时后再接入"],
+      "dataAwareness": "本机近似指标只代表当前数据范围，不升级为全平台真实体验结论。",
+      "gaps": ["N4 性能埋点等数据输入仍未接入"],
+      "evidence": "website/admin/admin.js:916-1089"
+    },
+    {
+      "id": "PAT-ADMIN-LIVEOPS", "name": "广场直播监管", "priority": "P1", "surface": "admin", "route": "lives", "layout": "live table + monitoring drawer + destructive action",
+      "anatomy": ["直播记录表", "直播与归档状态", "15 秒列表刷新", "直播流 Drawer", "4 秒增量轮询", "强制关播", "审计记录"],
+      "source": "website/admin/admin.html:38-57,74-78",
+      "lifecycle": {"loading": "直播列表定时刷新，Drawer 内增量拉取消息", "empty": "暂无直播时显示空记录", "live": "进行中直播可持续查看消息流", "archived": "归档直播只读查看", "error": "轮询失败不伪造新增消息", "closed": "强关后停止直播并记录操作"},
+      "behavior": ["列表每 15 秒刷新", "Drawer 直播流每 4 秒增量轮询", "强制关播需 confirm 且不可恢复", "查看与关播动作保留审计"],
+      "dataAwareness": "直播流可能来自本机公开桌同步，监管范围受当前部署的数据共享方式限制。",
+      "gaps": ["live / arch 状态类在业务模板中出现，但 admin.css 未登记对应样式"],
+      "evidence": "website/admin/admin.js:1467-1555"
+    }
+  ]
+}

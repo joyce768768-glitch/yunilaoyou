@@ -1,13 +1,14 @@
 {
   "name": "button",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "changelog": "v1.1.0 (2026-11-01): primary 对齐页面真相（v1.9.0 投影治理）: bg --bg-brand→--grad-primary; rest 投影 --sh-m→inset 白高光×2+var(--shadow-brand); hover 不换底色, 补 var(--shadow-brand-hover)+translateY(-2px)(admin -1.5px 微差)",
   "source": "index.html .btn / .btn-primary / .icbtn",
   "slots": ["container", "icon(optional)", "label", "badge-dot(optional)"],
   "variants": {
     "primary": {
       "states": {
-        "rest":     { "bg": "--bg-brand", "text": "--text-invert", "shadow": "--sh-m" },
-        "hover":    { "bg": "--bg-brand-hover" },
+        "rest":     { "bg": "--grad-primary", "text": "--text-invert", "shadow": "inset 0 1px 0 rgba(255,255,255,.30), inset 0 0 0 1px rgba(255,255,255,.08), var(--shadow-brand)" },
+        "hover":    { "bg": "保持 --grad-primary(不换底; --bg-brand-hover 仅 preview 自演示在用)", "transform": "translateY(-2px)(admin -1.5px 微差)", "shadow": "inset 0 1px 0 rgba(255,255,255,.30), inset 0 0 0 1px rgba(255,255,255,.08), var(--shadow-brand-hover)" },
         "active":   { "bg": "--bg-brand-active", "transform": "scale(.96)" },
         "focus":    { "ring": "--ring-focus" },
         "disabled": { "opacity": "var(--state-disabled-opacity)", "pointer-events": "none" },

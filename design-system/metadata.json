@@ -1,12 +1,12 @@
 {
   "id": "yln-design-system",
   "name": "与你老友 Design System",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "created": "2026-10-20",
   "wired": true,
   "layers": {
     "primitive": "tokens/tokens.css (done, v1.4.0 补 --r-2xl)",
-    "semantic": "tokens/semantic.css (v1.2.0: 44 角色, 补 --icon-faint/--shadow-brand)",
+    "semantic": "tokens/semantic.css (v1.9.0: 47 角色, v1.2.0 44 角色 + 染色投影治理 +3 词 --shadow-brand-hover/--shadow-ink/--shadow-stage)",
     "component": "components/*.json (8 份, v1.6.0 新增 friend-card; chat-bubble/avatar → v1.1.0)",
     "preview": "preview/index.html (done v1.3.0, 浏览器验证通过)"
   },

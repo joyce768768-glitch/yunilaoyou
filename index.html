@@ -35,9 +35,9 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
   var(--sun-soft);}
 .stage::before{content:'';position:absolute;inset:0;opacity:.4;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");}
-.stage::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 220px rgba(48,44,99,.10)}
+.stage::after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:var(--shadow-stage)}
 .brand-mark{position:fixed;left:44px;top:40px;display:flex;align-items:center;gap:14px}
-.brand-mark .logo{width:52px;height:52px;border-radius:18px;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(83,67,212,.20),0 12px 28px -6px rgba(83,67,212,.42),inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.12);transform:rotate(-6deg)}
+.brand-mark .logo{width:52px;height:52px;border-radius:18px;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-brand),inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.12);transform:rotate(-6deg)}
 .brand-mark .logo svg{width:28px;height:28px}
 .brand-mark h1{font-family:var(--f-disp);font-size:26px;color:var(--ink);letter-spacing:1px}
 .brand-mark p{font-size:11px;color:var(--ink-3);letter-spacing:3.5px;margin-top:3px;font-weight:500}
@@ -76,7 +76,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 .act-row.danger b{color:var(--coral)}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border-radius:var(--r-m);transition:transform .16s var(--spring),box-shadow .25s var(--ease),filter .25s;letter-spacing:.5px}
 .btn:active{transform:scale(.96)}
-.btn-primary{background:linear-gradient(140deg,var(--primary-300) 0%,var(--primary) 48%,var(--primary-600) 100%);color:var(--text-invert);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 0 0 1px rgba(255,255,255,.08),0 2px 5px rgba(86,71,214,.22),0 12px 26px -8px rgba(86,71,214,.48)}
+.btn-primary{background:linear-gradient(140deg,var(--primary-300) 0%,var(--primary) 48%,var(--primary-600) 100%);color:var(--text-invert);box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 0 0 1px rgba(255,255,255,.08),var(--shadow-brand)}
 .btn-primary:disabled{filter:grayscale(.6);opacity:.5;box-shadow:none}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:100px;background:var(--surface);border:1px solid var(--hairline);font-size:13px;font-weight:500;color:var(--ink-2);transition:all .2s var(--ease);box-shadow:var(--sh-s)}
 .chip.on{background:var(--grad-brand);border-color:transparent;color:var(--text-invert);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 5px 14px -3px rgba(108,92,231,.5)}
@@ -180,7 +180,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 /* ============ FRIENDS ============ */
 .f-filter{display:flex;gap:8px;padding:16px 22px 4px;overflow-x:auto}
 .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 22px 0}
-#f-grid,#desk-grid{grid-template-columns:1fr} /* 老友页与开桌选人均一行 1 个（invite-grid 保持 2 列） */
+#f-grid,#desk-grid,#invite-grid{grid-template-columns:1fr} /* 老友页 / 开桌选人 / 邀人上桌均一行 1 个横版卡 */
 .f-card{position:relative;background:var(--surface);border-radius:var(--r-l);padding:18px 14px 15px;text-align:center;box-shadow:var(--sh-s);border:1.5px solid transparent;transition:transform .18s var(--spring),border-color .2s,box-shadow .25s var(--ease);animation:pop .4s var(--spring) backwards}
 .f-card:active{transform:scale(.94)}
 .f-card.sel{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft),var(--sh-m),inset 0 0 0 1px var(--hairline)}
@@ -243,7 +243,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 .set-row{display:flex;align-items:center;gap:13px;padding:15px 17px;border-bottom:.5px solid var(--line);width:100%;text-align:left;transition:background .15s}
 .set-row:last-child{border-bottom:none}
 .set-row:active{background:var(--primary-softer)}
-.set-ic{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 0 0 1px rgba(48,44,99,.05),0 3px 8px -3px rgba(48,44,99,.12)}
+.set-ic{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),var(--shadow-ink)}
 .set-row .t{flex:1}
 .set-row .t b{font-size:14px;font-weight:600;display:block}
 .set-row .t span{font-size:11px;color:var(--ink-2);display:block;margin-top:2px}
@@ -290,7 +290,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 .end-chip span{font-size:11px;font-weight:700;color:var(--text-invert);background:linear-gradient(140deg,var(--mint-light),var(--mint-deep));padding:7px 18px;border-radius:100px;letter-spacing:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 16px -3px rgba(43,190,148,.45)}
 .chat-foot{position:absolute;left:0;right:0;bottom:0;padding:12px 16px 26px;background:rgba(250,246,239,.9);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);box-shadow:0 -.5px 0 var(--hairline);display:flex;align-items:center;gap:10px;z-index:30}
 .chat-foot .field{flex:1;height:44px;border-radius:100px;background:var(--surface);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);display:flex;align-items:center;padding:0 17px;font-size:13px;color:var(--ink-3)}
-.chat-foot .send{width:44px;height:44px;border-radius:50%;background:var(--grad-brand);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 8px rgba(86,71,214,.24),0 10px 20px -6px rgba(86,71,214,.45);transition:transform .16s var(--spring)}
+.chat-foot .send{width:44px;height:44px;border-radius:50%;background:var(--grad-brand);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),var(--shadow-brand);transition:transform .16s var(--spring)}
 .chat-foot .send:active{transform:scale(.88)}
 .c-inp{flex:1;height:44px;border-radius:100px;background:var(--surface);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);border:none;outline:none;padding:0 17px;font-size:13px;color:var(--ink);font-family:inherit;min-width:0}
 .c-inp::placeholder{color:var(--ink-3)}
@@ -431,7 +431,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 .close-x{width:34px;height:34px;border-radius:50%;background:var(--surface);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--ink-2);transition:transform .18s var(--spring)}
 .close-x:active{transform:scale(.88) rotate(90deg)}
 .step-label{display:flex;align-items:center;gap:8px;padding:16px 22px 10px}
-.step-label .num{width:22px;height:22px;border-radius:8px;background:linear-gradient(140deg,var(--primary-300),var(--primary));color:var(--text-invert);font-family:var(--f-num);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(108,92,231,.35)}
+.step-label .num{width:22px;height:22px;border-radius:8px;background:linear-gradient(140deg,var(--primary-300),var(--primary));color:var(--text-invert);font-family:var(--f-num);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(108,92,231,.35);margin-left:0}   /* margin-left:0 抵消 .step-label span 的 auto，标题左对齐卡片 */
 .step-label b{font-size:14.5px;font-weight:700}
 .step-label span{font-size:11px;color:var(--ink-2);margin-left:auto}
 .combo-row{display:flex;gap:8px;padding:0 22px 6px;overflow-x:auto}
@@ -473,15 +473,18 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
 .char-cta .btn{flex:1;height:48px;font-size:14.5px}
 
 /* ============ NUWA SCREEN ============ */
-.nuwa-head{display:flex;align-items:center;gap:15px;padding:14px 22px 0}
+.nuwa-head{display:flex;align-items:center;gap:15px;padding:14px 22px 0;margin-top:46px}   /* 避开悬浮 chat-head（56+58=114px）：屏幕自带 68px 顶距，补 46px 齐平顶栏底边 */
 .nuwa-head .info h1{font-family:var(--f-disp);font-size:24px;letter-spacing:1px}
+.nuwa-head .nuwa-face{background:var(--coral-soft)}   /* 低饱和暖橙平涂，不渐变，安静不跳 */
 .nuwa-head .info p{font-size:12px;color:var(--ink-2);margin-top:3px}
 .nuwa-body{padding:10px 22px 0}
+.nuwa-body .step-label{padding-left:0;padding-right:20px;margin-left:-20px}   /* 步骤行与输入框卡片左缘对齐（抵消 step-label 自带 22px 内距）；按预览要求再左移 20px */
 .w-input{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:15px 17px;transition:border-color .2s,box-shadow .25s var(--ease);box-shadow:var(--sh-s)}
 .w-input:focus-within{border-color:var(--primary);box-shadow:0 0 0 3.5px var(--primary-soft)}
 .w-input label{font-size:11px;font-weight:700;color:var(--ink-2);letter-spacing:1px}
 .w-input input{width:100%;font-size:19px;font-weight:700;margin-top:6px}
 .w-input input::placeholder{color:var(--ink-3);font-weight:500}
+.w-input textarea::placeholder{color:var(--ink-3)}   /* 语料提示色与「越具体…」placeholder 一致（原走浏览器默认灰） */
 .dir-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .pipe{margin-top:20px;display:none}
 .pipe.on{display:block;animation:fadeUp .4s ease backwards}
@@ -615,7 +618,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
         <div class="hi">
           <div class="l"><p>Old Friends</p><h1>老友库</h1></div>
           <div class="r">
-            <button class="ava" style="--c1:#C4B8F0;--c2:#9A8AE0;--eg:13px;width:42px;height:42px" onclick="openNuwa()"><i class="badge" style="font-size:12px">🏺</i></button>
+            <button class="nuwa-face" style="border:0;cursor:pointer;width:42px;height:42px;font-size:23px" onclick="openNuwa()" title="女娲工坊" aria-label="女娲工坊">🌷</button>
           </div>
         </div>
         <div class="f-filter" id="f-filter"></div>
@@ -862,7 +865,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
           <span style="width:38px"></span>
         </div>
 
-        <div class="nuwa-head" style="padding-top:130px">
+        <div class="nuwa-head">
           <div class="nuwa-face" style="width:74px;height:74px"><i class="pin" style="font-size:20px">🌷</i><i class="hb l"></i><i class="hb r"></i></div>
           <div class="info">
             <h1>捏一位老友</h1>
@@ -888,12 +891,12 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
             <input id="nuwa-dir" placeholder="越具体，蒸出的思维越像 TA" maxlength="16">
           </div>
           <div class="w-input" style="margin-top:14px">
-            <label>🧪 喂语料（可选 · 喂了才叫真蒸馏）</label>
-            <textarea id="nuwa-corpus" rows="3" placeholder="粘贴 TA 的访谈、课程、文章、聊天记录片段…女娲会从里面提取语言指纹与决策模式" style="width:100%;font-size:13px;line-height:1.6;margin-top:6px;border:none;outline:none;background:transparent;resize:vertical;font-family:inherit;color:var(--ink)"></textarea>
+            <label>喂语料（可选 · 喂了才叫真蒸馏）</label>
+            <textarea id="nuwa-corpus" rows="1" placeholder="粘贴 TA 的访谈、课程、文章、聊天记录片段…女娲会从里面提取语言指纹与决策模式" style="width:100%;font-size:13px;line-height:1.8;margin-top:6px;border:none;outline:none;background:transparent;resize:vertical;font-family:inherit;color:var(--ink)"></textarea>
           </div>
-          <p style="font-size:10.5px;color:var(--ink-3);margin-top:8px" id="nuwa-honest">ℹ️ 不喂语料时，女娲基于公开认知推演并标注置信度</p>
+          <p style="font-size:10.5px;color:var(--ink-3);margin-top:8px" id="nuwa-honest"><svg width="12" height="12" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><rect x="11" y="10.5" width="2" height="7" rx="1" fill="#fff"/><circle cx="12" cy="7" r="1.3" fill="#fff"/></svg>不喂语料时，女娲基于公开认知推演并标注置信度</p>
           <div style="padding:22px 0 10px">
-            <button class="btn btn-primary" style="width:100%;height:52px;font-size:15.5px;letter-spacing:1px" id="nuwa-go" onclick="startDistill()">🔥 开始蒸馏</button>
+            <button class="btn btn-primary" style="width:100%;height:52px;font-size:15.5px;letter-spacing:1px" id="nuwa-go" onclick="startDistill()">开始蒸馏</button>
           </div>
         </div>
 
@@ -1509,39 +1512,24 @@ function getChar(id){return CHARS[id]||SNAP_CHARS[id]||REALS.find(r=>r.id===id)|
 let ADMIN_CHARS=[];
 function loadAdminChars(){try{const ac=JSON.parse(localStorage.getItem('yln_admin_chars')||'[]');ADMIN_CHARS=Array.isArray(ac)?ac:[]}catch(e){ADMIN_CHARS=[]}}
 loadAdminChars();
-/* 官方老友跨设备同步：boot 时从本地服务器拉取（后台编辑 → 任意设备开桌可见），并刷新已收入副本的字段 */
-/* 内置默认老友快照（此刻 = 出厂 15 位 + 真友 2 位 + 真女娲资产 6 位，私有捏的尚未恢复）：供播种进后台老友管理 */
+/* 官方老友跨设备同步：APP 只读，后台是唯一编辑与播种入口 */
 const BUILTIN_CHARS={};Object.entries(CHARS).forEach(([id,c])=>{BUILTIN_CHARS[id]=c});REALS.forEach(r=>{BUILTIN_CHARS[r.id]={...r}});
-YLN.adminCharsPull().then(async cs=>{
+async function syncOfficialChars(){
+  const cs=await YLN.adminCharsPull();
   loadAdminChars();
   let touched=false;
   Object.entries(CHARS).forEach(([id,c])=>{
-    if(!c.official&&!BUILTIN_CHARS[id])return;   /* 已收入副本与内置默认老友都接受后台下发刷新 */
+    if(!c.official&&!BUILTIN_CHARS[id])return;
     const n=(cs||[]).find(x=>x.id===id);
     if(!n)return;
     ['name','short','title','emoji','c1','c2','tint','deep','field','quote','tags','mind','conf'].forEach(k=>{if(n[k]!=null&&c[k]!==n[k]){c[k]=n[k];touched=true}});
-    /* 单老友 Prompt 覆盖单独合并：允许 null（后台清除覆盖时手机端同步清掉，不残留旧值） */
     if((n.promptSys||null)!==(c.promptSys||null)){c.promptSys=n.promptSys||null;touched=true}
   });
-  /* 内置默认老友同步进后台老友管理：GET 成功且服务器缺的补种（published+source=builtin），已有的不覆盖后台编辑 */
-  try{
-    if(Array.isArray(cs)){
-      const srvIds=new Set(cs.map(x=>x.id));
-      const missing=Object.entries(BUILTIN_CHARS)
-        .filter(([id])=>!srvIds.has(id))
-        .map(([id,c])=>({id,...c,published:true,source:'builtin'}));
-      if(missing.length){
-        const merged=[...cs,...missing];
-        YLN.saveAdminChars(merged);
-        const ok=await YLN.adminCharsPush(merged);
-        if(ok&&ok.ok){try{localStorage.setItem('yln_builtin_seeded','1')}catch(e){}}
-        loadAdminChars();
-      }else{try{localStorage.setItem('yln_builtin_seeded','1')}catch(e){}}
-    }
-  }catch(e){}
   if(touched)saveChars();
   if(typeof renderFriends==='function')try{renderFriends()}catch(e){}
-}).catch(()=>{});
+  return cs;
+}
+syncOfficialChars().catch(()=>{});
 
 /* 广场老友：别人捏的，可加为老友，主人得分（uses=被加次数，created=上架时间） */
 const PUBS = [
@@ -1924,9 +1912,16 @@ function inviteCandidates(){
   return deskPool().filter(id=>!cur.includes(id)&&getChar(id));
 }
 function renderInviteGrid(){
+  /* 与老友页同款横版老友卡：头像 + 名字/标签 + 签名，点卡即邀上桌 */
   document.getElementById('invite-grid').innerHTML=inviteCandidates().map(id=>{
     const c=getChar(id);
-    return `<button class="f-card" onclick="inviteChar('${id}')">${avaHTML(id,54)}<h3>${c.short}</h3><p>${c.title}</p></button>`;
+    return `<button class="f-card hor" onclick="inviteChar('${id}')">
+      ${avaHTML(id,46)}
+      <span class="fi"><span class="nm"><h3>${c.short}</h3>${charTag(c)}</span><p>${c.quote}</p></span>
+      <span class="f-more" onclick="event.stopPropagation();openChar('${id}')" title="查看资料">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3.5"/><circle cx="9" cy="10.5" r="2.1"/><path d="M5.6 16.4c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4M15.5 9.5h3.8M15.5 13h2.6"/></svg>
+      </span>
+    </button>`;
   }).join('')||'<p style="grid-column:1/-1;text-align:center;color:var(--ink-3);font-size:12px;padding:18px">老友们都已在桌上了 ✦</p>';
 }
 function inviteChar(id){
@@ -1961,7 +1956,9 @@ function openChat(opt){
   document.getElementById('chat-topic').textContent = opt.topic || '公开圆桌 · 直播中';
   document.getElementById('chat-sub').textContent = opt.chars.map(id=>{const c=getChar(id);return c?c.short:(typeof id==='object'?id.short:id)}).join(' · ')+' ｜ '+(opt.liveId?'围观直播':deskModeIf(opt));
   document.getElementById('chat-invite').style.display='';   /* 单聊/群聊右上角都可邀请老友：单聊邀人即升级群聊 */
-  document.getElementById('chat-inp').placeholder=opt.solo?'和 TA 单独聊聊…':'插句话，老友们都会回应你…';
+  document.getElementById('chat-inp').placeholder=opt.liveId?'围观模式仅可观看':opt.solo?'和 TA 单独聊聊…':'插句话，老友们都会回应你…';
+  document.getElementById('chat-inp').disabled=!!opt.liveId;
+  document.getElementById('chat-send').style.opacity=opt.liveId ? .5 : 1;
   document.getElementById('skip-btn').style.display='none';
   document.getElementById('chat-body').innerHTML = '';
   pushScreen('scr-chat');
@@ -2017,41 +2014,8 @@ async function sendUserMsg(){
   if(!activeRound)return;
   if(userBusy){toast('老友们正在回应，稍等一下 🙏');return}
   if(!text){toast('先说点什么吧 ✍️');return}
-  if(activeRound.liveId&&!activeRound.rid){   /* 围观/演示桌：写入服务器直播流，主播端与全体围观者可见 */
-    const body=document.getElementById('chat-body');
-    const nick=siteUser()?.nick||'围观者';
-    body.insertAdjacentHTML('beforeend',userMsgHTML(text,nick));
-    inp.value='';
-    scrollChat(true);
-    const closed=activeRound.srvStatus==='done';
-    if(!closed)YLN.livePost(activeRound.liveId,[{type:'user',text,nick}]);   /* 已收官流只读：不再推流 */
-    if(activeRound.demo&&!closed){   /* 演示桌：本地 2 位成员真实回应并推流，围观者同步可见（离线静默降级） */
-      userBusy=true;inp.disabled=true;document.getElementById('chat-send').style.opacity=.5;
-      roomDialog.push({who:'_user',text});
-      const speakers=activeRound.chars.filter(id=>!getChar(id).human).slice().sort(()=>Math.random()-.5).slice(0,2);
-      for(const id of speakers){
-        const t=document.createElement('div');t.innerHTML=typingHTML(id);
-        const tel=t.firstElementChild;body.appendChild(tel);scrollChat(true);
-        let reply='';
-        try{
-          const hist=roomDialog.slice(-6).map(d=>`${d.who==='_user'?'你':getChar(d.who).short}：${d.text}`).join('\n');
-          const topicLine=activeRound.topic?`圆桌话题：「${activeRound.topic}」。`:'这是一场直播圆桌，请顺着对话自然接话。';
-          reply=await llmChat([
-            {role:'system',content:personaSys(id)},
-            {role:'user',content:`${topicLine}\n最近的对话：\n${hist}\n\n${YLN.nuwa.askLineBuild('demo',nick)}`}
-          ],{temp:0.85});
-          if(!reply)throw new Error('empty');
-        }catch(e){reply=''}
-        if(tel.isConnected)tel.remove();
-        if(!reply)continue;
-        roomDialog.push({who:id,text:reply});
-        body.insertAdjacentHTML('beforeend',msgHTML({who:id,text:reply}));
-        YLN.livePost(activeRound.liveId,[{type:'msg',who:id,text:reply}]);
-        scrollChat(true);
-      }
-      inp.disabled=false;document.getElementById('chat-send').style.opacity=1;userBusy=false;
-    }
-    return;
+  if(activeRound.liveId&&!activeRound.rid){   /* 围观只读：直播写操作仅限 owner，演示桌由公开剧本续播 */
+    toast('围观模式仅可观看，直播发言仅主播可操作');return;
   }
   /* 无主题桌：用户的第一句话自动定为圆桌主题（微信式以首条提问命名），同步头部标题与实录；
      放在 liveStart 之前，公开桌开播建流的 title 即带新主题 */
@@ -2075,7 +2039,7 @@ async function sendUserMsg(){
   roomSeq.push({type:'user',text,t:Date.now()});
   syncCache();
   scrollChat(true);
-  const speakers = activeRound.chars.filter(c=>!getChar(c).human).slice().sort(()=>Math.random()-.5).slice(0,2);
+  const speakers = activeRound.chars.filter(c=>!getChar(c).human).slice().sort(()=>Math.random()-.5);   /* 插话后每位在桌老友各回应一次（随机顺序，真友除外）；单聊自然只有 1 位 */
   for(const id of speakers){
     const t = document.createElement('div');t.innerHTML = typingHTML(id);
     const tel = t.firstElementChild;body.appendChild(tel);scrollChat(true);
@@ -2156,11 +2120,11 @@ function liveStart(){
   liveSent=roomSeq.length;   /* 续播时本地已有的不再重推 */
   YLN.liveOpen({liveId:activeRound.rid,title:activeRound.topic,topic:activeRound.topic,
     chars:activeRound.chars.map(id=>{const c=getChar(id);return{id,short:c?c.short:id,field:c?(c.field||''):'',tint:c?(c.tint||'var(--primary-soft)'):'var(--primary-soft)'}}),
-    ownerNick:siteUser()?.nick||'小Moon'});
+    ownerNick:siteUser()?.nick||'小Moon'}).then(d=>{if(!d||!d.ok)toast((d&&d.err)||'直播服务暂时不可达，本地圆桌可继续')});
   if(!liveInboxTimer)liveInboxTimer=setInterval(pullLiveInbox,4000);  /* 主播轮询围观插话 */
 }
 /* 主播收流：围观者的插话增量进入主播端上下文与实录 */
-let liveInboxBusy=false, specTimer=null, specTotal=0;
+let liveInboxBusy=false, specTimer=null, specTotal=0, specBusy=false;
 async function pullLiveInbox(){
   if(!activeRound||!activeRound.isPublic||!activeRound.rid||liveInboxBusy)return;
   liveInboxBusy=true;
@@ -2190,8 +2154,9 @@ async function spectateLive(){
   roomSeq=[];roomDialog=[];
   const body=document.getElementById('chat-body');
   document.getElementById('skip-btn').style.display='none';
-  document.getElementById('chat-inp').disabled=false;
-  document.getElementById('chat-send').style.opacity=1;
+  document.getElementById('chat-inp').disabled=true;
+  document.getElementById('chat-inp').placeholder='围观模式仅可观看';
+  document.getElementById('chat-send').style.opacity=.5;
   body.innerHTML='<p class="sq-empty" style="padding:40px 20px;text-align:center">正在接通直播流… 📡</p>';
   const d=await YLN.liveStream(activeRound.liveId,0);
   if(my!==debateToken)return;
@@ -2217,40 +2182,48 @@ async function spectateLive(){
   scrollChat(false);
   if(d.status!=='live')return;
   if(activeRound.demo){   /* 演示桌剧本续播：打开瞬间续播下一轮组（3 轮），剧本放完循环（服务器唯一事实源，全端同步） */
-    const nx=await YLN.demoNext(activeRound.liveId);
-    if(my!==debateToken)return;
-    if(nx&&nx.added&&nx.added.length){
-      nx.added.forEach(m=>{
-        body.insertAdjacentHTML('beforeend',seqHTML(m));
-        roomDialog.push({who:m.who,text:m.text||''});
-      });
-      specTotal+=nx.added.length;
-      scrollChat(true);
-    }
+    specBusy=true;
+    try{
+      const nx=await YLN.demoNext(activeRound.liveId);
+      if(my!==debateToken)return;
+      if(nx&&nx.added&&nx.added.length){
+        nx.added.forEach(m=>{
+          body.insertAdjacentHTML('beforeend',seqHTML(m));
+          roomDialog.push({who:m.who,text:m.text||''});
+        });
+        specTotal+=nx.added.length;
+        scrollChat(true);
+      }
+    }finally{specBusy=false}
   }
-  specTimer=setInterval(async()=>{
-    if(!activeRound||!activeRound.liveId||my!==debateToken){clearInterval(specTimer);specTimer=null;return}
-    const inc=await YLN.liveStream(activeRound.liveId,specTotal);
-    if(my!==debateToken||!inc)return;
+  specTimer=setInterval(pullSpectatorLive,4000);
+}
+/* SSE 与 4 秒轮询共用一个增量入口：只追加新消息，不重置围观聊天 DOM。 */
+async function pullSpectatorLive(){
+  if(!activeRound||!activeRound.liveId||activeRound.rid||specBusy)return;
+  const lid=activeRound.liveId,my=debateToken;
+  specBusy=true;
+  try{
+    const inc=await YLN.liveStream(lid,specTotal);
+    if(my!==debateToken||!inc||!activeRound||activeRound.liveId!==lid)return;
+    const body=document.getElementById('chat-body');
     (inc.chars||[]).forEach(c=>{if(c.id&&!getChar(c.id))SNAP_CHARS[c.id]=c});
     if(inc.msgs&&inc.msgs.length){
       inc.msgs.forEach(m=>{
         body.insertAdjacentHTML('beforeend',seqHTML(m));
-        if(activeRound.demo){   /* 演示桌：增量并入插话上下文，保证后续回应连贯 */
-          if(m.type==='msg')roomDialog.push({who:m.who,text:m.text||''});
-          else if(m.type==='user')roomDialog.push({who:'_user',text:m.text});
-        }
+        if(m.type==='msg')roomDialog.push({who:m.who,text:m.text||''});
+        else if(m.type==='user')roomDialog.push({who:'_user',text:m.text});
       });
       specTotal=inc.total;
       scrollChat(true);
     }
-    if(inc.status!=='live'){   /* 主播收官：围观端同步收流 */
+    if(inc.status!=='live'){
       clearInterval(specTimer);specTimer=null;
       activeRound.srvStatus='done';
       if(!body.querySelector('.end-chip'))body.insertAdjacentHTML('beforeend',`<div class="end-chip"><span>🎓 本场直播已收官</span></div>`);
       scrollChat(true);
     }
-  },4000);
+  }finally{specBusy=false}
 }
 async function playDebate(){
   if(activeRound.liveId&&!activeRound.rid){await spectateLive();return}  /* 围观者：渲染服务器直播流 + 轮询增量，绝不在本地生成 */
@@ -2667,6 +2640,22 @@ try{
 /* 无服务器会话（游客/停机）：保持 P0 官网本地同步；有 token 时由下方账号桥在 walletPull 之后统一处理，防旧值反写 */
 if(!YLN.auth.token())syncWalletFromSite();
 renderWalletUI();
+function applyPrivateChars(pc){
+  if(!pc||typeof pc!=='object')return;
+  Object.keys(CHARS).forEach(k=>{const c=CHARS[k];if((k.startsWith('nuwa_')||k.startsWith('my_')||(c&&c.owner))&&!pc[k])delete CHARS[k]});
+  Object.entries(pc).forEach(([k,v])=>{if(v&&v.name){CHARS[k]={...v};if(!charOrder.includes(k))charOrder.push(k)}});
+  const ids=new Set(Object.keys(CHARS));charOrder=charOrder.filter((id,i,a)=>ids.has(id)&&a.indexOf(id)===i);
+  renderFriends();renderSessions();renderHome();
+}
+function applyRounds(rd){
+  if(!Array.isArray(rd))return;
+  ROUNDS.length=0;rd.forEach(r=>ROUNDS.push(r));renderHome();renderSessions();renderProf();
+}
+function applyPrefs(pf){
+  if(!pf)return;
+  const setP=(id,on)=>{const el=document.getElementById(id);if(el)el.classList.toggle('on',on)};
+  setP('pref-remind',pf.remind!==false);setP('pref-sound',pf.sound===true);setP('pref-dark',pf.dark===true);
+}
 /* P0 账号桥：持有服务器 token → me() 校验 → 服务器身份桥接进本地三端身份。 */
 /* 策略：身份字段（id/nick/email）以服务器为准；P1 钱包由 walletPull 按 updated 戳 LWW 合并（先于官网本地同步）。 */
 /* 无 token / 校验失败 / 服务停机 → 静默保持现状（游客或本地登录态），不阻塞启动。 */
@@ -2687,18 +2676,34 @@ renderWalletUI();
     const w2=await YLN.walletPull(u.email);  /* P1：服务器钱包 LWW 合并（游客资产未并入时自动加和回推） */
     if(w2)wallet=w2;
     const pc=await YLN.privateCharsPull(u.email);  /* P2：私有老友跨端同步（服务器为准+游客老友首并） */
-    if(pc&&typeof pc==='object'){let t=false;
-      Object.entries(pc).forEach(([k,v])=>{if(v&&v.name){CHARS[k]={...v};if(!charOrder.includes(k))charOrder.push(k);t=true}});
-      if(t)try{renderFriends()}catch(_){}}
+    applyPrivateChars(pc);
     const rd=await YLN.roundsPull(u.email);  /* P3：圆桌跨端同步（服务器为准+游客圆桌首并） */
-    if(Array.isArray(rd)){ROUNDS.length=0;rd.forEach(r=>ROUNDS.push(r));try{renderHome()}catch(_){}}
+    applyRounds(rd);
     const pf=await YLN.prefsPull();  /* P4：偏好拉取（设备级，服务器为准） */
-    if(pf){try{const setP=(id,on)=>{const el=document.getElementById(id);if(el)el.classList.toggle('on',on)};
-      setP('pref-remind',pf.remind!==false);setP('pref-sound',pf.sound===true);setP('pref-dark',pf.dark===true)}catch(_){}}
+    applyPrefs(pf);
     syncWalletFromSite();
     renderWalletUI();
   }catch(e){try{syncWalletFromSite();renderWalletUI()}catch(_){}}
 })();
+/* SSE 精准刷新：事件只触发对应数据拉取与局部渲染；原轮询和 localStorage 降级继续保留。 */
+YLN.events.start({
+  onUnauthorized:()=>{if(YLN.auth.token())YLN.auth.setToken('')},
+  onEvent:e=>{
+    if(e.type==='chars')syncOfficialChars().then(()=>{renderSessions();renderHome()}).catch(()=>{});
+    else if(e.type==='prompts')YLN.nuwa.promptsPull().catch(()=>{});
+    else if(e.type==='live'){
+      renderHomeLive();
+      if(activeRound&&activeRound.rid&&activeRound.isPublic)pullLiveInbox();
+      else if(activeRound&&activeRound.liveId)pullSpectatorLive();
+    }else if(e.type==='wallet')YLN.walletPull(siteUser()?.email).then(w2=>{
+      if(w2)wallet=w2;syncWalletFromSite();renderWalletUI();
+    }).catch(()=>{});
+    else if(e.type==='my_chars')YLN.privateCharsPull(siteUser()?.email).then(applyPrivateChars).catch(()=>{});
+    else if(e.type==='rounds')YLN.roundsPull(siteUser()?.email).then(applyRounds).catch(()=>{});
+    else if(e.type==='prefs')YLN.prefsPull().then(applyPrefs).catch(()=>{});
+  }
+});
+addEventListener('beforeunload',()=>YLN.events.stop());
 /* 女娲 Prompt 热编辑跨端同步（APP 侧）：boot 时以服务器为准对齐本地覆盖（后台改 → 手机端捏老友即用新模板） */
 YLN.nuwa.promptsPull().catch(()=>{});
 try{const p=JSON.parse(localStorage.getItem('yln_prefs')||'{}');if(p.remind===false)document.getElementById('pref-remind').classList.remove('on');if(p.sound)document.getElementById('pref-sound').classList.add('on');if(p.dark)document.getElementById('pref-dark').classList.add('on')}catch(e){}
