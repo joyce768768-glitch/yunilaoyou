@@ -1,0 +1,41 @@
+{
+  "schema": "yln.m3-foundation.delivery.v1",
+  "name": "与你老友设计系统 · M3 Foundation 对照版",
+  "version": "0.2.0",
+  "lifecycle": "experimental",
+  "generatedAt": "2026-11-03",
+  "sourceCharter": "/Users/moon/Trae/设计系统实验室/material-3-foundation-merged.md",
+  "sourceProject": "/Users/moon/Trae/与你老友/index.html",
+  "sourceAdmin": "/Users/moon/Trae/与你老友/website/admin/admin.html",
+  "sourceSurfaces": {"consumer": "index.html", "admin": "website/admin/admin.html + admin.css + admin.js", "adminRoutes": ["dashboard", "xpanel", "users", "orders", "finance", "token", "nuwa", "prompts", "chars", "realfriends", "lives"]},
+  "method": "document-led/source-observed",
+  "pipelineUsed": false,
+  "productionWiring": "unwired",
+  "originalDesignSystemPreserved": "/Users/moon/Trae/与你老友/design-system",
+  "assets": {
+    "foundation": "foundation.json",
+    "referenceTokens": "tokens/reference.css",
+    "systemTokens": "tokens/system.css",
+    "tokenEvidence": "tokens/tokens.json",
+    "componentTemplates": "components/components.html",
+    "componentStyles": "components/components.css",
+    "componentSpecs": "components/components.json",
+    "patterns": "patterns/patterns.json",
+    "preview": "preview/index.html"
+  },
+  "counts": {"principles": 6, "typographyRoles": 15, "components": 26, "patterns": 14, "adminRoutes": 11},
+  "governanceFindings": [
+    {"id": "TOK-001", "severity": "review", "title": "coral 一色两义", "detail": "coral 同时承担 FAB 次级品牌行动与 danger/error；提取阶段不改色，需产品裁决。"},
+    {"id": "TOK-002", "severity": "review", "title": "SVG stroke 刻度漂移", "detail": "真实源码存在 2/2.1/2.2/2.4/2.6 多档，未在提取阶段静默归并。"},
+    {"id": "TOK-003", "severity": "gap", "title": "对比度未验收", "detail": "尚未计算文本与非文本对比度，不宣称 WCAG 2.2 AA 通过。"},
+    {"id": "A11Y-001", "severity": "gap", "title": "组件语义与焦点管理不完整", "detail": "Switch、Sheet、消息流、选择器缺少系统 ARIA 与键盘契约。"},
+    {"id": "CTX-001", "severity": "missing", "title": "深色与高对比度 mode 缺失", "detail": "深色入口仅提示排期中；未生成虚假 Token mode。"},
+    {"id": "CTX-002", "severity": "partial", "title": "窗口尺寸类未完整覆盖", "detail": "前台仅 Compact 与桌面手机舞台；后台仅 1080/920px 局部重组，其余档位未单独定义。"},
+    {"id": "ADMIN-TOK-001", "severity": "gap", "title": "后台裸值与 inline style 未收编", "detail": "图表、健康横幅、Trace、Prompt 编辑器等仍直接生成 HEX、间距和布局样式；本对照版保留证据，不宣称已全量 Token 化。"},
+    {"id": "ADMIN-A11Y-001", "severity": "gap", "title": "后台 Drawer 与动态数据语义不完整", "detail": "Drawer 缺少 dialog 语义、焦点圈定/恢复；图表缺键盘等价与数据替代，动态表格/消息流未登记 live region。"},
+    {"id": "ADMIN-RWD-001", "severity": "gap", "title": "后台窄屏表格与导航标签策略缺失", "detail": "920px 以下导航隐藏所有 span 且未提供统一无障碍名称；宽表格没有独立滚动、列优先级或卡片重排规则。"},
+    {"id": "ADMIN-MOTION-001", "severity": "missing", "title": "后台 Reduced Motion 缺失", "detail": "fadeUp、orbit、shake、drawer 与条形图动效未看到 prefers-reduced-motion 覆盖。"},
+    {"id": "ADMIN-DATA-001", "severity": "review", "title": "演示与跨端数据边界", "detail": "用户/订单/Token 含 localStorage 种子；体验指标为本机三端近似口径，服务器多用户聚合仍待接入，不得当作全平台真实指标。"}
+  ],
+  "changePolicy": {"patch": "真实值微调", "minor": "新增角色/组件/Pattern", "major": "删除或改变既有角色绑定", "releaseGate": ["源码证据", "八项组件规格", "浏览器视觉复核", "缺口显式登记"]}
+}

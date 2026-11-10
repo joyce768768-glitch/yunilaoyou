@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/tokens/tokens.css">
+<link rel="stylesheet" href="../design-system/tokens/semantic.css">
 <link rel="stylesheet" href="assets/site.css">
 <style>
 .page-head{padding:calc(var(--nav-h) + clamp(36px,6vw,64px)) 0 clamp(20px,3vw,34px);text-align:center}
@@ -27,7 +29,7 @@
 .popt.on .radio::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--grad-primary)}
 .popt .pm{flex:1}
 .popt .pm b{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-.popt .pm b .bdg{font-size:9.5px;font-weight:800;letter-spacing:1px;color:#fff;background:linear-gradient(140deg,#FF9A68,#F25C82);padding:3px 9px;border-radius:100px}
+.popt .pm b .bdg{font-size:9.5px;font-weight:800;letter-spacing:1px;color:var(--text-invert);background:linear-gradient(140deg,var(--coral-light),var(--pink-deep));padding:3px 9px;border-radius:100px}
 .popt .pm span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.6}
 .popt .pp{text-align:right;flex-shrink:0}
 .popt .pp .pv{font-family:var(--f-num);font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
@@ -52,7 +54,7 @@
 
 /* 登录态卡 */
 .me-card{text-align:center}
-.me-card .big-ava{width:72px;height:72px;border-radius:50%;background:var(--grad-primary);color:#fff;font-family:var(--f-num);font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 20px -6px rgba(86,71,214,.5),inset 0 1px 0 rgba(255,255,255,.3)}
+.me-card .big-ava{width:72px;height:72px;border-radius:50%;background:var(--grad-primary);color:var(--text-invert);font-family:var(--f-num);font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:var(--shadow-brand),inset 0 1px 0 rgba(255,255,255,.3)}
 .me-card h3{margin-bottom:2px}
 .me-card .mail{font-size:12.5px;color:var(--ink-3);margin-bottom:18px}
 .mstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0 22px}
@@ -75,7 +77,7 @@
 .method.on{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
 .method .mic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
 .method b{font-size:14px;font-weight:700;flex:1}
-.method .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;transition:all .2s}
+.method .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--text-invert);font-size:11px;transition:all .2s}
 .method.on .tick{background:var(--primary);border-color:var(--primary)}
 .paying{display:none;text-align:center;padding:30px 0 20px}
 .paying.on{display:block}
@@ -91,7 +93,7 @@
 
 <nav class="nav" id="nav">
   <a class="logo" href="index.html">
-    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="var(--sun-softer)"/><circle cx="15.5" cy="14.5" r="4.4" fill="var(--sun)" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="var(--pink)"/></svg></span>
     <span><b>与你老友</b><small>OLD FRIENDS · ROUNDTABLE</small></span>
   </a>
   <div class="links">
@@ -108,7 +110,7 @@
     </div>
   </div>
   <div class="cta" id="auth-slot"></div>
-  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#302C63" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </nav>
 <div class="mobile-menu" id="mm">
   <a href="index.html#features">产品</a><a href="membership.html">会员</a><a href="orders.html">订单</a>
@@ -267,19 +269,20 @@
         <button class="method" data-m="wechat"><span class="mic" style="background:var(--mint-soft)">💬</span><b>微信支付</b><span class="tick">✓</span></button>
         <button class="method" data-m="card"><span class="mic" style="background:var(--sun-soft)">💳</span><b>银行卡</b><span class="tick">✓</span></button>
       </div>
-      <button class="btn btn-primary btn-full" onclick="doPay()">确认支付 <span id="pay-amt-inline">¥89</span></button>
+      <button class="btn btn-primary btn-full" id="pay-go" onclick="doPay()">模拟支付 <span id="pay-amt-inline">¥89</span></button>
+      <div class="aux" style="justify-content:center"><span>模拟环境，不会真实扣款</span></div>
       <div class="aux" style="justify-content:center"><button onclick="closePay()">再想想</button></div>
     </div>
     <!-- 支付中 -->
     <div class="paying" id="pay-step2">
       <div class="spinner"></div>
-      <p style="font-size:14.5px;font-weight:700">正在拉起支付…</p>
+      <p style="font-size:14.5px;font-weight:700">正在模拟支付…</p>
       <p style="font-size:12px;color:var(--ink-3);margin-top:8px">演示环境，无需真实付款</p>
     </div>
     <!-- 成功 -->
     <div class="pay-ok" id="pay-step3">
       <div class="okic">✓</div>
-      <h3 style="font-family:var(--f-disp);font-size:22px;font-weight:600;letter-spacing:.5px">开通成功！</h3>
+      <h3 style="font-family:var(--f-disp);font-size:22px;font-weight:600;letter-spacing:.5px">模拟支付成功！</h3>
       <p style="font-size:12.5px;color:var(--ink-2);margin:10px 0 4px" id="ok-plan">标准月卡已到账</p>
       <p style="font-size:11px;color:var(--ink-3);letter-spacing:.5px" id="ok-oid">订单号 —</p>
       <div style="display:flex;gap:10px;margin-top:24px">
@@ -299,9 +302,10 @@
   </div>
 </footer>
 
+<script src="../yln-core.js?v=12"></script>
 <script src="assets/site.js"></script>
 <script>
-let selPlan='plus', selMethod='alipay';
+let selPlan='plus', selMethod='alipay', payBusy=false;
 const $=id=>document.getElementById(id);
 const PLANS={
   free:{name:'免费体验',amt:0,months:0,pts:0,coupons:0},
@@ -325,25 +329,25 @@ function switchTab(t){
 function bad(id){const f=document.getElementById(id);f.classList.add('bad');setTimeout(()=>f.classList.remove('bad'),2200);return false}
 const emailOK=v=>/^[\w.+-]+@[\w-]+\.[\w.]{2,}$/.test(v);
 
-function doSignup(){
+async function doSignup(){
   const nick=$('r-nick').value.trim(), email=$('r-email').value.trim(), pwd=$('r-pwd').value;
   if(nick.length<2) return bad('f-nick');
   if(!emailOK(email)) return bad('f-email');
   if(pwd.length<8) return bad('f-pwd');
   if(!$('r-agree').checked) return toast('请先同意用户协议与隐私政策');
   try{
-    const u=SITE.signup(nick,email,pwd);
+    const u=await SITE.signup(nick,email,pwd);
     SITE.updateUser({coupons:5, points:0});
     toast(`欢迎入席，${nick}！老友券 ×5 已到账 🎉`);
     renderMe();
   }catch(e){ toast(e,3000) }
 }
-function doLogin(){
+async function doLogin(){
   const email=$('l-email').value.trim(), pwd=$('l-pwd').value;
   if(!emailOK(email)) return bad('f-lemail');
   if(!pwd) return bad('f-lpwd');
   try{
-    const u=SITE.login(email,pwd);
+    const u=await SITE.login(email,pwd);
     toast(`欢迎回来，${u.nick} 👋`); renderMe();
   }catch(e){ toast(e,3000) }
 }
@@ -381,18 +385,31 @@ document.querySelectorAll('.method').forEach(m=>m.addEventListener('click',()=>{
   m.classList.add('on'); selMethod=m.dataset.m;
 }));
 function doPay(){
+  if(payBusy)return;
   const u=SITE.me(); if(!u){closePay();switchTab('login');return}
+  const p=PLANS[selPlan],planKey=selPlan,method=selMethod;
+  payBusy=true;
+  const btn=$('pay-go');btn.disabled=true;
   $('pay-step1').style.display='none'; $('pay-step2').classList.add('on');
   setTimeout(()=>{
     $('pay-step2').classList.remove('on'); $('pay-step3').classList.add('on');
-    const p=PLANS[selPlan];
-    const base=u.planUntil&&u.planUntil>Date.now()?u.planUntil:Date.now();
-    /* 对齐 App 会员规则：积分累加，老友券按档发放（不缩水取大值） */
-    SITE.updateUser({plan:selPlan,planUntil:base+p.months*30*864e5,
-      points:(u.points||0)+p.pts,coupons:Math.max(u.coupons||0,p.coupons||0)});
-    const rec=SITE.createOrder({plan:p.name,planKey:selPlan,amount:p.amt,method:{alipay:'支付宝',wechat:'微信支付',card:'银行卡'}[selMethod],months:p.months,pts:p.pts,nick:u.nick,email:u.email});
+    /* 模拟支付成功后才发权益：积分累加、老友券不缩水、未到期续费顺延 */
+    let cw=YLN.walletLoad();
+    if(cw&&cw.synced&&cw.synced!==u.email)cw=null;  /* 他人账号残留钱包不作本账号充值基数 */
+    cw=cw||YLN.WALLET_DEFAULT();
+    const base=cw.planUntil&&cw.planUntil>Date.now()?cw.planUntil:Date.now();
+    cw.plan=planKey;
+    cw.planUntil=base+p.months*30*864e5;
+    cw.points=(cw.points||0)+p.pts;
+    cw.coupons=Math.max(cw.coupons||0,p.coupons||0);
+    cw.ledger.unshift({t:Date.now(),n:`模拟支付成功 · ${p.name} · ${p.pts} 积分`,d:p.pts});
+    if(cw.ledger.length>40)cw.ledger.length=40;
+    YLN.walletSave(cw);
+    SITE.updateUser({plan:cw.plan,planUntil:cw.planUntil,points:cw.points,coupons:cw.coupons});
+    const rec=SITE.createOrder({plan:p.name,planKey,amount:p.amt,method:{alipay:'支付宝',wechat:'微信支付',card:'银行卡'}[method],months:p.months,pts:p.pts,nick:u.nick,email:u.email,mock:true});
     $('ok-plan').textContent=`${p.name}已到账 · ${p.pts} 积分入袋${p.coupons?` · 老友券 ×${p.coupons}`:''}`;
-    $('ok-oid').textContent='订单号 '+rec.id;
+    $('ok-oid').textContent='模拟订单号 '+rec.id;
+    payBusy=false;btn.disabled=false;
     SITE.renderAuth(); renderMe();
   },1300);
 }

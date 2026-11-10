@@ -1,0 +1,19 @@
+{
+  "name": "list-row",
+  "version": "1.0.0",
+  "source": "index.html .set-row / website .src-row",
+  "slots": ["icon(set-ic)", "t(title+sub)", "trailing(arrow/switch/value)"],
+  "layout": { "padding": "15px 17px", "gap": "13px", "divider": ".5px --border-default(末行无)" },
+  "typography": { "title": "--type-lead(原14px→对齐15⚠) 600", "sub": "--type-caption --text-secondary" },
+  "states": {
+    "rest":    { "bg": "transparent" },
+    "active":  { "bg": "--bg-brand-softer" },
+    "focus":   { "ring": "--ring-focus(inset)" },
+    "disabled": { "opacity": "var(--state-disabled-opacity)" }
+  },
+  "motion": { "background": "--dur-fast" },
+  "rules": [
+    "整行可点击(命中区=整行), 不得只在 arrow 上挂事件",
+    "destructive 行(删除/清空) title 用 --status-error"
+  ]
+}

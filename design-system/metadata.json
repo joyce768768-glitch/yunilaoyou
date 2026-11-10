@@ -1,0 +1,22 @@
+{
+  "id": "yln-design-system",
+  "name": "与你老友 Design System",
+  "version": "1.9.0",
+  "created": "2026-10-20",
+  "wired": true,
+  "layers": {
+    "primitive": "tokens/tokens.css (done, v1.4.0 补 --r-2xl)",
+    "semantic": "tokens/semantic.css (v1.9.0: 47 角色, v1.2.0 44 角色 + 染色投影治理 +3 词 --shadow-brand-hover/--shadow-ink/--shadow-stage)",
+    "component": "components/*.json (8 份, v1.6.0 新增 friend-card; chat-bubble/avatar → v1.1.0)",
+    "preview": "preview/index.html (done v1.3.0, 浏览器验证通过)"
+  },
+  "source": "收编自 5 页面 4125 行, 263 个 hex → 47 个 primitive 色位 → 44 个语义角色 → 8 组件规格",
+  "gates": {
+    "review": "人工(第1期3项 + 第5期3项裁决均通过)",
+    "rules": "SKILL.md (done v1.4.0: R1~R5 + 准入闸 + semver)"
+  },
+  "decisions": {
+    "五色定岗": "primary=品牌 mint=成功 sun=警告 coral=错误 pink=情感 sky=信息",
+    "状态派生": "hover=-8%L active=-14%L disabled=opacity.4"
+  }
+}

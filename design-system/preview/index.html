@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>与你老友 · 设计系统管理站 v1.9.0</title>
+<!-- 单源真相: 直接引用 token 文件, 改文件刷新即变 -->
+<link rel="stylesheet" href="../tokens/tokens.css">
+<link rel="stylesheet" href="../tokens/semantic.css">
+<style>
+/* ======== 管理站自身样式(也用产品 token 渲染·自举验证) ======== */
+*{margin:0;box-sizing:border-box}
+body{background:var(--bg-base);color:var(--text-default);font:400 var(--type-body)/1.7 var(--font-body);padding-bottom:120px}
+.hd{position:sticky;top:0;z-index:50;background:var(--bg-surface);border-bottom:1px solid var(--border-default);padding:14px 28px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh-s)}
+.hd h1{font:600 var(--type-title)/1.3 var(--font-display);letter-spacing:.5px}
+.ver{font:600 var(--type-caption)/1 var(--font-num);background:var(--bg-brand-soft);color:var(--text-brand);padding:5px 10px;border-radius:var(--r-pill)}
+.hd nav{margin-left:auto;display:flex;gap:6px}
+.hd nav a{font-size:13px;font-weight:500;color:var(--text-secondary);text-decoration:none;padding:7px 14px;border-radius:var(--r-pill);transition:all var(--dur-base) var(--ease)}
+.hd nav a:hover{background:var(--bg-brand-softer);color:var(--text-brand)}
+.export{margin-left:8px;border:none;cursor:pointer;font:600 13px var(--font-body);color:var(--text-invert);background:var(--bg-brand);padding:9px 18px;border-radius:var(--r-pill);box-shadow:var(--sh-m);transition:all var(--dur-fast) var(--spring)}
+.export:hover{background:var(--bg-brand-hover)}
+.export:active{transform:scale(.96)}
+.wrap{max-width:1060px;margin:0 auto;padding:36px 28px}
+.sec{margin-bottom:64px}
+.sec>h2{font:600 var(--type-lead)/1.4 var(--font-display);display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sec>h2::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--bg-brand)}
+.sec .desc{font-size:12.5px;color:var(--text-muted);margin-bottom:20px}
+/* 色板 */
+.fam{margin-bottom:22px}
+.fam .fname{font:600 13px/1 var(--font-num);color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.sw-row{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:96px;cursor:pointer;border-radius:var(--r-s);overflow:hidden;border:1px solid var(--border-hairline);background:var(--bg-surface);box-shadow:var(--sh-s);transition:transform var(--dur-fast) var(--spring)}
+.sw:hover{transform:translateY(-3px)}
+.sw i{display:block;height:52px;background:var(--c)}
+.sw b{display:block;font:600 11px/1.5 var(--font-num);padding:6px 8px 2px;color:var(--text-default)}
+.sw span{display:block;font:10.5px/1.4 var(--font-num);color:var(--text-muted);padding:0 8px 6px}
+/* 语义 */
+.pair-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.pair{border-radius:var(--r-m);padding:14px 16px;border:1px solid var(--border-hairline)}
+.pair b{font-weight:600;font-size:13.5px;display:block}
+.pair span{font:11px var(--font-num);opacity:.75}
+.role-line{display:flex;align-items:baseline;gap:12px;padding:8px 0;border-bottom:.5px solid var(--border-hairline)}
+.role-line code{font:11.5px var(--font-num);color:var(--text-brand);min-width:150px}
+/* 渐变资产 */
+.gsw-row{display:flex;gap:10px;flex-wrap:wrap}
+.gsw{flex:1;min-width:200px;border-radius:var(--r-m);overflow:hidden;border:1px solid var(--border-hairline);background:var(--bg-surface);box-shadow:var(--sh-s);cursor:pointer;transition:transform var(--dur-fast) var(--spring)}
+.gsw:hover{transform:translateY(-3px)}
+.gsw i{display:block;height:64px;background:var(--g)}
+.gsw b{display:block;font:600 11px/1.5 var(--font-num);padding:7px 10px 1px}
+.gsw span{display:block;font:10px/1.4 var(--font-num);color:var(--text-muted);padding:0 10px 8px}
+/* 间距 */
+.sprow{display:flex;align-items:center;gap:12px;padding:5px 0;border-bottom:.5px solid var(--border-hairline)}
+.sprow code{font:11.5px var(--font-num);color:var(--text-brand);min-width:80px}
+.sprow i{display:block;height:14px;border-radius:3px;background:var(--grad-brand);width:var(--w)}
+.sprow span{font:10.5px var(--font-num);color:var(--text-muted)}
+/* 动效 */
+.mo{display:flex;gap:10px;flex-wrap:wrap}
+.mo .mocard{flex:1;min-width:150px;border:1px solid var(--border-hairline);border-radius:var(--r-m);padding:14px;background:var(--bg-surface);overflow:hidden}
+.mo .mocard b{font:600 11.5px/1.6 var(--font-num);display:block;margin-bottom:10px}
+.mo .ball{width:24px;height:24px;border-radius:50%;background:var(--grad-brand);transition:transform var(--d,.2s) var(--e,ease)}
+.mo .mocard:hover .ball{transform:translateX(90px)}
+/* 组件区 */
+.stage{background:var(--bg-surface);border:1px solid var(--border-default);border-radius:var(--r-l);padding:28px;box-shadow:var(--sh-s);margin-bottom:18px}
+.stage h3{font:600 13px/1 var(--font-num);color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.crow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.lbl{font:10.5px var(--font-num);color:var(--text-muted);width:62px;flex-shrink:0}
+/* 组件:按钮(真实样式·消费 token) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:13.5px;border:none;cursor:pointer;padding:11px 22px;border-radius:var(--radius-button);transition:transform var(--dur-fast) var(--spring),box-shadow var(--dur-slow) var(--ease),background var(--dur-base);letter-spacing:.5px}
+.btn-p{background:var(--bg-brand);color:var(--text-invert);box-shadow:var(--sh-m)}
+.btn-p:hover,.st-hover.btn-p{background:var(--bg-brand-hover)}
+.btn-p:active,.st-active.btn-p{background:var(--bg-brand-active);transform:scale(.96)}
+.btn-s{background:var(--bg-brand-soft);color:var(--text-brand)}
+.btn-s:hover,.st-hover.btn-s{background:var(--bg-brand-softer)}
+.btn-s:active,.st-active.btn-s{transform:scale(.96)}
+.btn-d{background:var(--status-error);color:var(--text-invert)}
+.btn-p.st-focus,.btn-s.st-focus{box-shadow:var(--ring-focus)}
+.st-disabled{opacity:var(--state-disabled-opacity);pointer-events:none}
+.st-loading{opacity:.7;cursor:wait;pointer-events:none}
+.st-loading::before{content:'';width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.icbtn{width:42px;height:42px;border:none;border-radius:15px;background:var(--bg-surface);box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;position:relative;color:var(--icon-default);transition:transform var(--dur-fast) var(--spring)}
+.icbtn:active{transform:scale(.9)}
+.icbtn .dot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--status-error);border:2px solid #fff}
+/* chip */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r-pill);background:var(--bg-surface);border:1px solid var(--border-hairline);font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;box-shadow:var(--sh-s);transition:all var(--dur-base) var(--ease)}
+.chip.on{background:var(--grad-brand);border-color:transparent;color:var(--text-invert);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 5px 14px -3px rgba(108,92,231,.5)}
+.chip:active{transform:scale(.94)}
+/* tab-bar */
+.tbar{display:flex;background:var(--bg-surface);border:1px solid var(--border-default);border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh-s);max-width:420px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 0 10px;color:var(--icon-muted);cursor:pointer;transition:color var(--dur-base);font-size:10.5px;font-weight:600;letter-spacing:1px}
+.tab svg{width:22px;height:22px;transition:transform var(--dur-base) var(--spring)}
+.tab.on{color:var(--icon-brand)}
+.tab.on svg{transform:translateY(-2px) scale(1.08);filter:drop-shadow(0 3px 6px rgba(108,92,231,.35))}
+.t-dot{width:4px;height:4px;border-radius:50%}
+.tab.on .t-dot{background:var(--icon-brand)}
+/* list-row */
+.rows{background:var(--bg-surface);border:1px solid var(--border-default);border-radius:var(--r-l);overflow:hidden;max-width:420px}
+.set-row{display:flex;align-items:center;gap:13px;padding:15px 17px;border-bottom:.5px solid var(--border-default);cursor:pointer;transition:background var(--dur-fast)}
+.set-row:last-child{border-bottom:none}
+.set-row:active{background:var(--bg-brand-softer)}
+.set-ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.set-row .t{flex:1}
+.set-row .t b{font-size:15px;font-weight:600;display:block}
+.set-row .t span{font-size:11.5px;color:var(--text-secondary)}
+.set-row .arr{color:var(--icon-muted)}
+/* 聊天气泡(v1.1.1 同产品: peer 50% 白混无描边 / self 品牌渐变+--shadow-brand / system) */
+.chatdemo{max-width:480px;display:flex;flex-direction:column;gap:14px}
+.brow{display:flex;gap:10px;align-items:flex-end}
+.brow.self{flex-direction:row-reverse}
+.bub{background:color-mix(in srgb,var(--tint,var(--bg-surface)) 50%,var(--surface));border-radius:6px 20px 20px 20px;padding:11px 14px;font-size:13.5px;line-height:1.75;max-width:75%;box-shadow:0 1px 2px rgba(48,44,99,.05),0 5px 16px -4px rgba(48,44,99,.10);color:var(--ink)}
+.bub.self{background:var(--grad-brand);color:var(--text-invert);border-radius:20px 6px 20px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),var(--shadow-brand)}
+.brow.self .bub{border-radius:20px 6px 20px 20px}
+.bub .en{display:block;font-family:var(--font-num);font-size:11.5px;font-weight:600;opacity:.55;margin-top:5px;font-style:italic}
+.bub.sys{border-radius:var(--r-m);background:var(--bg-surface-2);color:var(--text-secondary);font-size:12.5px;max-width:100%;align-self:center}
+/* avatar(签名组件 v1.1.0 同产品: 4段阴影+眼距--eg+腮红+FIELD_ICON v2角标) */
+.ava{position:relative;flex-shrink:0;width:44px;height:44px;border-radius:36%;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:inset 0 -3px 6px rgba(0,0,0,.08),inset 0 2px 3px rgba(255,255,255,.5),0 2px 4px rgba(48,44,99,.08),0 5px 14px -3px rgba(48,44,99,.14)}
+.ava::before{content:'';position:absolute;left:50%;top:38%;width:9%;height:15%;border-radius:50%;background:var(--ink);transform:translate(calc(-50% - var(--eg,10px)/2),-50%);box-shadow:var(--eg,10px) 0 0 var(--ink)}
+.ava::after{content:'';position:absolute;left:50%;top:47%;width:20%;height:12%;border:2.2px solid var(--ink);border-top:none;border-radius:0 0 60px 60px;transform:translateX(-50%)}
+.ava .blush{position:absolute;top:52%;width:13%;height:9%;border-radius:50%;background:rgba(255,255,255,.42)}
+.ava .blush.l{left:12%}.ava .blush.r{right:12%}
+.ava .badge{position:absolute;right:-7%;bottom:-4%;width:44%;height:44%;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;line-height:1} /* 扁平白底, 无投影 */
+/* friend-card(老友卡 v1.0.1 同产品: 静息无描边 + f-more 64×64 命中区 + sel 态) */
+.fcard-wrap{max-width:430px;display:flex;flex-direction:column;gap:12px}
+.f-card{position:relative;background:var(--bg-surface);border-radius:var(--r-l);border:1.5px solid transparent;box-shadow:var(--sh-s);text-align:left;cursor:pointer;transition:transform var(--dur-fast) var(--spring),border-color var(--dur-base),box-shadow var(--dur-slow) var(--ease)}
+.f-card:active{transform:scale(.94)}
+.f-card.hor{display:flex;align-items:center;gap:10px;padding:11px 13px}
+.f-card.hor .ava{width:46px;height:46px;border-radius:14px}
+.f-card.hor .ava .badge{border-radius:9px}
+.f-card .fi{flex:1;min-width:0}
+.f-card .nm{display:flex;align-items:center;gap:6px;min-width:0}
+.f-card h3{font-size:14px;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-card p{font-size:10.5px;color:var(--ink-2);margin-top:3px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.f-card .new-tag{flex-shrink:0;font-size:9.5px;font-weight:700;color:var(--text-invert);background:linear-gradient(140deg,var(--coral-light),var(--pink-deep));padding:2.5px 8px;border-radius:var(--r-pill);letter-spacing:1px}
+.f-card.sel{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft),var(--sh-m),inset 0 0 0 1px var(--hairline)}
+.f-card .tick{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--grad-brand);color:var(--text-invert);display:none;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(108,92,231,.4)}
+.f-card.sel .tick{display:flex}
+.f-more{flex-shrink:0;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--icon-faint);background:var(--bg-brand-soft);cursor:pointer;padding:19px;margin:-19px;background-clip:content-box;box-sizing:border-box;transition:transform var(--dur-fast) var(--ease)}
+.f-more:active{transform:scale(.86)}
+/* 字阶/圆角/阴影样例 */
+.typerow{display:flex;align-items:baseline;gap:14px;padding:7px 0;border-bottom:.5px solid var(--border-hairline)}
+.typerow code{font:11px var(--font-num);color:var(--text-brand);min-width:130px}
+.typerow span{color:var(--text-muted);font-size:11px;margin-left:auto}
+.rdemo{display:flex;gap:14px;flex-wrap:wrap}
+.rdemo .rd{width:88px;text-align:center;font:10.5px var(--font-num);color:var(--text-muted)}
+.rdemo .rd i{display:block;height:56px;background:var(--bg-brand-soft);border:2px solid var(--border-brand);margin-bottom:6px}
+.shdemo{display:flex;gap:16px;flex-wrap:wrap}
+.shdemo .sd{width:120px;height:64px;background:var(--bg-surface);border-radius:var(--r-m);display:flex;align-items:center;justify-content:center;font:11px var(--font-num);color:var(--text-muted)}
+/* 编辑器 */
+.editor{position:fixed;right:24px;bottom:24px;width:300px;background:var(--bg-surface);border-radius:var(--r-l);box-shadow:var(--sh-l);border:1px solid var(--border-default);z-index:60;overflow:hidden;transition:transform var(--dur-slow) var(--ease)}
+.editor.min{transform:translateY(calc(100% - 44px))}
+.ed-hd{padding:12px 16px;font:600 13px/1 var(--font-body);background:var(--bg-brand);color:var(--text-invert);cursor:pointer;display:flex;justify-content:space-between}
+.ed-bd{padding:14px 16px;max-height:52vh;overflow-y:auto}
+.ed-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.ed-row label{flex:1;font:11.5px var(--font-num);color:var(--text-secondary)}
+.ed-row input[type=color]{width:34px;height:26px;border:1px solid var(--border-default);border-radius:6px;background:none;cursor:pointer;padding:0}
+.ed-row input[type=text]{width:76px;font:11px var(--font-num);padding:5px 7px;border:1px solid var(--border-default);border-radius:6px;background:var(--bg-surface-2);color:var(--text-default)}
+.ed-log{font:10.5px var(--font-num);color:var(--text-muted);border-top:1px dashed var(--border-default);padding-top:8px;margin-top:4px;min-height:20px}
+/* sheet 演示 */
+.demo-phone{position:relative;width:340px;height:420px;background:var(--bg-base);border:2px solid var(--border-default);border-radius:32px;overflow:hidden;margin:0 auto}
+.demo-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg-base);border-radius:36px 36px 0 0;transform:translateY(105%);transition:transform .44s var(--ease);box-shadow:0 -18px 56px -8px rgba(36,31,68,.28);padding:10px 20px 24px;z-index:5}
+.demo-sheet.on{transform:translateY(0)}
+.demo-sheet .grab{width:42px;height:5px;border-radius:5px;background:var(--ink-3);opacity:.35;margin:4px auto 14px}
+.demo-mask{position:absolute;inset:0;background:rgba(30,25,64,.32);opacity:0;pointer-events:none;transition:opacity var(--dur-slow);z-index:4}
+.demo-mask.on{opacity:1;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hd">
+  <h1>与你老友 · 设计系统管理站</h1>
+  <span class="ver">v1.9.0</span>
+  <nav>
+    <a href="#color">色彩</a><a href="#grad">渐变</a><a href="#semantic">语义</a><a href="#type">字阶</a><a href="#space">间距</a><a href="#comp">组件</a>
+  </nav>
+  <button class="export" onclick="exportChanges()">导出变更</button>
+</header>
+<div class="wrap">
+
+<section class="sec" id="color">
+  <h2>Primitive 色阶</h2>
+  <p class="desc">44 个色位 · 点击色板复制 var() 引用 · 数据来自 tokens.css（改文件刷新即变）</p>
+  <div id="fams"></div>
+</section>
+
+<section class="sec" id="grad">
+  <h2>渐变资产</h2>
+  <p class="desc">4 条复合 token（stop 全为色阶引用）· v1.8.0 收编 progress / nu 两条 · 点击复制 var() 引用</p>
+  <div class="gsw-row" id="grads"></div>
+</section>
+
+<section class="sec" id="semantic">
+  <h2>语义角色</h2>
+  <p class="desc">44 个角色 · 状态色字/底成对 · 一色一义</p>
+  <div class="pair-grid" id="pairs"></div>
+  <div style="height:18px"></div>
+  <div class="stage"><h3>文字层级</h3>
+    <div class="role-line"><code>--text-default</code><span style="color:var(--text-default);font-size:13.5px">主要文字 · 老友，今天想聊聊吗</span></div>
+    <div class="role-line"><code>--text-secondary</code><span style="color:var(--text-secondary);font-size:13.5px">次要文字 · 昨天 21:43</span></div>
+    <div class="role-line"><code>--text-muted</code><span style="color:var(--text-muted);font-size:13.5px">弱化文字 · 对方正在输入…</span></div>
+    <div class="role-line"><code>--text-brand</code><span style="color:var(--text-brand);font-size:13.5px">品牌文字 · 查看全部老友</span></div>
+  </div>
+  <div class="stage"><h3>表面叠放 base → surface → surface-2</h3>
+    <div style="background:var(--bg-base);padding:18px;border-radius:var(--r-m)">
+      <div style="background:var(--bg-surface);padding:16px;border-radius:var(--r-m);box-shadow:var(--sh-s)">
+        <div style="background:var(--bg-surface-2);padding:14px;border-radius:var(--r-s);font-size:12.5px;color:var(--text-secondary)">输入区 / 次级面板</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="type">
+  <h2>字阶 · 圆角 · 阴影 · 动效</h2>
+  <p class="desc">字阶角色引用刻度，AI 写样式说角色不说像素</p>
+  <div class="stage"><h3>字阶 type-*</h3><div id="types"></div></div>
+  <div class="stage"><h3>圆角</h3><div class="rdemo" id="radii"></div></div>
+  <div class="stage"><h3>阴影</h3><div class="shdemo">
+    <div class="sd" style="box-shadow:var(--sh-s)">--sh-s</div>
+    <div class="sd" style="box-shadow:var(--sh-m)">--sh-m</div>
+    <div class="sd" style="box-shadow:var(--sh-l)">--sh-l</div>
+    <div class="sd" style="box-shadow:var(--sh-inset)">--sh-inset</div>
+    <div class="sd" style="box-shadow:var(--shadow-brand);background:var(--grad-brand);color:var(--text-invert)">--shadow-brand</div>
+  </div></div>
+  <div class="stage"><h3>动效 · hover 演示（时长 × 曲线）</h3><div class="mo" id="motions"></div></div>
+</section>
+
+<section class="sec" id="space">
+  <h2>间距 · 布局</h2>
+  <p class="desc">4pt 基准 8 档 · 布局尺寸 1 词 · 待迁移期对页校验</p>
+  <div class="stage"><h3>间距 sp-*</h3><div id="sps"></div></div>
+  <div class="stage"><h3>布局尺寸</h3>
+    <div class="sprow"><code>--nav-h</code><i style="--w:76px"></i><span>76px · 官网固定导航高（v1.5.1 补收）</span></div>
+  </div>
+</section>
+
+<section class="sec" id="comp">
+  <h2>组件画廊</h2>
+  <p class="desc">活组件：可直接 hover/点击 · 矩阵列为强制定格态 · 规格见 components/*.json</p>
+
+  <div class="stage"><h3>Button · 六态矩阵</h3>
+    <div class="crow"><span class="lbl">primary</span>
+      <button class="btn btn-p">默认</button>
+      <button class="btn btn-p st-hover">hover</button>
+      <button class="btn btn-p st-active">active</button>
+      <button class="btn btn-p st-focus">focus</button>
+      <button class="btn btn-p st-disabled">禁用</button>
+      <button class="btn btn-p st-loading">加载中</button>
+    </div>
+    <div class="crow"><span class="lbl">soft</span>
+      <button class="btn btn-s">默认</button>
+      <button class="btn btn-s st-hover">hover</button>
+      <button class="btn btn-s st-active">active</button>
+      <button class="btn btn-s st-disabled">禁用</button>
+    </div>
+    <div class="crow"><span class="lbl">danger</span>
+      <button class="btn btn-d">删除老友</button>
+      <span class="lbl" style="width:auto">icon</span>
+      <button class="icbtn">✦<i class="dot"></i></button>
+      <button class="icbtn">♥</button>
+    </div>
+  </div>
+
+  <div class="stage"><h3>Chip（点击切换选中）</h3>
+    <div class="crow">
+      <button class="chip" onclick="this.classList.toggle('on')">全部老友</button>
+      <button class="chip on" onclick="this.classList.toggle('on')">陪你学英语</button>
+      <button class="chip" onclick="this.classList.toggle('on')">深夜树洞</button>
+      <button class="chip" onclick="this.classList.toggle('on')">决策参谋</button>
+    </div>
+  </div>
+
+  <div class="stage"><h3>Avatar · 签名组件（FIELD_ICON v2 领域角标 · avaHTML 唯一口）</h3>
+    <div class="crow" id="ava-gallery"></div>
+    <p class="desc" style="margin:10px 0 0">badge 圆块=头像 44% · 领域 SVG=圆块 72%（44px 头像→11px）· 角标由 avaHTML 自动注入，调用点禁止手传 · 改特征图形只改产品 FIELD_ICON 一处全端生效</p>
+  </div>
+
+  <div class="stage"><h3>Chat Bubble · v1.1.1 三变体（peer 50% 白混 / self 品牌渐变 / system）</h3>
+    <div class="chatdemo">
+      <div class="brow">
+        <div class="ava" style="--c1:#8478FF;--c2:#5647D6"><i class="blush l"></i><i class="blush r"></i><i class="badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4B42C6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4"/></svg></i></div>
+        <div class="bub" style="--tint:var(--primary-soft)">老友，今天工作顺不顺心？<span class="en">How was your day, buddy?</span></div>
+      </div>
+      <div class="brow self">
+        <div class="ava" style="--c1:#63E2B6;--c2:#1E9A74"><i class="blush l"></i><i class="blush r"></i></div>
+        <div class="bub self">还行，就是开了五个会<span class="en">Five meetings today…</span></div>
+      </div>
+      <div class="brow">
+        <div class="ava" style="--c1:#F5A8C0;--c2:#F25C82"><i class="blush l"></i><i class="blush r"></i><i class="badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F25C82" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.5C10.8 6.7 8 6.6 7 8.4c-.8 1.5 0 3 1.5 4.2L12 15l3.5-2.4c1.5-1.2 2.3-2.7 1.5-4.2-1-1.8-3.8-1.7-5 0z"/><path d="M5 19.5c2 1.3 4.5 2 7 2s5-.7 7-2"/></svg></i></div>
+        <div class="bub" style="--tint:var(--pink-soft)">辛苦啦！给你捏捏肩<span class="en">You did great today!</span></div>
+      </div>
+      <div class="bub sys">你们已互相陪伴 30 天 · 获得徽章「老友记」</div>
+    </div>
+  </div>
+
+  <div class="stage"><h3>Tab Bar（点击切换）</h3>
+    <div class="tbar" id="tbar">
+      <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>首页<i class="t-dot"></i></div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>聊天<i class="t-dot"></i></div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>我的<i class="t-dot"></i></div>
+    </div>
+  </div>
+
+  <div class="stage"><h3>List Row</h3>
+    <div class="rows">
+      <div class="set-row"><span class="set-ic" style="background:var(--bg-brand-soft)">🔔</span><div class="t"><b>消息提醒</b><span>老友主动找你时通知我</span></div><span class="arr">›</span></div>
+      <div class="set-row"><span class="set-ic" style="background:var(--sun-soft)">🌙</span><div class="t"><b>晚安模式</b><span>23:00 后降低打扰</span></div><span class="arr">›</span></div>
+      <div class="set-row"><span class="set-ic" style="background:var(--status-error-surface)">🗑</span><div class="t"><b style="color:var(--status-error)">清空聊天记录</b><span>此操作不可恢复</span></div><span class="arr">›</span></div>
+    </div>
+  </div>
+
+  <div class="stage"><h3>Friend Card · 老友卡 v1.0.1（静息无描边 · f-more 命中区 64×64 · sel 态点击切换）</h3>
+    <div class="fcard-wrap">
+      <button class="f-card hor" onclick="this.classList.toggle('sel')">
+        <span class="ava" style="--c1:#8478FF;--c2:#5647D6"><i class="blush l"></i><i class="blush r"></i><i class="badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4B42C6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4"/></svg></i></span>
+        <span class="fi"><span class="nm"><h3>小星</h3><span class="new-tag">NEW</span></span><p>陪你把大目标拆成今天就能做的一小步</p></span>
+        <span class="f-more" title="查看资料" onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3.5"/><circle cx="9" cy="10.5" r="2.1"/><path d="M5.6 16.4c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4M15.5 9.5h3.8M15.5 13h2.6"/></svg></span>
+      </button>
+      <button class="f-card hor" onclick="this.classList.toggle('sel')">
+        <span class="ava" style="--c1:#63E2B6;--c2:#1E9A74"><i class="blush l"></i><i class="blush r"></i><i class="badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1E9A74" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5C10 4 7.5 3.5 4.5 3.5v14c3 0 5.5.5 7.5 2 2-1.5 4.5-2 7.5-2v-14c-3 0-5.5.5-7.5 2zM12 5.5v14"/></svg></i></span>
+        <span class="fi"><span class="nm"><h3>知知</h3></span><p>凌晨三点的想法值得被认真接住</p></span>
+        <i class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></i>
+        <span class="f-more" title="查看资料" onclick="event.stopPropagation()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3.5"/><circle cx="9" cy="10.5" r="2.1"/><path d="M5.6 16.4c.6-1.6 1.9-2.4 3.4-2.4s2.8.8 3.4 2.4M15.5 9.5h3.8M15.5 13h2.6"/></svg></span>
+      </button>
+    </div>
+    <p class="desc" style="margin:12px 0 0">卡本体点击=主操作 · f-more=档案卡入口（命中区 64×64，视觉圆块 26px 不变，padding 19 + background-clip:content-box）· 描边只出现在 sel 交互态</p>
+  </div>
+
+  <div class="stage"><h3>Bottom Sheet（点击触发）</h3>
+    <div class="demo-phone">
+      <div style="padding:26px;text-align:center;color:var(--text-muted);font-size:12px">页面内容</div>
+      <div style="text-align:center"><button class="btn btn-p" onclick="sheet(true)">打开 Sheet</button></div>
+      <div class="demo-mask" id="mask" onclick="sheet(false)"></div>
+      <div class="demo-sheet" id="dsheet">
+        <div class="grab"></div>
+        <b style="font-size:15px">选择一位老友</b>
+        <div class="rows" style="border:none;margin-top:10px">
+          <div class="set-row"><div class="ava" style="--c1:#FFD98F;--c2:#F0B24C;width:34px;height:34px"></div><div class="t"><b>小太阳</b><span>元气担当</span></div></div>
+          <div class="set-row"><div class="ava" style="--c1:#7CC8F5;--c2:#2E86C8;width:34px;height:34px"></div><div class="t"><b>深蓝</b><span>理性参谋</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<aside class="editor" id="editor">
+  <div class="ed-hd" onclick="document.getElementById('editor').classList.toggle('min')"><span>Token 实时编辑器</span><span>▾</span></div>
+  <div class="ed-bd">
+    <div id="edrows"></div>
+    <div class="ed-log" id="edlog">修改即时生效 · 点「导出变更」生成 change-request JSON</div>
+  </div>
+</aside>
+
+<script>
+const $=s=>document.querySelector(s),cs=getComputedStyle(document.documentElement);
+const FAMS={
+ primary:['--primary-softer','--primary-soft','--primary-200','--primary-300','--primary-violet','--primary','--primary-600','--primary-deep','--primary-800'],
+ ink:['--ink-night','--ink-deep','--ink','--ink-2','--ink-3','--ink-4','--ink-frame'],
+ coral:['--coral-soft','--coral-light','--coral','--coral-deep'],
+ mint:['--mint-soft','--mint-light','--mint','--mint-deep'],
+ pink:['--pink-soft','--pink-light','--pink','--pink-bright','--pink-deep'],
+ sky:['--sky-soft','--sky-light','--sky','--sky-deep'],
+ sun:['--sun-soft','--sun-softer','--sun-light','--sun','--sun-deep','--sun-dark'],
+ surface:['--bg','--surface','--surface-2','--line','--hairline']
+};
+$('#fams').innerHTML=Object.entries(FAMS).map(([f,vs])=>`
+ <div class="fam"><div class="fname">${f}</div><div class="sw-row">${vs.map(v=>{
+   const val=cs.getPropertyValue(v).trim();
+   return `<div class="sw" style="--c:var(${v})" onclick="copy('var(${v})',this)" title="点击复制 var(${v})"><i></i><b>${v.replace('--','')}</b><span>${val}</span></div>`}).join('')}
+ </div></div>`).join('');
+const PAIRS=[
+ ['status-success','status-success-surface','成功 · 已完成'],
+ ['status-warning','status-warning-surface','警告 · 待处理'],
+ ['status-error','status-error-surface','错误 · 危险操作'],
+ ['status-info','status-info-surface','信息 · 链接提示'],
+ ['accent-affection','accent-affection-soft','情感 · 喜欢/亲密']];
+$('#pairs').innerHTML=PAIRS.map(([t,b,n])=>`
+ <div class="pair" style="background:var(--${b})"><b style="color:var(--${t})">${n}</b><span style="color:var(--${t})">--${t} / --${b}</span></div>`).join('');
+const TYPES=[['--type-display',22],['--type-title',19],['--type-lead',15],['--type-body',13.5],['--type-body-s',12.5],['--type-caption',11.5],['--type-micro',10.5]];
+$('#types').innerHTML=TYPES.map(([v,s])=>`
+ <div class="typerow"><code>${v}</code><b style="font-size:${s}px;font-family:var(${s>=19?'--font-display':'--font-body'});font-weight:${s>=15?600:400}">老友相伴，岁月不孤单 ${s}px</b><span>${s}px</span></div>`).join('');
+const RADII=[['--r-xs'],['--r-s'],['--r-m'],['--r-l'],['--r-xl'],['--r-2xl'],['--r-pill'],['--r-circle']];
+$('#radii').innerHTML=RADII.map(([v])=>{
+ const val=cs.getPropertyValue(v).trim();
+ return `<div class="rd"><i style="border-radius:var(${v})"></i>${v.replace('--','')}<br>${val}</div>`}).join('');
+/* 渐变资产 */
+const GRADS=[['--grad-primary','品牌主渐变 · 官网 CTA/hero 大按钮（v1.5.1 补收）'],['--grad-progress','进度条 shimmer · index/website 2 处复用（v1.8.0）'],['--grad-nu','website nu-m 卡装饰渐变（v1.8.0）'],['--grad-brand','语义层品牌渐变 · 按钮/徽标']];
+$('#grads').innerHTML=GRADS.map(([v,d])=>`
+ <div class="gsw" style="--g:var(${v})" onclick="copy('var(${v})',this)" title="点击复制 var(${v})"><i></i><b>${v.replace('--','')}</b><span>${d}</span></div>`).join('');
+/* 间距 */
+const SPS=['--sp-1','--sp-2','--sp-3','--sp-4','--sp-5','--sp-6','--sp-8','--sp-10'];
+$('#sps').innerHTML=SPS.map(v=>{
+ const val=cs.getPropertyValue(v).trim();
+ return `<div class="sprow"><code>${v}</code><i style="--w:${val}"></i><span>${val}</span></div>`}).join('');
+/* 动效演示: 时长 × 曲线矩阵 */
+const MOTIONS=[['--dur-fast','--ease'],['--dur-base','--ease'],['--dur-slow','--ease'],['--dur-lazy','--ease'],['--dur-base','--spring'],['--dur-slow','--spring']];
+$('#motions').innerHTML=MOTIONS.map(([d,e])=>`
+ <div class="mocard" style="--d:var(${d});--e:var(${e})"><b>${d.replace('--','')} × ${e.replace('--','')}</b><div class="ball"></div></div>`).join('');
+/* avatar 画廊: FIELD_ICON v2 七领域(图形 path 与产品同源, stroke=c.deep) */
+const FIELD_ICON={
+ '科技':'<path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4"/>',
+ '商业':'<path d="M4 20h16M7 16v-4M12 16V8M17 16V6"/>',
+ '智慧':'<path d="M12 5.5C10 4 7.5 3.5 4.5 3.5v14c3 0 5.5.5 7.5 2 2-1.5 4.5-2 7.5-2v-14c-3 0-5.5.5-7.5 2zM12 5.5v14"/>',
+ '创作':'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM18.5 16l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>',
+ '生涯':'<path d="M4 20h4v-4h4v-4h4V8h4"/>',
+ '情感':'<path d="M12 8.5C10.8 6.7 8 6.6 7 8.4c-.8 1.5 0 3 1.5 4.2L12 15l3.5-2.4c1.5-1.2 2.3-2.7 1.5-4.2-1-1.8-3.8-1.7-5 0z"/><path d="M5 19.5c2 1.3 4.5 2 7 2s5-.7 7-2"/>',
+ '真友':'<circle cx="8" cy="8.5" r="3.2"/><path d="M2.8 19.5a5.5 5.5 0 0110.4 0"/><path d="M15.5 8.5l2 2 3.5-3.5"/>'
+};
+const FAVA=[
+ ['科技','#8478FF','#5647D6','#4B42C6'],['商业','#7CC8F5','#2E86C8','#2E86C8'],['智慧','#63E2B6','#1E9A74','#1E9A74'],
+ ['创作','#F5A8C0','#F25C82','#F25C82'],['生涯','#FFD98F','#F0B24C','#F0B24C'],['情感','#FF9A76','#FA7550','#D9683A'],['真友','#8478FF','#5647D6','#6C5CE7']];
+$('#ava-gallery').innerHTML=FAVA.map(([n,c1,c2,deep])=>`
+ <div style="display:flex;flex-direction:column;align-items:center;gap:7px">
+  <span class="ava" style="--c1:${c1};--c2:${c2}"><i class="blush l"></i><i class="blush r"></i><i class="badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${deep}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">${FIELD_ICON[n]}</svg></i></span>
+  <span style="font:10.5px var(--font-num);color:var(--text-muted)">${n}</span>
+ </div>`).join('');
+/* tab 交互 */
+document.querySelectorAll('#tbar .tab').forEach(t=>t.onclick=()=>{
+ document.querySelectorAll('#tbar .tab').forEach(x=>x.classList.remove('on'));t.classList.add('on')});
+/* sheet 交互 */
+function sheet(on){$('#dsheet').classList.toggle('on',on);$('#mask').classList.toggle('on',on)}
+/* 复制 */
+function copy(txt,el){navigator.clipboard?.writeText(txt);const b=el.querySelector('b'),o=b.textContent;b.textContent='已复制!';setTimeout(()=>b.textContent=o,700)}
+/* 编辑器：消费索引 + change-request 导出 */
+(async function initEditor(){
+ const EDITABLE=['--primary','--primary-deep','--ink','--bg','--coral','--mint','--pink','--sky','--sun','--r-m','--r-l'];
+ const changed={},originals={};
+ let tidx=null;
+ try{
+  const r=await fetch('../token-index.json');
+  if(r.ok){const j=await r.json();if(j&&j.tokens)tidx=j;}
+ }catch(e){}
+ const consumerNote=v=>{
+  if(!tidx)return '未知';
+  const e=tidx.tokens[v];
+  return e?e.count+'处':'0处';
+ };
+ $('#edrows').innerHTML=EDITABLE.map(v=>{
+  const val=cs.getPropertyValue(v).trim();originals[v]=val;
+  const isColor=/^#|^rgba/.test(val);
+  return `<div class="ed-row"><label>${v} <span style="opacity:.55">· ${consumerNote(v)}引用</span></label>${isColor?`<input type="color" data-v="${v}" value="${val.length===7?val:'#6C5CE7'}">`:''}<input type="text" data-v="${v}" value="${val}"></div>`}).join('');
+ document.querySelectorAll('.ed-row input').forEach(inp=>inp.oninput=()=>{
+  const v=inp.dataset.v,val=inp.value;
+  document.documentElement.style.setProperty(v,val);changed[v]=val;
+  if(inp.type==='color')document.querySelector(`.ed-row input[type=text][data-v="${v}"]`).value=val;
+  $('#edlog').textContent='已改 '+Object.keys(changed).length+' 项 · 未写回文件';
+ });
+ window.exportChanges=function(){
+  const keys=Object.keys(changed);
+  if(!keys.length){$('#edlog').textContent='还没有修改';return;}
+  const reqs=keys.map(k=>{
+   const entry=tidx&&tidx.tokens[k];
+   return {
+    token:k,
+    layer:'primitive',
+    old_value:originals[k]!=null?originals[k]:'',
+    new_value:changed[k],
+    blast_radius:entry?{consumers:entry.count,files:Object.keys(entry.files)}:{consumers:tidx?0:null,files:[]},
+    suggested_semver:'patch',
+    requested_by:'preview-editor',
+    requested_at:new Date().toISOString()
+   };
+  });
+  const payload=reqs.length===1?reqs[0]:reqs;
+  navigator.clipboard?.writeText(JSON.stringify(payload,null,2));
+  $('#edlog').textContent='已复制 '+reqs.length+' 份 change-request JSON · 交给 AI 按变更执行协议处理'+(tidx?'':' · token-index.json 缺失，影响面未知');
+ };
+})();
+</script>
+</body>
+</html>

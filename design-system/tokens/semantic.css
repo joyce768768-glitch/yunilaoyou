@@ -1,0 +1,99 @@
+/* ============================================================
+   与你老友 · Design Tokens — Semantic Layer v1.2.0
+   ------------------------------------------------------------
+   前置: 需先加载 tokens.css (primitive)
+   本层只指派"角色/用途", 不直接出现 hex 值
+   语法: {域}-{角色}-{修饰}   准入: 暗色测试·一词一义·禁止外观词
+   ============================================================ */
+
+:root {
+  /* ---------- 文字角色 ---------- */
+  --text-default:   var(--ink);        /* 主要文字 */
+  --text-secondary: var(--ink-2);      /* 次要文字 */
+  --text-muted:     var(--ink-3);      /* 弱化/辅助 */
+  --text-disabled:  var(--ink-4);      /* 禁用(免对比度) */
+  --text-brand:     var(--primary);    /* 品牌强调文字 */
+  --text-invert:    #FFFFFF;           /* 深底/品牌底上的反白 */
+
+  /* ---------- 背景角色(由下往上叠) ---------- */
+  --bg-base:        var(--bg);         /* 页面底·暖米 */
+  --bg-surface:     var(--surface);    /* 卡片/面板 */
+  --bg-surface-2:   var(--surface-2);  /* 次级面板/输入区 */
+  --bg-brand:       var(--primary);    /* 品牌底(主按钮) */
+  --bg-brand-soft:  var(--primary-soft);   /* 品牌浅衬底 */
+  --bg-brand-softer: var(--primary-softer);
+  --bg-invert:      var(--ink-night);  /* 反相深色区块 */
+
+  /* ---------- 交互状态(派生规则: hover≈L-8% active≈L-14%) ---------- */
+  --bg-brand-hover:   var(--primary-600);  /* ≈基色-8%明度 */
+  --bg-brand-active:  var(--primary-deep); /* ≈基色-14%明度 */
+  --state-disabled-opacity: 0.4;           /* 禁用统一用透明度, 不调色 */
+
+  /* ---------- 边框角色 ---------- */
+  --border-default: var(--line);
+  --border-hairline: var(--hairline);
+  --border-brand:   var(--primary-200);
+  --border-focus:   var(--primary);    /* focus 可见环 */
+  --ring-focus: 0 0 0 3px var(--primary-soft);
+
+  /* ---------- 图标角色 ---------- */
+  --icon-default:   var(--ink-2);
+  --icon-muted:     var(--ink-3);
+  --icon-faint:     var(--ink-4);    /* 极弱图标/占位图形(档案卡入口); 原始 #B7B2D9 v1.0.0 已归并 ink-4 */
+  --icon-brand:     var(--primary);
+  --icon-invert:    #FFFFFF;
+
+  /* ---------- 状态色(一词一义, 字/底成对) ---------- */
+  --status-success:        var(--mint-deep);   /* 文字/图标 */
+  --status-success-surface: var(--mint-soft);  /* 衬底 */
+  --status-warning:        var(--sun-deep);
+  --status-warning-surface: var(--sun-soft);
+  --status-error:          var(--coral-deep);
+  --status-error-surface:  var(--coral-soft);
+
+  /* ---------- 特征色(产品专属语义) ---------- */
+  --accent-affection:        var(--pink);       /* 情感: 喜欢/亲密/礼物 */
+  --accent-affection-soft:   var(--pink-soft);
+  --accent-affection-strong: var(--pink-deep);
+  --status-info:             var(--sky-deep);   /* 信息/链接 */
+  --status-info-surface:     var(--sky-soft);
+
+  /* ---------- 字体语义 ---------- */
+  --font-display: var(--f-disp);   /* 标题/大数字·方圆体 */
+  --font-body:    var(--f-body);
+  --font-num:     var(--f-num);
+
+  /* ---------- 字阶语义(角色→刻度引用) ---------- */
+  --type-display: var(--text-2xl);  /* 22 页面级大标题 */
+  --type-title:   var(--text-xl);   /* 19 区块标题 */
+  --type-lead:    var(--text-lg);   /* 15 导语/强调句 */
+  --type-body:    var(--text-md);   /* 13.5 正文·聊天消息 */
+  --type-body-s:  var(--text-base); /* 12.5 次级正文 */
+  --type-caption: var(--text-sm);   /* 11.5 辅助说明 */
+  --type-micro:   var(--text-xs);   /* 10.5 角标/时间戳 */
+  --type-num:     var(--text-num);  /* 14.5 数字 */
+
+  /* ---------- 渐变(第3期补录: chip 选中态收编) ---------- */
+  --grad-brand: linear-gradient(140deg, var(--primary-300), var(--primary) 55%, var(--primary-600));
+
+  /* ---------- 品牌投影(v1.2.0 补录; v1.9.0 染色体系治理完成: 按钮/气泡/头像/logo 外投影统一走本组 token) ---------- */
+  --shadow-brand: 0 3px 8px rgba(86,71,214,.22), 0 10px 22px -6px rgba(86,71,214,.4);
+  --shadow-brand-hover: 0 4px 8px rgba(86,71,214,.24), 0 20px 40px -10px rgba(86,71,214,.56);
+
+  /* ---------- 墨色投影(v1.9.0: ink 染色字面量收编) ---------- */
+  --shadow-ink: 0 1px 2px rgba(48,44,99,.05), 0 4px 10px -3px rgba(48,44,99,.10);
+  --shadow-stage: inset 0 0 220px rgba(48,44,99,.10);
+
+  /* ---------- 布局语义(⚠ 待迁移期对页校验) ---------- */
+  --space-card:    var(--sp-4);     /* 卡片内边距 16 */
+  --space-section: var(--sp-6);     /* 区块间距 24 */
+  --radius-card:   var(--r-l);      /* 卡片默认圆角 */
+  --radius-button: var(--r-m);
+}
+
+/* ============================================================
+   五色定岗决议(第2期人审已通过):
+   primary=品牌  mint=成功  sun=警告  coral=错误/危险
+   pink=情感特征  sky=信息/链接
+   装饰性用法必须引用对应角色词, 禁止直引 primitive 色阶
+   ============================================================ */

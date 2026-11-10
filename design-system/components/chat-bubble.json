@@ -1,0 +1,46 @@
+{
+  "name": "chat-bubble",
+  "version": "1.1.1",
+  "source": "index.html .bub",
+  "signature": "产品旗舰组件 · 非对称圆角 + 每角色 --tint 定制 + 50% 减淡衬底",
+  "changelog": "v1.1.1 (2026-10-27): self 投影收编 --shadow-brand(inset 白高光保留); v1.1.0 (2026-10-27): peer 底色定稿为 tint 50% 白混(color-mix); surface 描边删除(仅柔影); self 镜像圆角 bug 修复落档(v1.4.0 裁决兑现)",
+  "slots": ["container", "text(中文)", "en(英文对照行·斜体)"],
+  "customProps": {
+    "--tint": "气泡底色(按说话人角色设定, 减淡前原色)",
+    "--deep": "文字色(默认 ink)"
+  },
+  "variants": {
+    "peer": {
+      "radius": "6px 20px 20px 20px",
+      "bg": "color-mix(in srgb, var(--tint, var(--bg-surface)) 50%, var(--surface))",
+      "text": "--text-default",
+      "shadow": "0 1px 2px rgba(48,44,99,.05), 0 5px 16px -4px rgba(48,44,99,.10)",
+      "border": "无(2026-10-27 起发丝内描边已删)",
+      "note": "左尖角指向头像; tint 减淡 50% 后文字对比度天然提升, 4.5:1 自检按减淡后实色计算"
+    },
+    "self": {
+      "radius": "20px 6px 20px 20px",
+      "bg": "--grad-brand",
+      "text": "--text-invert",
+      "shadow": "inset 0 1px 0 rgba(255,255,255,.25), var(--shadow-brand)",
+      "note": "v1.4.0 裁决已兑现: 镜像圆角 2026-10-27 修复(原 CSS 漏分号致 radius 整条失效); 投影已收编 --shadow-brand(primary-600 染色), inset 白高光按组件保留"
+    },
+    "system": {
+      "radius": "--r-m",
+      "bg": "--bg-surface-2",
+      "text": "--text-secondary",
+      "type": "--type-body-s",
+      "note": "系统通知/时间分隔"
+    }
+  },
+  "typography": { "text": "--type-body lh1.75", "en": "--type-caption var(--font-num) italic op.55" },
+  "surface": { "shadow": "0 1px 2px rgba(48,44,99,.05), 0 5px 16px -4px rgba(48,44,99,.10)", "border": "无" },
+  "padding": "11px 14px",
+  "rules": [
+    "气泡色必须通过 --tint 注入, 禁止写死 hex",
+    "tint 取值仅限各 family 的 soft 档(mint-soft/pink-soft/sky-soft/sun-soft/primary-soft)",
+    "peer 底色渲染一律走 50% 白混公式, 页面不得直接使用原 tint 实色",
+    "text 与 tint 组合须过 4.5:1 对比度自检(按减淡后实色)",
+    "群聊/单聊共用本规格, 浓度调节只改 color-mix 百分比一处"
+  ]
+}

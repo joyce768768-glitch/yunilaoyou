@@ -1,0 +1,41 @@
+{
+  "name": "friend-card",
+  "version": "1.0.1",
+  "source": "index.html .f-card / .f-card.hor / .f-more",
+  "signature": "老友库入口卡 · 静息无描边柔影 + 横版列表行 + 64×64 档案卡命中区",
+  "changelog": "v1.0.1 (2026-10-27): f-more 图标色收编 --icon-faint(原始 #B7B2D9 已归并 ink-4); tick 渐变统一 --grad-brand; new-tag/fab/plan-tag 的 #FF9A68 收编 --coral-light(沿用 v1.0.0 归并); v1.0.0 (2026-10-27): 新建收编——灰描边删除(2026-10-27 裁决: 静息态仅柔影, 1.5px 透明边框占位防跳变)、f-more 命中区扩至 64×64(视觉 26px 不变)、档案卡 icon 升级 v2",
+  "slots": ["ava(46px·走 avaHTML 唯一口)", "fi(nm→h3+charTag, p→quote)", "f-more(档案卡入口·横版专属)", "tick(选中勾·选人态)", "new-tag(NEW 徽标·可选)"],
+  "geometry": {
+    "radius": "--r-l",
+    "padding": "竖版 18px 14px 15px / 横版 11px 13px",
+    "layout": "横版 flex align-center gap 10px, ava flex-shrink:0, fi flex:1 min-width:0"
+  },
+  "surface": {
+    "bg": "--bg-surface",
+    "border": "1.5px solid transparent(占位, 2026-10-27 起灰描边已删)",
+    "shadow": "--sh-s"
+  },
+  "variants": {
+    "default-竖版": "居中排版: ava 居中 + h3(14px/700/mt12) + p(10.5px ink-2 两行截断 h33)",
+    "hor-横版": "列表行: ava 46px 左 + fi 中(h3 单行省略 + p 两行 clamp) + f-more 右",
+    "sel": "border --primary + box-shadow 0 0 0 3px --primary-soft + --sh-m + inset 0 0 0 1px --hairline; 右上 tick 显形"
+  },
+  "states": ["rest", "active(scale .94)", "sel(选人态)", "f-more:active(scale .86)"],
+  "f-more": {
+    "hitArea": "64×64: width/height 64 + padding 19 + margin -19 + background-clip:content-box + box-sizing:border-box",
+    "visual": "26px 圆块, bg --bg-brand-soft(2026-10-27 收编, 原 rgba(108,92,231,.09) 叠白近似等值)",
+    "icon": "档案卡 v2: rect 19×15 r3.5 + circle 头像 + 人形肩线 + 两行文字线, stroke currentColor 2.1, 视觉 15px",
+    "color": "--icon-faint(2026-10-27 收编; 原始 #B7B2D9 当年已归并 --ink-4, 值差 2/255 不可感知)",
+    "note": "命中区扩大不改视觉: 内圆直径由 padding+clip 控制, 与 40px 版视觉完全一致"
+  },
+  "decorations": {
+    "tick": "22px 圆勾, --grad-brand(2026-10-27 统一, 原两停渐变), 白 --text-invert, 投影 rgba(108,92,231,.4)",
+    "new-tag": "圆角胶囊, linear-gradient(140deg, --coral-light→--pink-deep)(2026-10-27 收编, 原始 #FF9A68 已归并 coral-light), 横版转静态徽标"
+  },
+  "rules": [
+    "头像一律走 avaHTML 唯一口, 调用点禁手传角标(见 avatar.json api 禁令)",
+    "卡本体点击=主操作(私聊/选人), f-more 点击=查看档案(stopPropagation 防穿透)",
+    "描边只许出现在 sel 交互态, 静息态无描边(透明占位保留防布局跳变)",
+    "f-more 命中区改动不得改变视觉圆块直径(视觉/命中解耦)"
+  ]
+}

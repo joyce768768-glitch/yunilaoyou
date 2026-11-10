@@ -1,0 +1,19 @@
+{
+  "name": "chip",
+  "version": "1.0.0",
+  "source": "index.html .chip / .chip.on",
+  "slots": ["container", "icon(optional)", "label"],
+  "variants": {
+    "rest-off": {
+      "bg": "--bg-surface", "border": "--border-hairline", "text": "--text-secondary",
+      "type": "--type-body-s(原13px→对齐) 500", "shadow": "--sh-s", "radius": "--r-pill", "padding": "8px 15px"
+    },
+    "on": {
+      "bg": "--grad-brand", "border": "transparent", "text": "--text-invert",
+      "shadow": "inset 0 1px 0 rgba(255,255,255,.25), 0 5px 14px -3px rgba(108,92,231,.5)"
+    }
+  },
+  "states": { "active": { "transform": "scale(.94)" }, "focus": { "ring": "--ring-focus" }, "disabled": { "opacity": "var(--state-disabled-opacity)" } },
+  "motion": { "all": "--dur-base var(--ease)" },
+  "rules": ["选中态渐变统一引用 --grad-brand(已补入 semantic.css), 禁止手写渐变 stops"]
+}

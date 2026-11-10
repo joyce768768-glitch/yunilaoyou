@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/tokens/tokens.css">
+<link rel="stylesheet" href="../design-system/tokens/semantic.css">
 <link rel="stylesheet" href="assets/site.css">
 <style>
 .page-head{padding:calc(var(--nav-h) + clamp(36px,6vw,60px)) 0 clamp(16px,2.6vw,28px)}
@@ -42,7 +44,7 @@
 .bar-g{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
 .bar-g .col{width:100%;max-width:52px;border-radius:12px 12px 6px 6px;background:var(--grad-primary);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 14px -4px rgba(108,92,231,.4);min-height:6px;transition:height .8s var(--spring);position:relative}
 .bar-g .col.zero{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--hairline)}
-.bar-g .col:hover::after{content:attr(data-v);position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--primary-deep);background:#fff;padding:3px 9px;border-radius:100px;box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);white-space:nowrap;z-index:3}
+.bar-g .col:hover::after{content:attr(data-v);position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--primary-deep);background:var(--surface);padding:3px 9px;border-radius:100px;box-shadow:var(--sh-s),inset 0 0 0 1px var(--hairline);white-space:nowrap;z-index:3}
 .bar-g .lb{font-size:11px;color:var(--ink-3);font-weight:700}
 .ring-card{padding:24px;display:flex;flex-direction:column}
 .ring-card .hd b{font-size:15px;font-weight:800}
@@ -63,7 +65,7 @@
 .orders .hd b{font-size:15px;font-weight:800}
 .filters{display:flex;gap:7px;flex-wrap:wrap}
 .filters button{padding:7.5px 15px;border-radius:100px;font-size:12px;font-weight:700;color:var(--ink-2);background:var(--surface-2);transition:all .2s}
-.filters button.on{background:var(--grad-primary);color:#fff;box-shadow:0 4px 12px -3px rgba(108,92,231,.45)}
+.filters button.on{background:var(--grad-primary);color:var(--text-invert);box-shadow:0 4px 12px -3px rgba(108,92,231,.45)}
 .o-table{width:100%;border-collapse:collapse}
 .o-table th{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--ink-3);text-align:left;padding:11px 22px;border-top:.5px solid var(--line);border-bottom:.5px solid var(--line);background:rgba(245,241,232,.6)}
 .o-table td{padding:14px 22px;border-bottom:.5px solid var(--line);font-size:13px;vertical-align:middle}
@@ -94,7 +96,7 @@
 
 <nav class="nav" id="nav">
   <a class="logo" href="index.html">
-    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="#FFF7EA"/><circle cx="15.5" cy="14.5" r="4.4" fill="#FFB930" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="#FF8FB8"/></svg></span>
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="4.4" fill="var(--sun-softer)"/><circle cx="15.5" cy="14.5" r="4.4" fill="var(--sun)" opacity=".92"/><circle cx="10.5" cy="15.5" r="2.2" fill="var(--pink)"/></svg></span>
     <span><b>与你老友</b><small>OLD FRIENDS · ROUNDTABLE</small></span>
   </a>
   <div class="links">
@@ -111,7 +113,7 @@
     </div>
   </div>
   <div class="cta" id="auth-slot"></div>
-  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#302C63" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <button class="burger" id="burger" aria-label="菜单"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </nav>
 <div class="mobile-menu" id="mm">
   <a href="index.html#features">产品</a><a href="membership.html">会员</a><a href="orders.html">订单</a>
@@ -143,25 +145,25 @@
       <span class="lb"><span class="dic" style="background:var(--primary-soft)">💰</span>累计消费</span>
       <p class="v" id="k-spend">¥0</p>
       <p class="sub" id="k-spend-sub">共 0 笔订单</p>
-      <span class="deco" style="background:#6C5CE7"></span>
+      <span class="deco" style="background:var(--primary)"></span>
     </div>
     <div class="card kpi reveal">
       <span class="lb"><span class="dic" style="background:var(--sun-soft)">👑</span>当前会员</span>
       <p class="v" id="k-plan">—</p>
       <p class="sub" id="k-plan-sub">未开通</p>
-      <span class="deco" style="background:#FBB03B"></span>
+      <span class="deco" style="background:var(--sun)"></span>
     </div>
     <div class="card kpi reveal">
       <span class="lb"><span class="dic" style="background:var(--mint-soft)">✦</span>剩余积分</span>
       <p class="v" id="k-pts">0</p>
       <p class="sub">每月 1 号发放 · 未用 20% 结转</p>
-      <span class="deco" style="background:#2BBE94"></span>
+      <span class="deco" style="background:var(--mint)"></span>
     </div>
     <div class="card kpi reveal">
       <span class="lb"><span class="dic" style="background:var(--coral-soft)">🎟</span>老友券</span>
       <p class="v" id="k-coupons">0</p>
       <p class="sub">可在女娲工坊捏人消耗</p>
-      <span class="deco" style="background:#FA7550"></span>
+      <span class="deco" style="background:var(--coral)"></span>
     </div>
   </div>
 
@@ -175,9 +177,9 @@
       <div class="ring-wrap">
         <div class="ring">
           <svg width="158" height="158" viewBox="0 0 158 158">
-            <circle cx="79" cy="79" r="64" fill="none" stroke="#F0EBE0" stroke-width="16"/>
+            <circle cx="79" cy="79" r="64" fill="none" stroke="var(--surface-2)" stroke-width="16"/>
             <circle id="ring-arc" cx="79" cy="79" r="64" fill="none" stroke="url(#gradRing)" stroke-width="16" stroke-linecap="round" stroke-dasharray="0 999"/>
-            <defs><linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8478FF"/><stop offset="1" stop-color="#5647D6"/></linearGradient></defs>
+            <defs><linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--primary-300)"/><stop offset="1" stop-color="var(--primary-600)"/></linearGradient></defs>
           </svg>
           <div class="cval"><b id="ring-pct">—</b><span>首选支付宝</span></div>
         </div>
@@ -213,12 +215,13 @@
   </div>
 </footer>
 
+<script src="../yln-core.js?v=12"></script>
 <script src="assets/site.js"></script>
 <script>
 let curFilter='all';
 /* 全端统一档位名（与 App PLANS 同步） */
 const PLAN_NAME={free:'免费版',trial:'体验装',lite:'轻量月卡',plus:'标准月卡',max:'创作月卡'};
-const METHOD_META={alipay:['🅰','支付宝','#4AA8E8'],wechat:['💬','微信支付','#2BBE94'],card:['💳','银行卡','#FBB03B']};
+const METHOD_META={alipay:['🅰','支付宝','var(--sky)'],wechat:['💬','微信支付','var(--mint)'],card:['💳','银行卡','var(--sun)']};
 const $=id=>document.getElementById(id);
 
 function render(){
@@ -276,7 +279,7 @@ function drawRing(paid){
   const top=entries[0];
   $('ring-pct').textContent=Math.round(top[1]/total*100)+'%';
   $('ring-pct').nextElementSibling.textContent=`首选${METHOD_META[top[0]]?.[1]||top[0]}`;
-  const colors=['#8478FF','#2BBE94','#FBB03B','#FA7550'];
+  const colors=['var(--primary-300)','var(--mint)','var(--sun)','var(--coral)'];
   let acc=0; const C=2*Math.PI*64;
   const arc=document.getElementById('ring-arc');
   arc.setAttribute('stroke-dasharray',`${C*top[1]/total} ${C}`);
@@ -298,7 +301,7 @@ function drawTable(orders){
   $('o-list').innerHTML=`<table class="o-table">
     <thead><tr><th>订单号</th><th>套餐</th><th class="hide-m">支付方式</th><th class="hide-m">时间</th><th>金额</th><th>状态</th></tr></thead>
     <tbody>${list.map(o=>{
-      const mm=METHOD_META[o.method]||['✦',o.method||'—','#A9A5CD'];
+      const mm=METHOD_META[o.method]||['✦',o.method||'—','var(--ink-3)'];
       return `<tr>
         <td class="oid">${o.id}</td>
         <td class="pl"><b>${o.plan}</b><span>${o.pts?'到账 '+o.pts+' 积分':''}</span></td>

@@ -1,0 +1,17 @@
+{
+  "name": "tab-bar",
+  "version": "1.0.0",
+  "source": "index.html .tab / .tab.on / .homebar",
+  "slots": ["bar(container)", "tab*2-5", "tab.icon", "tab.label", "tab.t-dot(选中指示)"],
+  "tab": {
+    "states": {
+      "rest":  { "icon": "--icon-muted", "label": "--text-muted" },
+      "on":    { "icon": "--icon-brand", "label": "--text-brand", "iconMotion": "translateY(-2px) scale(1.08)", "glow": "drop-shadow(0 3px 6px rgba(108,92,231,.35))", "dot": "4px --icon-brand" },
+      "focus": { "ring": "--ring-focus" }
+    },
+    "label": "--type-micro 600 ls1px(原10px→对齐10.5)"
+  },
+  "motion": { "icon": "--dur-base var(--spring)", "color": "--dur-base" },
+  "a11y": ["role=tablist/tab", "aria-selected 绑定 .on", "点击区 ≥44px"],
+  "rules": ["tab 数量 2~5", "选中指示 dot+上移+变色三者同时出现, 不可单独使用"]
+}

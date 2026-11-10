@@ -1,0 +1,93 @@
+/* 与你老友 · M3 Foundation 对照版 Reference tokens
+   仅提取 index.html 已使用的真实值；不代表 M3 官方色位。 */
+:root {
+  /* Color · violet */
+  --ref-violet-050: #F5F3FF;
+  --ref-violet-100: #ECE8FF;
+  --ref-violet-200: #C4B8F0;
+  --ref-violet-300: #8478FF;
+  --ref-violet-500: #6C5CE7;
+  --ref-violet-600: #5647D6;
+  --ref-violet-700: #4B42C6;
+  --ref-violet-900: #3D2F80;
+  /* Color · ink */
+  --ref-ink-900: #1E1940;
+  --ref-ink-800: #262050;
+  --ref-ink-700: #302C63;
+  --ref-ink-500: #6D69A4;
+  --ref-ink-300: #A9A5CD;
+  --ref-ink-200: #B9B4D8;
+  /* Color · coral / mint / pink / sky / sun */
+  --ref-coral-100: #FFEAE1;
+  --ref-coral-300: #FF9A76;
+  --ref-coral-500: #FA7550;
+  --ref-coral-700: #D9683A;
+  --ref-mint-100: #DEF5EC;
+  --ref-mint-300: #63E2B6;
+  --ref-mint-500: #2BBE94;
+  --ref-mint-700: #1E9A74;
+  --ref-pink-100: #FFE6EF;
+  --ref-pink-300: #F5A8C0;
+  --ref-pink-500: #FF8FB8;
+  --ref-pink-700: #F25C82;
+  --ref-sky-100: #E3F1FD;
+  --ref-sky-300: #7CC8F5;
+  --ref-sky-500: #4AA8E8;
+  --ref-sky-700: #2E86C8;
+  --ref-sun-050: #FFF7EA;
+  --ref-sun-100: #FFF3D6;
+  --ref-sun-300: #FFD98F;
+  --ref-sun-500: #FBB03B;
+  --ref-sun-700: #B47716;
+  /* Color · neutral surface */
+  --ref-neutral-000: #FFFFFF;
+  --ref-neutral-050: #FAF6EF;
+  --ref-neutral-100: #F5F1E8;
+  --ref-neutral-150: #EFE9DD;
+  --ref-hairline: rgba(48,44,99,.07);
+  /* Typography families */
+  --ref-font-display: '阿里妈妈方圆体 VF','AlimamaFangYuanTiVF','Yuanti SC','LXGW WenKai Screen','Baloo 2','PingFang SC',sans-serif;
+  --ref-font-body: -apple-system,BlinkMacSystemFont,'PingFang SC','HarmonyOS Sans SC','Microsoft YaHei',sans-serif;
+  --ref-font-numeric: 'Baloo 2',-apple-system,sans-serif;
+  /* Spacing · observed finite baseline */
+  --ref-space-100: 4px;
+  --ref-space-200: 8px;
+  --ref-space-300: 12px;
+  --ref-space-400: 16px;
+  --ref-space-500: 20px;
+  --ref-space-600: 24px;
+  --ref-space-800: 32px;
+  --ref-space-1000: 40px;
+  --ref-layout-page-gutter: 22px;
+  --ref-layout-compact-gutter: 14px;
+  /* Shape */
+  --ref-shape-xs: 8px;
+  --ref-shape-sm: 12px;
+  --ref-shape-md: 16px;
+  --ref-shape-lg: 22px;
+  --ref-shape-xl: 28px;
+  --ref-shape-2xl: 36px;
+  --ref-shape-pill: 999px;
+  --ref-shape-circle: 50%;
+  --ref-shape-jelly: 46% 54% 52% 48%/52% 46% 54% 48%;
+  /* Elevation · ink-tinted observed shadows */
+  --ref-elevation-1: 0 1px 2px rgba(48,44,99,.04),0 3px 12px rgba(48,44,99,.055);
+  --ref-elevation-2: 0 2px 5px rgba(48,44,99,.04),0 12px 30px -6px rgba(48,44,99,.10);
+  --ref-elevation-3: 0 6px 16px rgba(48,44,99,.08),0 28px 64px -12px rgba(48,44,99,.20);
+  --ref-elevation-brand: 0 3px 8px rgba(86,71,214,.22),0 10px 22px -6px rgba(86,71,214,.4);
+  /* Motion · Expressive scheme */
+  --ref-motion-100: .15s;
+  --ref-motion-200: .2s;
+  --ref-motion-300: .3s;
+  --ref-motion-500: .5s;
+  --ref-easing-standard: cubic-bezier(.32,.72,.24,1);
+  --ref-easing-spring: cubic-bezier(.34,1.56,.64,1);
+  /* Component measurements observed in index.html */
+  --ref-size-touch-primary: 52px;
+  --ref-size-touch-input: 48px;
+  --ref-size-touch-chat: 44px;
+  --ref-size-icon-button: 42px;
+  --ref-size-fab: 48px;
+  --ref-size-switch: 48px 28px;
+  --ref-size-nav-compact: 92px;
+}
