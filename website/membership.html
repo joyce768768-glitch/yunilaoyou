@@ -269,19 +269,20 @@
         <button class="method" data-m="wechat"><span class="mic" style="background:var(--mint-soft)">💬</span><b>微信支付</b><span class="tick">✓</span></button>
         <button class="method" data-m="card"><span class="mic" style="background:var(--sun-soft)">💳</span><b>银行卡</b><span class="tick">✓</span></button>
       </div>
-      <button class="btn btn-primary btn-full" onclick="doPay()">确认支付 <span id="pay-amt-inline">¥89</span></button>
+      <button class="btn btn-primary btn-full" id="pay-go" onclick="doPay()">模拟支付 <span id="pay-amt-inline">¥89</span></button>
+      <div class="aux" style="justify-content:center"><span>模拟环境，不会真实扣款</span></div>
       <div class="aux" style="justify-content:center"><button onclick="closePay()">再想想</button></div>
     </div>
     <!-- 支付中 -->
     <div class="paying" id="pay-step2">
       <div class="spinner"></div>
-      <p style="font-size:14.5px;font-weight:700">正在拉起支付…</p>
+      <p style="font-size:14.5px;font-weight:700">正在模拟支付…</p>
       <p style="font-size:12px;color:var(--ink-3);margin-top:8px">演示环境，无需真实付款</p>
     </div>
     <!-- 成功 -->
     <div class="pay-ok" id="pay-step3">
       <div class="okic">✓</div>
-      <h3 style="font-family:var(--f-disp);font-size:22px;font-weight:600;letter-spacing:.5px">开通成功！</h3>
+      <h3 style="font-family:var(--f-disp);font-size:22px;font-weight:600;letter-spacing:.5px">模拟支付成功！</h3>
       <p style="font-size:12.5px;color:var(--ink-2);margin:10px 0 4px" id="ok-plan">标准月卡已到账</p>
       <p style="font-size:11px;color:var(--ink-3);letter-spacing:.5px" id="ok-oid">订单号 —</p>
       <div style="display:flex;gap:10px;margin-top:24px">
@@ -304,7 +305,7 @@
 <script src="../yln-core.js?v=12"></script>
 <script src="assets/site.js"></script>
 <script>
-let selPlan='plus', selMethod='alipay';
+let selPlan='plus', selMethod='alipay', payBusy=false;
 const $=id=>document.getElementById(id);
 const PLANS={
   free:{name:'免费体验',amt:0,months:0,pts:0,coupons:0},
@@ -384,27 +385,31 @@ document.querySelectorAll('.method').forEach(m=>m.addEventListener('click',()=>{
   m.classList.add('on'); selMethod=m.dataset.m;
 }));
 function doPay(){
+  if(payBusy)return;
   const u=SITE.me(); if(!u){closePay();switchTab('login');return}
+  const p=PLANS[selPlan],planKey=selPlan,method=selMethod;
+  payBusy=true;
+  const btn=$('pay-go');btn.disabled=true;
   $('pay-step1').style.display='none'; $('pay-step2').classList.add('on');
   setTimeout(()=>{
     $('pay-step2').classList.remove('on'); $('pay-step3').classList.add('on');
-    const p=PLANS[selPlan];
-    /* 对齐 App 会员规则：积分累加，老友券按档发放（不缩水取大值）；P1 以核心钱包为源，盖章+官网写穿+服务器推送三端同步 */
+    /* 模拟支付成功后才发权益：积分累加、老友券不缩水、未到期续费顺延 */
     let cw=YLN.walletLoad();
     if(cw&&cw.synced&&cw.synced!==u.email)cw=null;  /* 他人账号残留钱包不作本账号充值基数 */
     cw=cw||YLN.WALLET_DEFAULT();
     const base=cw.planUntil&&cw.planUntil>Date.now()?cw.planUntil:Date.now();
-    cw.plan=selPlan;
+    cw.plan=planKey;
     cw.planUntil=base+p.months*30*864e5;
     cw.points=(cw.points||0)+p.pts;
     cw.coupons=Math.max(cw.coupons||0,p.coupons||0);
-    cw.ledger.unshift({t:Date.now(),n:`会员充值 · ${p.name} · ${p.pts} 积分`,d:p.pts});
+    cw.ledger.unshift({t:Date.now(),n:`模拟支付成功 · ${p.name} · ${p.pts} 积分`,d:p.pts});
     if(cw.ledger.length>40)cw.ledger.length=40;
     YLN.walletSave(cw);
     SITE.updateUser({plan:cw.plan,planUntil:cw.planUntil,points:cw.points,coupons:cw.coupons});
-    const rec=SITE.createOrder({plan:p.name,planKey:selPlan,amount:p.amt,method:{alipay:'支付宝',wechat:'微信支付',card:'银行卡'}[selMethod],months:p.months,pts:p.pts,nick:u.nick,email:u.email});
+    const rec=SITE.createOrder({plan:p.name,planKey,amount:p.amt,method:{alipay:'支付宝',wechat:'微信支付',card:'银行卡'}[method],months:p.months,pts:p.pts,nick:u.nick,email:u.email,mock:true});
     $('ok-plan').textContent=`${p.name}已到账 · ${p.pts} 积分入袋${p.coupons?` · 老友券 ×${p.coupons}`:''}`;
-    $('ok-oid').textContent='订单号 '+rec.id;
+    $('ok-oid').textContent='模拟订单号 '+rec.id;
+    payBusy=false;btn.disabled=false;
     SITE.renderAuth(); renderMe();
   },1300);
 }

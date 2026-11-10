@@ -22,6 +22,7 @@ const adminJs = fs.readFileSync(path.join(ROOT, 'website/admin/admin.js'), 'utf8
 const adminHtml = fs.readFileSync(path.join(ROOT, 'website/admin/admin.html'), 'utf8');
 const adminCss = fs.readFileSync(path.join(ROOT, 'website/admin/admin.css'), 'utf8');
 const siteJs = fs.readFileSync(path.join(ROOT, 'website/assets/site.js'), 'utf8');
+const membershipHtml = fs.readFileSync(path.join(ROOT, 'website/membership.html'), 'utf8');
 const serverPy = fs.readFileSync(path.join(ROOT, 'yln-server.py'), 'utf8');
 const seg1 = html.match(/\/\* ==== 三端数据桥[\s\S]*?const ri2=\(a,b\)=>[^;]+;/);
 const seg2 = html.match(/\/\* 三端同步：登录态下[\s\S]*?syncWalletFromSite\(\);/);
@@ -43,6 +44,9 @@ t('三份源码 JS 语法编译通过', () => {
   try { new Function(coreJs); } catch (e) { throw new Error('yln-core.js: ' + e.message); }
   try { new Function(coreJs + '\n' + adminJs); } catch (e) { throw new Error('admin.js: ' + e.message); }
   try { new Function(siteJs); } catch (e) { throw new Error('site.js: ' + e.message); }
+  [...membershipHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)].forEach((m, i) => {
+    try { new Function(m[1]); } catch (e) { throw new Error('membership.html script#' + i + ': ' + e.message); }
+  });
 });
 
 /* ============================================================
@@ -809,7 +813,7 @@ console.log('\n[J] P1 钱包跨端同步（写穿 + LWW 合并）');
 
   /* J1 无 token：walletSave 仅落本地并盖章，不发服务器请求 */
   setRoute(() => rok({ ok: true }));
-  const w0 = { plan: 'free', points: 10, coupons: 5, freeSpeaks: 3, freeDesk: 1, ledger: [] };
+  const w0 = { plan: 'free', points: 10, coupons: 5, freeSpeaks: 100, freeQuota: 100, freeDesk: 10, freeDeskQuota: 10, ledger: [] };
   JY.walletSave(w0);
   await new Promise(r => setTimeout(r, 20));
   __ck('J1 无 token→walletSave 仅本地+盖章 0 请求', calls.length === 0 && typeof w0.updated === 'number'
@@ -1443,7 +1447,7 @@ console.log('\n[N] 真人好友管理（后台真人视图 · 手机端真友/�
     ok(/if\(btn\.dataset\.tab==='scr-square'\)renderSessions\(\)/.test(html), '切到会话 tab 应渲染会话列表');
   });
 
-  /* O14 插话计费：免费用户先扣 3 条免费额度；额度用尽后与会员一致按条扣积分（单聊/私密 10 · 公开 20），
+  /* O14 插话计费：免费用户先扣 100 条免费额度；额度用尽后与会员一致按条扣积分（单聊/私密 10 · 公开 20），
      积分不足弹会员墙；围观/演示桌分支先于计费门槛 return（免会员墙不变） */
   t('O14 插话积分计费静态断言', () => {
     ok(/const speakFree = !isMember\(\)&&wallet\.freeSpeaks>0/.test(html), '免费用户应先消耗免费插话额度');
@@ -1652,6 +1656,86 @@ globalThis.__runQ = (async () => { try {
   Y.events.stop();
   __ck('Q4 SSE 401 触发会话失效回调', unauthorized >= 1);
 } catch (e) { fail++; fails.push('Q 组执行'); console.log('  \x1b[31m✗\x1b[0m Q 组执行 — ' + e.message); } })();
+
+/* ================= 组 R：模拟支付与 VIP 权限到账 ================= */
+console.log('\n[R] 模拟支付与 VIP 权限到账');
+
+t('R1 APP 模拟支付：防重复到账、续费顺延、过期失效、刷新持久化', () => {
+  const plans = html.match(/const PLANS = \[[\s\S]*?\];/);
+  const paySeg = html.match(/function renderPlans\(\)\{[\s\S]*?function pickPlan\(id\)\{[^\n]+\}\nfunction doSubscribe\(\)\{[\s\S]*?\n\}/);
+  const memberSeg = html.match(/function isMember\(\)\{[^\n]+\}/);
+  ok(plans && paySeg && memberSeg, 'APP 支付源码段应可提取');
+  const store = mkStore();
+  store.setItem('yln_site_users', JSON.stringify([{ id: 'uR1', nick: '测试员', email: 'r1@x.com', plan: 'free', points: 0, coupons: 5 }]));
+  store.setItem('yln_site_session', JSON.stringify('uR1'));
+  const btn = mkEl(); btn.disabled = false;
+  const doc = { querySelector: () => null, querySelectorAll: () => [], getElementById: id => id === 'sub-go' ? btn : mkEl(), createElement: mkEl, body: mkEl() };
+  const Y = new Function('document', 'localStorage', 'fetch', coreJs + ';return YLN;')(doc, store, async () => ({ ok: true, json: async () => ({ ok: true }) }));
+  const wallet = { plan: 'free', points: 0, coupons: 5, freeSpeaks: 100, freeDesk: 10, ledger: [] };
+  let timer = null, timers = 0;
+  const env = new Function('document', 'setTimeout', 'saveWallet', 'renderWalletUI', 'toast', 'confetti', 'PLAN_NAME', 'wallet', `
+    let curPlanId='plus',subscribeBusy=false;
+    ${plans[0]}
+    ${memberSeg[0]}
+    ${paySeg[0]}
+    return {pay:doSubscribe,isMember,get busy(){return subscribeBusy}};
+  `)(doc, fn => { timer = fn; timers++; }, () => Y.walletSave(wallet), () => {}, () => {}, () => {}, { plus: '标准月卡' }, wallet);
+
+  env.pay(); env.pay();
+  eq(timers, 1, '连续点击只能产生一次模拟支付');
+  eq(wallet.points, 0, '支付成功回调前不能提前发积分');
+  ok(btn.disabled && env.busy, '支付中按钮应禁用');
+  timer();
+  eq(wallet.points, 2000, '标准月卡应发放 2000 积分');
+  eq(wallet.coupons, 5, '套餐券较少时不能清空原有老友券');
+  ok(wallet.plan === 'plus' && wallet.planUntil > Date.now() && env.isMember(), '支付成功应开通有效 VIP');
+  ok(!btn.disabled && !env.busy, '到账后应恢复按钮');
+  eq(Y.walletLoad().points, 2000, '重新读取钱包应保持已到账积分');
+  eq(JSON.parse(store.getItem('yln_site_users'))[0].planUntil, wallet.planUntil, 'APP 续费有效期应写穿官网账号');
+
+  const firstUntil = wallet.planUntil;
+  env.pay(); timer();
+  eq(wallet.points, 4000, '续费应继续累加积分');
+  eq(wallet.planUntil, firstUntil + 30 * 864e5, '未到期续费应顺延 30 天');
+  wallet.planUntil = Date.now() - 1;
+  eq(env.isMember(), false, '会员过期后不得继续享受 VIP 权限');
+});
+
+t('R2 官网模拟支付：成功后才发 VIP，模拟订单可识别且刷新不丢失', () => {
+  const plans = membershipHtml.match(/const PLANS=\{[\s\S]*?\n\};/);
+  const paySeg = membershipHtml.match(/function doPay\(\)\{[\s\S]*?\n\}/);
+  ok(plans && paySeg, '官网支付源码段应可提取');
+  const store = mkStore();
+  const doc = { querySelector: () => null, querySelectorAll: () => [], getElementById: () => mkEl(), createElement: mkEl, body: mkEl() };
+  const Y = new Function('document', 'localStorage', 'fetch', coreJs + ';return YLN;')(doc, store, async () => ({ ok: true, json: async () => ({ ok: true }) }));
+  const els = {};
+  ['pay-go', 'pay-step1', 'pay-step2', 'pay-step3', 'ok-plan', 'ok-oid'].forEach(id => { els[id] = mkEl(); });
+  const user = { email: 'r2@x.com', nick: '官网测试' }, orders = [];
+  let timer = null, timers = 0;
+  const SITE = {
+    me: () => user,
+    updateUser: p => Object.assign(user, p),
+    createOrder: o => { orders.push(o); return { id: 'YLMOCK1', ...o }; },
+    renderAuth: () => {},
+  };
+  const env = new Function('$', 'SITE', 'YLN', 'setTimeout', 'closePay', 'switchTab', 'renderMe', `
+    let selPlan='plus',selMethod='alipay',payBusy=false;
+    ${plans[0]}
+    ${paySeg[0]}
+    return {doPay,get busy(){return payBusy}};
+  `)(id => els[id], SITE, Y, fn => { timer = fn; timers++; }, () => {}, () => {}, () => {});
+
+  env.doPay(); env.doPay();
+  eq(timers, 1, '官网连续点击只能产生一次模拟支付');
+  eq(orders.length, 0, '支付成功前不能生成已支付订单');
+  timer();
+  eq(user.plan, 'plus', '官网账号应获得标准月卡');
+  eq(user.points, 2000, '官网账号应获得 2000 积分');
+  ok(user.planUntil > Date.now(), '官网账号应获得会员有效期');
+  ok(orders.length === 1 && orders[0].mock === true, '订单必须明确标记为模拟支付');
+  eq(Y.walletLoad().points, 2000, '官网刷新后钱包仍应保留到账权益');
+  ok(!els['pay-go'].disabled && !env.busy, '官网到账后应恢复支付按钮');
+});
 
 /* ---------- 汇总 ---------- */
 setTimeout(() => {

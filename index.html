@@ -671,19 +671,19 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
             <div class="sub">
               <span class="plan-b" id="w-plan">免费版</span>
               <span id="w-coupon">🎟 老友券 ×0</span>
-              <span id="w-free">💬 免费插话 ×3</span>
+              <span id="w-free">💬 免费插话 ×100</span>
             </div>
           </div>
 
           <div class="sec-head" style="margin:22px 22px 0"><h2>选一档月租</h2><span class="more" onclick="toast('到期自动续费，可随时一键取消')">规则</span></div>
           <div class="plan-row" id="plan-row"></div>
-          <div style="padding:14px 22px 0"><button class="btn btn-primary" id="sub-go" style="width:100%;height:52px;font-size:15.5px" onclick="doSubscribe()">立即开通 · 89 元/月</button></div>
-          <p style="text-align:center;font-size:10.5px;color:var(--ink-3);margin-top:10px">每月 1 号发放积分 · 未用 20% 结转（封顶 500）· 随时可取消</p>
+          <div style="padding:14px 22px 0"><button class="btn btn-primary" id="sub-go" style="width:100%;height:52px;font-size:15.5px" onclick="doSubscribe()">模拟支付 · 89 元/月</button></div>
+          <p style="text-align:center;font-size:10.5px;color:var(--ink-3);margin-top:10px">模拟支付，不会真实扣款；成功后 VIP 立即到账<br>每月 1 号发放积分 · 未用 20% 结转（封顶 500）· 随时可取消</p>
 
           <div class="rule-card">
             <h4>🎱 积分怎么算</h4>
             <p><b>开桌</b><span>按场计费：私密 10 分 · 公开 20 分，桌内老友发言和你的插话都不限次</span></p>
-            <p><b>插话</b><span>会员在所有公开桌无限插话；免费用户共 3 次体验</span></p>
+            <p><b>插话</b><span>会员在所有公开桌无限插话；免费用户共 100 次体验</span></p>
             <p><b>女娲蒸馏</b><span>新用户送 5 张老友券，会员每月按档发放，券用完后 200 分/位</span></p>
             <p><b>结转</b><span>月末未用积分的 20% 自动结转下月，封顶 500 分</span></p>
             <p><b>续费</b><span>默认自动续费，到期前 5 天提醒，设置里可一键关闭</span></p>
@@ -728,7 +728,7 @@ input,textarea{font-family:inherit;border:none;outline:none;background:none;colo
             <span class="vc-num"><b id="vip-pts">0</b><i>积分余额</i></span>
             <span class="vc-bot">
               <span class="bar"><i id="vip-bar" style="width:0%"></i></span>
-              <span class="st" id="vip-line">免费版 · 3 次免费插话剩余</span>
+              <span class="st" id="vip-line">免费版 · 100 次免费插话剩余</span>
             </span>
           </span>
           <span class="vc-tear"></span>
@@ -1388,8 +1388,8 @@ const PLANS = [
   {id:'max',name:'创作月卡',price:'169',points:8000,coupons:8,feats:['8000 积分 / 月','每月 8 张老友券','老友出租分成 · 新功能优先']}
 ];
 const PLAN_NAME = YLN.PLAN_NAME;
-let wallet = {plan:'free',points:0,coupons:5,freeSpeaks:3,freeDesk:1,ledger:[{t:Date.now(),n:'新人礼包 · 老友券 ×5 + 免费插话 ×3 + 免费建桌 ×1',d:0}]};
-let curPlanId = 'plus';
+let wallet = {plan:'free',points:0,coupons:5,freeSpeaks:100,freeQuota:100,freeDesk:10,freeDeskQuota:10,ledger:[{t:Date.now(),n:'新人礼包 · 老友券 ×5 + 免费插话 ×100 + 免费建桌 ×10',d:0}]};
+let curPlanId = 'plus', subscribeBusy = false;
 /* ==== 三端数据桥 → yln-core.js 唯一实现（键名/读写/写穿全在 core） ==== */
 const SITE = YLN.K.site;
 const siteUser = () => YLN.siteUser();
@@ -1414,7 +1414,7 @@ function logRoundTokens(rec,early){
   }catch(e){}
 }
 const ri2=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-function isMember(){return wallet.plan!=='free'}
+function isMember(){return wallet.plan!=='free'&&(!wallet.planUntil||wallet.planUntil>Date.now())}
 function walletGain(n,label){
   wallet.points+=n;
   wallet.ledger.unshift({t:Date.now(),n:label,d:n});
@@ -1428,9 +1428,9 @@ function walletSpend(n,label){
   saveWallet();renderWalletUI();
 }
 const PAYWALLS = {
-  speak:{hero:'💬',title:'免费插话用完了',desc:'你的 3 次免费插话已用完。开通会员持续开麦，也可以按条消耗积分继续聊：单聊/私密桌 10 分、公开桌 20 分。',feats:['按条计费：单聊/私密桌 10 分 · 公开桌 20 分','会员每月 600-8000 积分按档到账','每月积分 20% 可结转，不清零']},
+  speak:{hero:'💬',title:'免费插话用完了',desc:'你的 100 次免费插话已用完。开通会员持续开麦，也可以按条消耗积分继续聊：单聊/私密桌 10 分、公开桌 20 分。',feats:['按条计费：单聊/私密桌 10 分 · 公开桌 20 分','会员每月 600-8000 积分按档到账','每月积分 20% 可结转，不清零']},
   speak_pts:{hero:'👛',title:'积分不够插话了',desc:'会员插话按条计积分：单聊/私密桌 10 分、公开桌 20 分。开通或续费一档月租，积分立即到账，和任何老友接着聊。',feats:['轻量 39.9 = 600 分 · 约 60 条单聊','标准 89 = 2000 分 · 重度用户够用一月','未用 20% 结转，不让积分白白清零']},
-  desk:{hero:'🏗',title:'免费建桌机会用完了',desc:'新人免费建桌机会已使用。开通会员按场开桌：私密 10 分、公开 20 分，一场完整的圆桌讨论一次扣清，桌内不再计费。',feats:['9.9 体验装即可开 15 场私密桌','积分明细全程可查','随时可取消，到期前 5 天提醒']},
+  desk:{hero:'🏗',title:'免费建桌机会用完了',desc:'你的 10 次免费建桌机会已用完。开通会员按场开桌：私密 10 分、公开 20 分，一场完整的圆桌讨论一次扣清，桌内不再计费。',feats:['9.9 体验装即可开 15 场私密桌','积分明细全程可查','随时可取消，到期前 5 天提醒']},
   points:{hero:'👛',title:'积分不够开这桌了',desc:'当前积分余额不足。开通或续费一档月租，积分立即到账，老友们马上开麦。',feats:['轻量 39.9 = 600 分 · 约 30-60 场','标准 89 = 2000 分 · 重度用户够用一月','未用 20% 结转，不让积分白白清零']},
   nuwa:{hero:'🏺',title:'捏老友是会员专享',desc:'女娲蒸馏是你的私人老友工厂：输入一个人名或人设，六路采集生成专属 AI 分身。新用户送 5 张老友券，捏出的老友永久属于你。',feats:['新用户赠老友券 ×5','会员每月 2-8 张按档发放','券用完 200 分/位，随时可捏','老友可拉上桌 · 可公开出租（创作月卡）']}
 };
@@ -1454,18 +1454,27 @@ function renderPlans(){
       <ul>${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
     </button>`).join('');
   const cp = PLANS.find(x=>x.id===curPlanId);
-  document.getElementById('sub-go').textContent = wallet.plan===cp.id?`续费「${cp.name}」· ¥${cp.price}/月`:`立即开通「${cp.name}」· ¥${cp.price}/月`;
+  if(!subscribeBusy)document.getElementById('sub-go').textContent = wallet.plan===cp.id?`模拟续费「${cp.name}」· ¥${cp.price}/月`:`模拟支付「${cp.name}」· ¥${cp.price}/月`;
 }
-function pickPlan(id){curPlanId=id;renderPlans();}
+function pickPlan(id){if(subscribeBusy)return;curPlanId=id;renderPlans();}
 function doSubscribe(){
+  if(subscribeBusy)return;
   const p = PLANS.find(x=>x.id===curPlanId);
-  wallet.plan = p.id;
-  wallet.coupons = p.coupons||0;
-  wallet.points += p.points;
-  wallet.ledger.unshift({t:Date.now(),n:`订阅「${p.name}」· 积分到账`,d:p.points});
-  if(wallet.ledger.length>40)wallet.ledger.length=40;
-  saveWallet();renderWalletUI();renderPlans();
-  toast(`🎉 已开通${p.name}，+${p.points} 积分到账`);confetti(16);
+  const btn = document.getElementById('sub-go');
+  subscribeBusy=true;btn.disabled=true;btn.textContent='模拟支付中…';
+  setTimeout(()=>{
+    const base=wallet.planUntil&&wallet.planUntil>Date.now()?wallet.planUntil:Date.now();
+    wallet.plan=p.id;
+    wallet.planUntil=base+30*864e5;
+    wallet.coupons=Math.max(wallet.coupons||0,p.coupons||0);
+    wallet.points+=p.points;
+    wallet.ledger.unshift({t:Date.now(),n:`模拟支付成功 · ${p.name} · 积分到账`,d:p.points});
+    if(wallet.ledger.length>40)wallet.ledger.length=40;
+    saveWallet();
+    subscribeBusy=false;btn.disabled=false;
+    renderWalletUI();renderPlans();
+    toast(`模拟支付成功，已开通${p.name}，+${p.points} 积分到账`);confetti(16);
+  },900);
 }
 /* 「我的」页身份数据条：圆桌/发言/老友 三列真实统计 */
 function renderProf(){
@@ -1487,8 +1496,9 @@ function renderWalletUI(){
     : `免费版 · 免费插话 ×${wallet.freeSpeaks} · 建桌 ×${wallet.freeDesk}`;
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
   set('w-pts',wallet.points);
-  set('vip-chip',PLAN_NAME[wallet.plan]||'免费版');
-  set('w-plan',PLAN_NAME[wallet.plan]||'免费版');
+  const planLabel=isMember()?(PLAN_NAME[wallet.plan]||'会员'):'免费版';
+  set('vip-chip',planLabel);
+  set('w-plan',planLabel);
   set('w-coupon',`🎟 老友券 ×${wallet.coupons}`);
   set('w-free',isMember()?'💬 插话 10-20 分/条':`💬 免费插话 ×${wallet.freeSpeaks}`);
   const led = document.getElementById('ledger');
@@ -2026,7 +2036,7 @@ async function sendUserMsg(){
     if(rec){rec.topic=activeRound.topic;saveRounds()}
   }
   if(activeRound.isPublic&&!roomSeq.length)liveStart();   /* 公开静场桌首条插话即开播 */
-  /* 插话计费：免费用户先消耗 3 条免费额度；额度用尽后与会员一致按条扣积分（单聊/私密桌 10 分 · 公开桌 20 分），积分不足才弹会员墙 */
+  /* 插话计费：免费用户先消耗 100 条免费额度；额度用尽后与会员一致按条扣积分（单聊/私密桌 10 分 · 公开桌 20 分），积分不足才弹会员墙 */
   const speakFree = !isMember()&&wallet.freeSpeaks>0;
   const speakCost = (activeRound.solo||!activeRound.isPublic)?10:20;
   if(!speakFree&&wallet.points<speakCost){openPaywall(isMember()?'speak_pts':'speak');return}

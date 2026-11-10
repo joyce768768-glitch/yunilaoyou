@@ -1103,7 +1103,7 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
                         return self._json({'ok': False, 'err': '该用户未同步到服务器（本地游客号无法远程调整）'}, 404)
                     row = conn.execute('SELECT json FROM yln_wallet WHERE user_id=?', (uid,)).fetchone()
                     w = json.loads(row[0]) if row and row[0] else {'plan': 'free', 'points': 0, 'coupons': 5,
-                                                                  'freeSpeaks': 3, 'freeDesk': 1, 'ledger': []}
+                                                                  'freeSpeaks': 100, 'freeQuota': 100, 'freeDesk': 10, 'freeDeskQuota': 10, 'ledger': []}
                     for k in ('plan', 'planUntil', 'points', 'coupons', 'freeSpeaks', 'freeDesk'):
                         if k in patch:
                             w[k] = patch[k]

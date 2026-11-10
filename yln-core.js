@@ -77,18 +77,28 @@ const YLN = (() => {
   }
 
   /* ---- 钱包（用户资产唯一逻辑；P1 起服务器 yln_wallet 表为跨端事实源，updated 戳 LWW 合并） ---- */
-  const WALLET_DEFAULT = () => ({plan:'free',points:0,coupons:5,freeSpeaks:3,freeDesk:1,
-    ledger:[{t:Date.now(),n:'新人礼包 · 老友券 ×5 + 免费插话 ×3 + 免费建桌 ×1',d:0}],updated:Date.now()});
+  const FREE_SPEAKS = 100, FREE_DESKS = 10;
+  const WALLET_DEFAULT = () => ({plan:'free',points:0,coupons:5,freeSpeaks:FREE_SPEAKS,freeQuota:FREE_SPEAKS,
+    freeDesk:FREE_DESKS,freeDeskQuota:FREE_DESKS,
+    ledger:[{t:Date.now(),n:'新人礼包 · 老友券 ×5 + 免费插话 ×100 + 免费建桌 ×10',d:0}],updated:Date.now()});
+  function walletNormalize(w){
+    /* 旧免费钱包一次性迁移；额度标记防止每次启动重置已消耗次数 */
+    if(w&&w.plan==='free'){
+      if(w.freeQuota!==FREE_SPEAKS){w.freeSpeaks=FREE_SPEAKS;w.freeQuota=FREE_SPEAKS}
+      if(w.freeDeskQuota!==FREE_DESKS){w.freeDesk=FREE_DESKS;w.freeDeskQuota=FREE_DESKS}
+    }
+    return w;
+  }
   function walletLoad(){
     const w = jload(K.wallet,null);
-    return (w && typeof w.points==='number' && w.ledger) ? w : null;
+    return (w && typeof w.points==='number' && w.ledger) ? walletNormalize(w) : null;
   }
   /* 官网账号写穿（钱包变动实时可见于官网/管理后台） */
   function walletSiteWrite(w){
     const su = siteUser();
     if(su){
       su.points=w.points; su.coupons=w.coupons; su.plan=w.plan;
-      if(su.plan!=='free')su.planUntil=su.planUntil||w.planUntil||Date.now()+30*864e5;
+      if(su.plan!=='free')su.planUntil=w.planUntil||su.planUntil||Date.now()+30*864e5;
       siteSaveUser(su);
     }
   }
@@ -116,7 +126,7 @@ const YLN = (() => {
     const d = await AUTH.call('/wallet');
     if(!d || !d.ok)return null;
     const local = walletLoad();
-    const srv = d.wallet;                          /* null = 服务器尚无该用户钱包记录 */
+    const srv = walletNormalize(d.wallet);          /* null = 服务器尚无该用户钱包记录 */
     if(!srv){
       if(!local)return null;
       if(local.synced && local.synced!==accountEmail)return null;  /* 他人账号残留钱包，不播种污染新账号 */
